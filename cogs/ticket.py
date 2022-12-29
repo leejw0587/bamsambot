@@ -35,12 +35,12 @@ class SelectProblem(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
 
-        with open("ticket.json") as file:
+        with open("database/ticket.json") as file:
             ticket_json = json.load(file)
 
         user = interaction.user
         guild = interaction.guild
-        creator = guild.get_role(int(self.bot.config["creator_role_id"][0]))
+        creator = guild.get_role(int(ticket_json["creator_role_id"]))
 
         if self.values[0] == "질문":
             new_channel = await guild.create_text_channel(name=f'❔┃{user}-ticket')

@@ -94,7 +94,3 @@ async def get_warnings(user_id: int, server_id: int) -> list:
             for row in result:
                 result_list.append(row)
             return result_list
-
-
-async def shop_list() -> list:
-    async with aiosqlite.connect("database/database.db") as db:

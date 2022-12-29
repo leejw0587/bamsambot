@@ -63,6 +63,11 @@ class General(commands.Cog, name="general"):
             value=f"{platform.python_version()}",
             inline=True
         )
+        embed.add_field(
+            name="Bot Version:",
+            value=f"0.1 Beta",
+            inline=False
+        )
         # embed.add_field(
         #     name="Prefix:",
         #     value=f"/ (Slash Commands) or {self.bot.config['prefix']} for normal commands",
