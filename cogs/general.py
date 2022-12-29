@@ -1,5 +1,6 @@
 import platform
 import random
+import json
 
 import aiohttp
 import discord
@@ -46,6 +47,9 @@ class General(commands.Cog, name="general"):
 
         :param context: The hybrid command context.
         """
+
+        config = self.bot.config
+
         embed = discord.Embed(
             description="Dev By xDxD#6779",
             color=0x9C84EF
@@ -65,7 +69,7 @@ class General(commands.Cog, name="general"):
         )
         embed.add_field(
             name="Bot Version:",
-            value=f"0.1 Beta",
+            value=f"{config['version']}",
             inline=False
         )
         # embed.add_field(
