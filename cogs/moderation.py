@@ -3,7 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from helpers import checks, db_manager
+from helpers import checks, db_manager, log
 
 
 class Moderation(commands.Cog, name="moderation"):
@@ -185,7 +185,7 @@ class Moderation(commands.Cog, name="moderation"):
             user.id, context.guild.id, context.author.id, reason)
         embed = discord.Embed(
             title="유저 경고 완료.",
-            description=f"**{member}**가 경고를 받았습니다!\n누적 경고: {total}",
+            description=f"**{member}**(이)가 경고를 받았습니다!\n누적 경고: {total}",
             color=0x9C84EF
         )
         embed.add_field(
@@ -197,7 +197,11 @@ class Moderation(commands.Cog, name="moderation"):
             await member.send(f"**뱀샘크루에서 경고를 받았습니다!**\n경고 사유: ``{reason}``\n누적 경고: {total}")
         except:
             # Couldn't send a message in the private messages of the user
-            await context.send(f"{member.mention}가 경고를 받았습니다!\n경고 사유: ``{reason}``")
+            await context.send(f"{member.mention}(이)가 경고를 받았습니다!\n경고 사유: ``{reason}``")
+
+        Log_channel = discord.utils.get(context.guild.channels,
+                                        id=self.bot.config["log_channel_id"])
+        await Log_channel.send(log.warning("add", context, user))
 
     @warning.command(
         name="remove",
@@ -222,6 +226,10 @@ class Moderation(commands.Cog, name="moderation"):
             color=0x9C84EF
         )
         await context.send(embed=embed)
+
+        Log_channel = discord.utils.get(context.guild.channels,
+                                        id=self.bot.config["log_channel_id"])
+        await Log_channel.send(log.warning("remov", context, user))
 
     @warning.command(
         name="list",

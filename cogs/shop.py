@@ -4,7 +4,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from helpers import checks, db_manager
+from helpers import checks, log
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 TOKEN_EMOJI = "<:chip:884035217252311051>"
@@ -128,6 +128,9 @@ class Shop(commands.Cog, name="shop"):
             color=0x9C84EF
         )
         await context.send(embed=embed)
+        Log_channel = discord.utils.get(context.guild.channels,
+                                        id=self.bot.config["log_channel_id"])
+        await Log_channel.send(log.token(context, item))
 
     @shop.command(
         name="add",

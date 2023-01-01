@@ -4,7 +4,7 @@ import random
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
-from helpers import checks
+from helpers import checks, log
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 TOKEN_EMOJI = "<:chip:884035217252311051>"
@@ -105,6 +105,9 @@ class Inventory(commands.Cog, name="inventory"):
                 color=0x9C84EF
             )
             await context.send(embed=embed)
+            Log_channel = discord.utils.get(context.guild.channels,
+                                            id=self.bot.config["log_channel_id"])
+            await Log_channel.send(log.peridot("add", context, user, amount))
 
     @peridot.command(
         name="remove",
@@ -143,6 +146,9 @@ class Inventory(commands.Cog, name="inventory"):
                     color=0x9C84EF
                 )
                 await context.send(embed=embed)
+                Log_channel = discord.utils.get(context.guild.channels,
+                                                id=self.bot.config["log_channel_id"])
+                await Log_channel.send(log.peridot("remov", context, user, amount))
 
     @commands.hybrid_group(
         name="token",
@@ -186,6 +192,9 @@ class Inventory(commands.Cog, name="inventory"):
                 color=0x9C84EF
             )
             await context.send(embed=embed)
+            Log_channel = discord.utils.get(context.guild.channels,
+                                            id=self.bot.config["log_channel_id"])
+            await Log_channel.send(log.token("add", context, user, amount))
 
     @token.command(
         name="remove",
@@ -224,6 +233,9 @@ class Inventory(commands.Cog, name="inventory"):
                     color=0x9C84EF
                 )
                 await context.send(embed=embed)
+                Log_channel = discord.utils.get(context.guild.channels,
+                                                id=self.bot.config["log_channel_id"])
+                await Log_channel.send(log.token("remov", context, user, amount))
 
     @token.command(
         name="open",

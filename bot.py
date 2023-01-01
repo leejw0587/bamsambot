@@ -131,7 +131,7 @@ async def on_command_completion(context: Context) -> None:
     executed_command = str(split[0])
     if context.guild is not None:
         print(
-            f"Executed {executed_command} command in {context.guild.name} (ID: {context.guild.id}) by {context.author} (ID: {context.author.id})")
+            f"Executed {executed_command} command by {context.author} (ID: {context.author.id})")
     else:
         print(
             f"Executed {executed_command} command by {context.author} (ID: {context.author.id}) in DMs")

@@ -4,7 +4,7 @@ from discord import app_commands, Interaction, Object, InteractionResponse
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from helpers import checks
+from helpers import checks, log
 
 
 class SelectProblem(discord.ui.Select):
@@ -37,10 +37,13 @@ class SelectProblem(discord.ui.Select):
 
         with open("database/ticket.json") as file:
             ticket_json = json.load(file)
+        with open("config.json") as file:
+            config = json.load(file)
 
         user = interaction.user
         guild = interaction.guild
         creator = guild.get_role(int(ticket_json["creator_role_id"]))
+        log_channel = guild.get_channel(config["log_channel_id"])
 
         if self.values[0] == "질문":
             new_channel = await guild.create_text_channel(name=f'❔┃{user}-ticket')
@@ -77,10 +80,11 @@ class SelectProblem(discord.ui.Select):
 
         ticket_json["ticket_channel_ids"].append(new_channel.id)
 
-        with open("ticket.json", 'w') as file:
+        with open("database/ticket.json", 'w') as file:
             json.dump(ticket_json, file, indent="\t", ensure_ascii=False)
 
         await interaction.response.edit_message(content=f'``{self.values[0]}``에 관한 새로운 티켓이 생성되었습니다 : <#{new_channel.id}>', view=None)
+        await log_channel.send(log.new_ticket(user))
 
 
 class SelectProblemView(discord.ui.View):
@@ -116,7 +120,7 @@ class Ticket(commands.Cog, name="ticket"):
     )
     @checks.not_blacklisted()
     async def close(self, context: Context) -> None:
-        with open("ticket.json") as file:
+        with open("database/ticket.json") as file:
             ticket_json = json.load(file)
 
         if context.channel.id in ticket_json["ticket_channel_ids"]:
@@ -132,7 +136,7 @@ class Ticket(commands.Cog, name="ticket"):
             index = ticket_json["ticket_channel_ids"].index(channel_id)
             del ticket_json["ticket_channel_ids"][index]
 
-            with open('ticket.json', 'w') as f:
+            with open('database/ticket.json', 'w') as f:
                 json.dump(ticket_json, f, indent="\t", ensure_ascii=False)
 
             await context.channel.delete()
