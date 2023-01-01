@@ -147,7 +147,7 @@ class Moderation(commands.Cog, name="moderation"):
 
     @commands.hybrid_group(
         name="warning",
-        description="유저의 경고를 관리합니다.",
+        description="유저의 경고를 관리합니다. (창조자 전용)",
     )
     @checks.is_owner()
     @checks.not_blacklisted()
@@ -167,7 +167,7 @@ class Moderation(commands.Cog, name="moderation"):
 
     @warning.command(
         name="add",
-        description="유저에게 경고를 추가합니다.",
+        description="유저에게 경고를 추가합니다. (창조자 전용)",
     )
     @checks.not_blacklisted()
     @checks.is_owner()
@@ -201,7 +201,7 @@ class Moderation(commands.Cog, name="moderation"):
 
     @warning.command(
         name="remove",
-        description="유저의 경고를 제거합니다.",
+        description="유저의 경고를 제거합니다. (창조자 전용)",
     )
     @checks.not_blacklisted()
     @checks.is_owner()
@@ -225,7 +225,7 @@ class Moderation(commands.Cog, name="moderation"):
 
     @warning.command(
         name="list",
-        description="유저의 경고 목록을 나타냅니다.",
+        description="유저의 경고 목록을 나타냅니다. (창조자 전용)",
     )
     @checks.is_owner()
     @checks.not_blacklisted()

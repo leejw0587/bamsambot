@@ -93,7 +93,7 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="load",
-        description="cog를 로드합니다.",
+        description="cog를 로드합니다. (창조자 전용)",
     )
     @app_commands.describe(cog="로드할 cog 이름")
     @checks.is_owner()
@@ -123,7 +123,7 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="unload",
-        description="cog를 언로드합니다.",
+        description="cog를 언로드합니다. (창조자 전용)",
     )
     @app_commands.describe(cog="언로드할 cog 이름")
     @checks.is_owner()
@@ -153,7 +153,7 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="reload",
-        description="cog를 리로드합니다.",
+        description="cog를 리로드합니다. (창조자 전용)",
     )
     @app_commands.describe(cog="리로드할 cog 이름")
     @checks.is_owner()
@@ -183,7 +183,7 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="shutdown",
-        description="봇을 강제종료합니다.",
+        description="봇을 강제종료합니다. (창조자 전용)",
     )
     @checks.is_owner()
     async def shutdown(self, context: Context) -> None:
@@ -201,7 +201,7 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="say",
-        description="입력한 메시지를 봇이 대신 말해줍니다.",
+        description="입력한 메시지를 봇이 대신 말해줍니다. (창조자 전용)",
     )
     @app_commands.describe(message="보낼 메시지")
     @checks.is_owner()
@@ -216,7 +216,7 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="embed",
-        description="봇이 embed 형태로 메시지를 보내줍니다.",
+        description="봇이 embed 형태로 메시지를 보내줍니다. (창조자 전용)",
     )
     @app_commands.describe(message="보낼 메시지")
     @checks.is_owner()

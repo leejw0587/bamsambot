@@ -2,17 +2,11 @@
 	"424546094182039552": {
 		"username": "xDxD#6779",
 		"userid": "424546094182039552",
-		"peridot": 1949,
-		"token": 2,
+		"peridot": 0,
+		"token": 0,
 		"xp": 0,
-		"level": 0
-	},
-	"290827188033421312": {
-		"username": "Cobalt#9016",
-		"userid": "290827188033421312",
-		"peridot": 5000,
-		"token": 50,
-		"xp": 0,
-		"level": 0
+		"level": 0,
+		"attendance": 1,
+		"last_attendance": "2023-01-01"
 	}
 }

@@ -1,4 +1,5 @@
 import json
+import discord
 from typing import Callable, TypeVar
 
 from discord.ext import commands
@@ -30,6 +31,17 @@ def not_blacklisted() -> Callable[[T], T]:
     async def predicate(context: commands.Context) -> bool:
         if await db_manager.is_blacklisted(context.author.id):
             raise UserBlacklisted
+        return True
+
+    return commands.check(predicate)
+
+
+def has_check_role() -> Callable[[T], T]:
+    async def predicate(context: commands.Context) -> bool:
+        CHECK = discord.utils.get(context.guild.roles, id=390821573315002369)
+
+        if CHECK not in context.author.roles:
+            raise UserNotHasCheck
         return True
 
     return commands.check(predicate)

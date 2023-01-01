@@ -35,7 +35,9 @@ class Inventory(commands.Cog, name="inventory"):
                     "peridot": 0,
                     "token": 0,
                     "xp": 0,
-                    "level": 0
+                    "level": 0,
+                    "attendance": 0,
+                    "last_attendance": ""
                 }
             }
             userdata.update(newUser)
@@ -63,7 +65,7 @@ class Inventory(commands.Cog, name="inventory"):
 
     @commands.hybrid_group(
         name="peridot",
-        description="유저의 페리도트를 관리합니다.",
+        description="유저의 페리도트를 관리합니다. (창조자 전용)",
     )
     async def peridot(self, context: Context) -> None:
         if context.invoked_subcommand is None:
@@ -76,7 +78,7 @@ class Inventory(commands.Cog, name="inventory"):
 
     @peridot.command(
         name="add",
-        description="유저에게 페리도트를 추가합니다.",
+        description="유저에게 페리도트를 추가합니다. (창조자 전용)",
     )
     @app_commands.describe(user="대상 유저", amount="추가할 양")
     @checks.is_owner()
@@ -106,7 +108,7 @@ class Inventory(commands.Cog, name="inventory"):
 
     @peridot.command(
         name="remove",
-        description="유저로부터 페리도트를 제거합니다.",
+        description="유저로부터 페리도트를 제거합니다. (창조자 전용)",
     )
     @app_commands.describe(user="대상 유저", amount="제거할 양")
     @checks.is_owner()
@@ -157,7 +159,7 @@ class Inventory(commands.Cog, name="inventory"):
 
     @token.command(
         name="add",
-        description="유저에게 토큰을 추가합니다.",
+        description="유저에게 토큰을 추가합니다. (창조자 전용)",
     )
     @app_commands.describe(user="대상 유저", amount="추가할 개수")
     @checks.is_owner()
@@ -187,7 +189,7 @@ class Inventory(commands.Cog, name="inventory"):
 
     @token.command(
         name="remove",
-        description="유저로부터 토큰을 제거합니다.",
+        description="유저로부터 토큰을 제거합니다. (창조자 전용)",
     )
     @app_commands.describe(user="대상 유저", amount="제거할 개수")
     @checks.is_owner()
