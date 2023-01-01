@@ -142,3 +142,4 @@ cython_debug/
 
 # SQLITE database
 *.db
+database/userdata.json
