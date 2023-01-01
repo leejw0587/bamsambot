@@ -1,13 +1,13 @@
 {
   "prefix": "/",
   "token": "OTU4NjkwOTA2MjE3ODAzODA3.G_aCt2.3R1W4oeKPRToCehrKKgXHWpyyUCSBK9DGhl9R4",
-  "version": "0.1.1 Beta",
+  "version": "2.0.0 Stable",
   "permissions": "8",
   "application_id": "958690906217803807",
   "sync_commands_globally": true,
   "owners": [
     424546094182039552, 290827188033421312
   ],
-  "log_channel_id": 958025710025453640
+  "log_channel_id": 1026400764408635402
   
 }
