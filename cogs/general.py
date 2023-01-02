@@ -255,7 +255,7 @@ class General(commands.Cog, name="general"):
         description="출석 체크 커맨드입니다.",
     )
     async def attendance(self, context: Context) -> None:
-        with open("database/userdata.json", encoding="UTF-8") as file:
+        with open("database/userdata.json", encoding="utf-8") as file:
             userdata = json.load(file)
 
         today = str(datetime.date.today())
@@ -272,7 +272,7 @@ class General(commands.Cog, name="general"):
             else:
                 userdata[str(context.author.id)]["last_attendance"] = today
                 userdata[str(context.author.id)]["attendance"] += 1
-                with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+                with open("database/userdata.json", 'w', encoding="utf-8") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
                 attendance_count = userdata[str(
