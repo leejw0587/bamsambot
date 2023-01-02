@@ -326,7 +326,7 @@ class Owner(commands.Cog, name="owner"):
     )
     @checks.is_owner()
     async def initialize(self, context: Context) -> None:
-        with open("database/userdata.json", encoding="UTF-8") as file:
+        with open("database/userdata.json", encoding="cp949") as file:
             userdata = json.load(file)
         for guild in self.bot.guilds:
             for member in guild.members:
@@ -343,7 +343,7 @@ class Owner(commands.Cog, name="owner"):
                     }
                 }
                 userdata.update(newUser)
-                with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+                with open("database/userdata.json", 'w', encoding="cp949") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
         await context.send("Initialized `userdata.json`")

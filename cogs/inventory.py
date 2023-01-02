@@ -23,7 +23,7 @@ class Inventory(commands.Cog, name="inventory"):
         if user == None:
             user = context.author
 
-        with open("database/userdata.json", 'rt', encoding="cp949") as file:
+        with open("database/userdata.json", encoding="cp949") as file:
             userdata = json.load(file)
         if str(user.id) in userdata:
             pass
@@ -41,7 +41,7 @@ class Inventory(commands.Cog, name="inventory"):
                 }
             }
             userdata.update(newUser)
-            with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+            with open("database/userdata.json", 'w', encoding="cp949") as file:
                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
         with open("database/userdata.json") as file:
@@ -83,7 +83,7 @@ class Inventory(commands.Cog, name="inventory"):
     @app_commands.describe(user="대상 유저", amount="추가할 양")
     @checks.is_owner()
     async def peridot_add(self, context: Context, user: discord.User, *, amount: int) -> None:
-        with open("database/userdata.json", encoding="UTF-8") as file:
+        with open("database/userdata.json", encoding="cp949") as file:
             userdata = json.load(file)
 
         if str(user.id) not in userdata:
@@ -96,7 +96,7 @@ class Inventory(commands.Cog, name="inventory"):
         else:
             userdata[str(user.id)]["peridot"] = userdata[str(
                 user.id)]["peridot"] + int(amount)
-            with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+            with open("database/userdata.json", 'w', encoding="cp949") as file:
                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
             embed = discord.Embed(
@@ -116,7 +116,7 @@ class Inventory(commands.Cog, name="inventory"):
     @app_commands.describe(user="대상 유저", amount="제거할 양")
     @checks.is_owner()
     async def peridot_remove(self, context: Context, user: discord.User, *, amount: int) -> None:
-        with open("database/userdata.json", encoding="UTF-8") as file:
+        with open("database/userdata.json", encoding="cp949") as file:
             userdata = json.load(file)
 
         if str(user.id) not in userdata:
@@ -137,7 +137,7 @@ class Inventory(commands.Cog, name="inventory"):
             else:
                 userdata[str(user.id)]["peridot"] = userdata[str(
                     user.id)]["peridot"] - int(amount)
-                with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+                with open("database/userdata.json", 'w', encoding="cp949") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
                 embed = discord.Embed(
@@ -170,7 +170,7 @@ class Inventory(commands.Cog, name="inventory"):
     @app_commands.describe(user="대상 유저", amount="추가할 개수")
     @checks.is_owner()
     async def token_add(self, context: Context, user: discord.User, *, amount: int) -> None:
-        with open("database/userdata.json", encoding="UTF-8") as file:
+        with open("database/userdata.json", encoding="cp949") as file:
             userdata = json.load(file)
 
         if str(user.id) not in userdata:
@@ -183,7 +183,7 @@ class Inventory(commands.Cog, name="inventory"):
         else:
             userdata[str(user.id)]["token"] = userdata[str(
                 user.id)]["token"] + int(amount)
-            with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+            with open("database/userdata.json", 'w', encoding="cp949") as file:
                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
             embed = discord.Embed(
@@ -203,7 +203,7 @@ class Inventory(commands.Cog, name="inventory"):
     @app_commands.describe(user="대상 유저", amount="제거할 개수")
     @checks.is_owner()
     async def token_remove(self, context: Context, user: discord.User, *, amount: int) -> None:
-        with open("database/userdata.json", encoding="UTF-8") as file:
+        with open("database/userdata.json", encoding="cp949") as file:
             userdata = json.load(file)
 
         if str(user.id) not in userdata:
@@ -224,7 +224,7 @@ class Inventory(commands.Cog, name="inventory"):
             else:
                 userdata[str(user.id)]["token"] = userdata[str(
                     user.id)]["token"] - int(amount)
-                with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+                with open("database/userdata.json", 'w', encoding="cp949") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
                 embed = discord.Embed(
@@ -242,7 +242,7 @@ class Inventory(commands.Cog, name="inventory"):
         description="본인의 토큰을 개봉합니다",
     )
     async def token_open(self, context: Context) -> None:
-        with open("database/userdata.json", encoding="UTF-8") as file:
+        with open("database/userdata.json", encoding="cp949") as file:
             userdata = json.load(file)
 
         if userdata[str(context.author.id)]["token"] <= 0:
@@ -259,7 +259,7 @@ class Inventory(commands.Cog, name="inventory"):
                 context.author.id)]["token"] - 1
             userdata[str(context.author.id)]["peridot"] = userdata[str(
                 context.author.id)]["peridot"] + result
-            with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+            with open("database/userdata.json", 'w', encoding="cp949") as file:
                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
             embed = discord.Embed(
