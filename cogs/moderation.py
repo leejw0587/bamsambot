@@ -1,4 +1,5 @@
 import discord
+import json
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -319,6 +320,34 @@ class Moderation(commands.Cog, name="moderation"):
     #             color=0xE02B2B
     #         )
     #         await context.send(embed=embed)
+
+    @commands.hybrid_command(
+        name="initialize",
+        description="initialize all userdata",
+    )
+    @checks.is_owner()
+    async def initialize(self, context: Context) -> None:
+        with open("database/userdata.json", encoding="UTF-8") as file:
+            userdata = json.load(file)
+        for guild in self.bot.guilds:
+            for member in guild.members:
+                newUser = {
+                    str(member.id): {
+                        "username": str(member),
+                        "userid": str(member.id),
+                        "peridot": 0,
+                        "token": 0,
+                        "xp": 0,
+                        "level": 0,
+                        "attendance": 0,
+                        "last_attendance": ""
+                    }
+                }
+                userdata.update(newUser)
+                with open("database/userdata.json", 'w', encoding="UTF-8") as file:
+                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+        await context.send("Initialized `userdata.json`")
 
 
 async def setup(bot):
