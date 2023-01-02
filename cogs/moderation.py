@@ -332,10 +332,10 @@ class Moderation(commands.Cog, name="moderation"):
     #     for guild in self.bot.guilds:
     #         for member in guild.members:
     #             newUser = {
-    #                 str(member.id): {
+    #                 str(member.id): {s
     #                     "username": str(member),
     #                     "userid": str(member.id),
-    #                     "peridot": 0,
+    #                     "peridot": 1000,
     #                     "token": 0,
     #                     "xp": 0,
     #                     "level": 0,

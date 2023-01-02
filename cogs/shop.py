@@ -7,7 +7,7 @@ from discord.ext.commands import Context
 from helpers import checks, log
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
-TOKEN_EMOJI = "<:chip:884035217252311051>"
+TOKEN_EMOJI = "<:token:884035217252311051>"
 
 
 class Shop(commands.Cog, name="shop"):

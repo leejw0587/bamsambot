@@ -7,7 +7,7 @@ from discord.ext.commands import Context
 from helpers import checks, log
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
-TOKEN_EMOJI = "<:chip:884035217252311051>"
+TOKEN_EMOJI = "<:token:884035217252311051>"
 
 
 class Inventory(commands.Cog, name="inventory"):
@@ -53,7 +53,7 @@ class Inventory(commands.Cog, name="inventory"):
         XP = userdata[str(user.id)]["xp"]
         LEVEL = userdata[str(user.id)]["level"]
 
-        TARGETXP = 5000
+        TARGETXP = 0
 
         embed = discord.Embed(
             title=None, description=f"Lv. {LEVEL}\n「 {XP} / {TARGETXP} EXP 」", color=0xa83bb0)
