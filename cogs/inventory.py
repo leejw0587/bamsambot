@@ -23,7 +23,7 @@ class Inventory(commands.Cog, name="inventory"):
         if user == None:
             user = context.author
 
-        with open("database/userdata.json", encoding="UTF-8") as file:
+        with open("database/userdata.json", 'rt', encoding="UTF-8") as file:
             userdata = json.load(file)
         if str(user.id) in userdata:
             pass
