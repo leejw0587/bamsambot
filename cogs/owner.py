@@ -320,33 +320,34 @@ class Owner(commands.Cog, name="owner"):
     #         text=f"There are now {total} {'user' if total == 1 else 'users'} in the blacklist"
     #     )
     #     await context.send(embed=embed)
-    @commands.hybrid_command(
-        name="initialize",
-        description="initialize all userdata (창조자 전용)",
-    )
-    @checks.is_owner()
-    async def initialize(self, context: Context) -> None:
-        with open("database/userdata.json", encoding="utf-8") as file:
-            userdata = json.load(file)
-        for guild in self.bot.guilds:
-            for member in guild.members:
-                newUser = {
-                    str(member.id): {
-                        "username": str(member),
-                        "userid": str(member.id),
-                        "peridot": 1000,
-                        "token": 0,
-                        "xp": 0,
-                        "level": 0,
-                        "attendance": 0,
-                        "last_attendance": ""
-                    }
-                }
-                userdata.update(newUser)
-                with open("database/userdata.json", 'w', encoding="utf-8") as file:
-                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
+    # @commands.hybrid_command(
+    #     name="initialize",
+    #     description="initialize all userdata (창조자 전용)",
+    # )
+    # @checks.is_owner()
+    # async def initialize(self, context: Context) -> None:
+    #     if context.author
+    #     with open("database/userdata.json", encoding="utf-8") as file:
+    #         userdata = json.load(file)
+    #     for guild in self.bot.guilds:
+    #         for member in guild.members:
+    #             newUser = {
+    #                 str(member.id): {
+    #                     "username": str(member),
+    #                     "userid": str(member.id),
+    #                     "peridot": 1000,
+    #                     "token": 0,
+    #                     "xp": 0,
+    #                     "level": 0,
+    #                     "attendance": 0,
+    #                     "last_attendance": ""
+    #                 }
+    #             }
+    #             userdata.update(newUser)
+    #             with open("database/userdata.json", 'w', encoding="utf-8") as file:
+    #                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
-        await context.send("Initialized `userdata.json`")
+    #     await context.send("Initialized `userdata.json`")
 
 
 async def setup(bot):
