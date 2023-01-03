@@ -41,11 +41,30 @@ class RockPaperScissors(discord.ui.Select):
             "가위": 2,
         }
         user_choice = self.values[0].lower()
+
         user_choice_index = choices[user_choice]
         user_win = False
 
+        user_choice_emoji = ""
+        if user_choice_index == 0:
+            user_choice_emoji = "🪨"
+        elif user_choice_index == 1:
+            user_choice_emoji = "🧻"
+        elif user_choice_index == 2:
+            user_choice_emoji = "✂️"
+        user_choice = user_choice + user_choice_emoji
+
         bot_choice = random.choice(list(choices.keys()))
         bot_choice_index = choices[bot_choice]
+
+        bot_choice_emoji = ""
+        if bot_choice_index == 0:
+            bot_choice_emoji = "🪨"
+        elif bot_choice_index == 1:
+            bot_choice_emoji = "🧻"
+        elif bot_choice_index == 2:
+            bot_choice_emoji = "✂️"
+        bot_choice = bot_choice + bot_choice_emoji
 
         result_embed = discord.Embed(color=0x9C84EF)
         result_embed.set_author(
@@ -54,22 +73,22 @@ class RockPaperScissors(discord.ui.Select):
         )
 
         if user_choice_index == bot_choice_index:
-            result_embed.description = f"**비겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.description = f"**비겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}."
             result_embed.colour = 0xF59E42
         elif user_choice_index == 0 and bot_choice_index == 2:
-            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}."
             result_embed.colour = 0x9C84EF
             user_win = True
         elif user_choice_index == 1 and bot_choice_index == 0:
-            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}."
             result_embed.colour = 0x9C84EF
             user_win = True
         elif user_choice_index == 2 and bot_choice_index == 1:
-            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}."
             result_embed.colour = 0x9C84EF
             user_win = True
         else:
-            result_embed.description = f"**뱀샘봇이 이겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.description = f"**뱀샘봇이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}."
             result_embed.colour = 0xE02B2B
 
         if user_win == True:
