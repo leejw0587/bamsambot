@@ -54,6 +54,7 @@ class Inventory(commands.Cog, name="inventory"):
         LEVEL = userdata[str(user.id)]["level"]
 
         TARGETXP = 0
+        PERIDOT = format(PERIDOT, ',d')
 
         embed = discord.Embed(
             title=None, description=f"Lv. {LEVEL}\n「 {XP} / {TARGETXP} EXP 」", color=0xa83bb0)
@@ -99,6 +100,8 @@ class Inventory(commands.Cog, name="inventory"):
             with open("database/userdata.json", 'w', encoding="utf-8") as file:
                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
+            amount = format(amount, ',d')
+
             embed = discord.Embed(
                 title="페리도트 추가 완료",
                 description=f"**{user}**에게 **{amount}** {PERIDOT_EMOJI}를 추가하였습니다.",
@@ -139,6 +142,8 @@ class Inventory(commands.Cog, name="inventory"):
                     user.id)]["peridot"] - int(amount)
                 with open("database/userdata.json", 'w', encoding="utf-8") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+                amount = format(amount, ',d')
 
                 embed = discord.Embed(
                     title="페리도트 제거 완료",
@@ -272,6 +277,8 @@ class Inventory(commands.Cog, name="inventory"):
                 context.author.id)]["peridot"] + peridot_sum
             with open("database/userdata.json", 'w', encoding="utf-8") as file:
                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+            peridot_sum = format(peridot_sum, ',d')
 
             embed = discord.Embed(
                 title="토큰 개봉",

@@ -43,6 +43,8 @@ class Shop(commands.Cog, name="shop"):
             AMOUNT = shopdata[i]["AMOUNT"]
             ID = shopdata[i]["ID"]
 
+            PRICE = format(PRICE, ',d')
+
             if int(AMOUNT) == -1:
                 AMOUNT = "∞"
             if shopdata[i]["CONDITION"] == "CHECK":
