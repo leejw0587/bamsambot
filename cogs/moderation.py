@@ -62,38 +62,37 @@ class Moderation(commands.Cog, name="moderation"):
     #             )
     #             await context.send(embed=embed)
 
-    # @commands.hybrid_command(
-    #     name="nick",
-    #     description="유저의 닉네임을 변경합니다.",
-    # )
-    # @commands.has_permissions(manage_nicknames=True)
-    # @commands.bot_has_permissions(manage_nicknames=True)
-    # @checks.not_blacklisted()
-    # @app_commands.describe(user="대상 유저", nickname="변경할 닉네임")
-    # async def nick(self, context: Context, user: discord.User, *, nickname: str = None) -> None:
-    #     """
-    #     Change the nickname of a user on a server.
-
-    #     :param context: The hybrid command context.
-    #     :param user: The user that should have its nickname changed.
-    #     :param nickname: The new nickname of the user. Default is None, which will reset the nickname.
-    #     """
-    #     member = context.guild.get_member(user.id) or await context.guild.fetch_member(user.id)
-    #     try:
-    #         await member.edit(nick=nickname)
-    #         embed = discord.Embed(
-    #             title="Changed Nickname!",
-    #             description=f"**{member}'s** new nickname is **{nickname}**!",
-    #             color=0x9C84EF
-    #         )
-    #         await context.send(embed=embed)
-    #     except:
-    #         embed = discord.Embed(
-    #             title="Error!",
-    #             description="An error occurred while trying to change the nickname of the user. Make sure my role is above the role of the user you want to change the nickname.",
-    #             color=0xE02B2B
-    #         )
-    #         await context.send(embed=embed)
+    @commands.hybrid_command(
+        name="nick",
+        description="유저의 닉네임을 뱀샘크루에 맞게 변경합니다.",
+    )
+    @commands.has_permissions(manage_nicknames=True)
+    @commands.bot_has_permissions(manage_nicknames=True)
+    @checks.not_blacklisted()
+    @app_commands.describe(user="대상 유저", nickname="변경할 닉네임")
+    async def nick(self, context: Context, user: discord.User, *, nickname: str = None) -> None:
+        """
+        :param context: The hybrid command context.
+        :param user: The user that should have its nickname changed.
+        :param nickname: The new nickname of the user. Default is None, which will reset the nickname.
+        """
+        member = context.guild.get_member(user.id) or await context.guild.fetch_member(user.id)
+        nickname = "༺ৡۣۜ͜ ৡ " + nickname + " ৡۣۜ͜ ৡ༻"
+        try:
+            await member.edit(nick=nickname)
+            embed = discord.Embed(
+                title="닉네임 변경 완료!",
+                description=f"`{member}`의 닉네임을 `{nickname}`(으)로 설정하였습니다!",
+                color=0x9C84EF
+            )
+            await context.send(embed=embed)
+        except:
+            embed = discord.Embed(
+                title="Error!",
+                description="오류가 발생하였습니다. 다시 시도해주세요.",
+                color=0xE02B2B
+            )
+            await context.send(embed=embed)
 
     # @commands.hybrid_command(
     #     name="ban",

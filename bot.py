@@ -19,8 +19,7 @@ else:
         config = json.load(file)
 
 """	
-Setup bot intents (events restrictions)
-For more information about intents, please go to the following websites:
+bot intents:
 https://discordpy.readthedocs.io/en/latest/intents.html
 https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents
 
@@ -45,7 +44,7 @@ intents.typing = True
 intents.voice_states = True
 intents.webhooks = True
 
-Privileged Intents (Needs to be enabled on developer portal of Discord), please use them only if you need them:
+Privileged Intents:
 intents.members = True
 intents.message_content = True
 intents.presences = True
@@ -53,14 +52,6 @@ intents.presences = True
 
 intents = discord.Intents.default()
 intents.members = True
-
-"""
-Uncomment this if you don't want to use prefix (normal) commands.
-It is recommended to use slash commands and therefore not use prefix commands.
-
-If you want to use prefix commands, make sure to also enable the intent below in the Discord developer portal.
-"""
-# intents.message_content = True
 
 
 bot = Bot(command_prefix=commands.when_mentioned_or(
@@ -75,10 +66,7 @@ async def init_db():
 
 
 """
-Create a bot variable to access the config file in cogs so that you don't need to import it every time.
-
-The config is available using the following code:
-- bot.config # In this file
+- bot.config # In here
 - self.bot.config # In cogs
 """
 bot.config = config
@@ -86,9 +74,6 @@ bot.config = config
 
 @bot.event
 async def on_ready() -> None:
-    """
-    The code in this even is executed when the bot is ready
-    """
     print(f"Logged in as {bot.user.name}")
     print(f"discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
@@ -102,9 +87,6 @@ async def on_ready() -> None:
 
 @tasks.loop(minutes=1.0)
 async def status_task() -> None:
-    """
-    Setup the game status task of the bot
-    """
     statuses = ["/help", "Happy New Year!"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
@@ -112,8 +94,6 @@ async def status_task() -> None:
 @bot.event
 async def on_message(message: discord.Message) -> None:
     """
-    The code in this event is executed every time someone sends a message, with or without the prefix
-
     :param message: The message that was sent.
     """
     if message.author == bot.user or message.author.bot:
@@ -124,7 +104,6 @@ async def on_message(message: discord.Message) -> None:
 @bot.event
 async def on_command_completion(context: Context) -> None:
     """
-    The code in this event is executed every time a normal command has been *successfully* executed
     :param context: The context of the command that has been executed.
     """
     full_command_name = context.command.qualified_name
@@ -141,7 +120,6 @@ async def on_command_completion(context: Context) -> None:
 @bot.event
 async def on_command_error(context: Context, error) -> None:
     """
-    The code in this event is executed every time a normal valid command catches an error
     :param context: The context of the normal command that failed executing.
     :param error: The error that has been faced.
     """
@@ -150,26 +128,20 @@ async def on_command_error(context: Context, error) -> None:
         hours, minutes = divmod(minutes, 60)
         hours = hours % 24
         embed = discord.Embed(
-            title="Hey, please slow down!",
-            description=f"You can use this command again in {f'{round(hours)} hours' if round(hours) > 0 else ''} {f'{round(minutes)} minutes' if round(minutes) > 0 else ''} {f'{round(seconds)} seconds' if round(seconds) > 0 else ''}.",
+            title="진정하세요!",
+            description=f"{f'{round(hours)} 시간' if round(hours) > 0 else ''} {f'{round(minutes)} 분' if round(minutes) > 0 else ''} {f'{round(seconds)} 초' if round(seconds) > 0 else ''} 뒤에 이 커맨드를 다시 사용할 수 있습니다.",
             color=0xE02B2B
         )
         await context.send(embed=embed)
     elif isinstance(error, exceptions.UserBlacklisted):
-        """
-        The code here will only execute if the error is an instance of 'UserBlacklisted', which can occur when using
-        the @checks.not_blacklisted() check in your command, or you can raise the error by yourself.
-        """
         embed = discord.Embed(
             title="Error!",
-            description="You are blacklisted from using the bot.",
+            description="당신은 블랙리스트에 포함되어 있습니다.",
             color=0xE02B2B
         )
         await context.send(embed=embed)
     elif isinstance(error, exceptions.UserNotOwner):
-        """
-        Same as above, just for the @checks.is_owner() check.
-        """
+
         embed = discord.Embed(
             title="Error!",
             description="창조자만 이 명령어를 사용할 수 있습니다.",
@@ -187,15 +159,14 @@ async def on_command_error(context: Context, error) -> None:
     elif isinstance(error, commands.BotMissingPermissions):
         embed = discord.Embed(
             title="Error!",
-            description="I am missing the permission(s) `" + ", ".join(
-                error.missing_permissions) + "` to fully perform this command!",
+            description="Bot missing permission: `" + ", ".join(
+                error.missing_permissions) + "`",
             color=0xE02B2B
         )
         await context.send(embed=embed)
     elif isinstance(error, commands.MissingRequiredArgument):
         embed = discord.Embed(
             title="Error!",
-            # We need to capitalize because the command arguments have no capital letter in the code.
             description=str(error).capitalize(),
             color=0xE02B2B
         )
@@ -204,9 +175,6 @@ async def on_command_error(context: Context, error) -> None:
 
 
 async def load_cogs() -> None:
-    """
-    The code in this function is executed whenever the bot will start.
-    """
     for file in os.listdir(f"./cogs"):
         if file.endswith(".py"):
             extension = file[:-3]

@@ -9,7 +9,7 @@ from helpers import checks, log
 
 class SelectProblem(discord.ui.Select):
     def __init__(self):
-        options = [  # the list of options from which users can choose, a required field
+        options = [
             discord.SelectOption(
                 label="질문",
                 description="질문이 있을 때 선택해주세요",

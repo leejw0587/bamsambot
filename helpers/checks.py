@@ -11,9 +11,6 @@ T = TypeVar("T")
 
 
 def is_owner() -> Callable[[T], T]:
-    """
-    This is a custom check to see if the user executing the command is an owner of the bot.
-    """
     async def predicate(context: commands.Context) -> bool:
         with open("config.json") as file:
             data = json.load(file)
@@ -36,9 +33,6 @@ def is_informant() -> Callable[[T], T]:
 
 
 def not_blacklisted() -> Callable[[T], T]:
-    """
-    This is a custom check to see if the user executing the command is blacklisted.
-    """
     async def predicate(context: commands.Context) -> bool:
         if await db_manager.is_blacklisted(context.author.id):
             raise UserBlacklisted

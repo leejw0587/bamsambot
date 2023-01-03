@@ -100,8 +100,6 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def load(self, context: Context, cog: str) -> None:
         """
-        The bot will load the given cog.
-
         :param context: The hybrid command context.
         :param cog: The name of the cog to load.
         """
@@ -130,8 +128,6 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def unload(self, context: Context, cog: str) -> None:
         """
-        The bot will unload the given cog.
-
         :param context: The hybrid command context.
         :param cog: The name of the cog to unload.
         """
@@ -160,8 +156,6 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def reload(self, context: Context, cog: str) -> None:
         """
-        The bot will reload the given cog.
-
         :param context: The hybrid command context.
         :param cog: The name of the cog to reload.
         """
@@ -189,8 +183,6 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def shutdown(self, context: Context) -> None:
         """
-        Shuts down the bot.
-
         :param context: The hybrid command context.
         """
         embed = discord.Embed(
@@ -208,8 +200,6 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def say(self, context: Context, *, message: str) -> None:
         """
-        The bot will say anything you want.
-
         :param context: The hybrid command context.
         :param message: The message that should be repeated by the bot.
         """
@@ -223,8 +213,6 @@ class Owner(commands.Cog, name="owner"):
     @checks.is_owner()
     async def embed(self, context: Context, *, message: str) -> None:
         """
-        The bot will say anything you want, but using embeds.
-
         :param context: The hybrid command context.
         :param message: The message that should be repeated by the bot.
         """
