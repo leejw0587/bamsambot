@@ -14,6 +14,76 @@ from discord.ext.commands import Context
 from helpers import checks
 
 
+class RockPaperScissors(discord.ui.Select):
+    def __init__(self):
+        options = [
+            discord.SelectOption(
+                label="가위", description="가위를 냅니다", emoji="✂️"
+            ),
+            discord.SelectOption(
+                label="바위", description="바위를 냅니다", emoji="🪨"
+            ),
+            discord.SelectOption(
+                label="보", description="보를 냅니다.", emoji="🧻"
+            ),
+        ]
+        super().__init__(
+            placeholder="무엇을 낼지 선택해주세요",
+            min_values=1,
+            max_values=1,
+            options=options,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        choices = {
+            "바위": 0,
+            "보": 1,
+            "가위": 2,
+        }
+        user_choice = self.values[0].lower()
+        user_choice_index = choices[user_choice]
+        user_win = False
+
+        bot_choice = random.choice(list(choices.keys()))
+        bot_choice_index = choices[bot_choice]
+
+        result_embed = discord.Embed(color=0x9C84EF)
+        result_embed.set_author(
+            name=interaction.user.name,
+            icon_url=interaction.user.avatar.url
+        )
+
+        if user_choice_index == bot_choice_index:
+            result_embed.description = f"**비겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.colour = 0xF59E42
+        elif user_choice_index == 0 and bot_choice_index == 2:
+            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.colour = 0x9C84EF
+            user_win = True
+        elif user_choice_index == 1 and bot_choice_index == 0:
+            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.colour = 0x9C84EF
+            user_win = True
+        elif user_choice_index == 2 and bot_choice_index == 1:
+            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.colour = 0x9C84EF
+            user_win = True
+        else:
+            result_embed.description = f"**뱀샘봇이 이겼습니다!**\n유저의 선택: {user_choice} 뱀샘봇의 선택: {bot_choice}."
+            result_embed.colour = 0xE02B2B
+
+        if user_win == True:
+            pass
+
+        await interaction.response.edit_message(embed=result_embed, content=None, view=None)
+
+
+class RockPaperScissorsView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(RockPaperScissors())
+
+
 class General(commands.Cog, name="general"):
     def __init__(self, bot):
         self.bot = bot
@@ -291,6 +361,14 @@ class General(commands.Cog, name="general"):
                 color=0xE02B2B
             )
             await context.send(embed=embed)
+
+    @commands.hybrid_command(
+        name="rps",
+        description="뱀샘봇과 가위바위보를 합니다."
+    )
+    async def rock_paper_scissors(self, context: Context) -> None:
+        view = RockPaperScissorsView()
+        await context.send("가위, 바위, 보!", view=view)
 
 
 async def setup(bot):
