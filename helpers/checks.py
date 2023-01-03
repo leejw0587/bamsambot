@@ -24,6 +24,17 @@ def is_owner() -> Callable[[T], T]:
     return commands.check(predicate)
 
 
+def is_informant() -> Callable[[T], T]:
+    async def predicate(context: commands.Context) -> bool:
+        with open("config.json") as file:
+            data = json.load(file)
+        if context.author.id not in data["informants"]:
+            raise UserNotInformant
+        return True
+
+    return commands.check(predicate)
+
+
 def not_blacklisted() -> Callable[[T], T]:
     """
     This is a custom check to see if the user executing the command is blacklisted.

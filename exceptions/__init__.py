@@ -29,6 +29,12 @@ class UserNotOwner(commands.CheckFailure):
         super().__init__(self.message)
 
 
+class UserNotInformant(commands.CheckFailure):
+    def __init__(self, message="해당 유저는 정보원이 아닙니다!"):
+        self.message = message
+        super().__init__(self.message)
+
+
 class UserNotHasCheck(commands.CheckFailure):
     """
     Thrown when a user is attempting something, but is not an owner of the bot.
