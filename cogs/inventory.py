@@ -260,22 +260,25 @@ class Inventory(commands.Cog, name="inventory"):
             )
             await context.send(embed=embed)
         else:
+            peridot_sum = 0
             for i in range(amount):
-                result = random.randint(1, 1000)
-
                 userdata[str(context.author.id)]["token"] = userdata[str(
                     context.author.id)]["token"] - 1
-                userdata[str(context.author.id)]["peridot"] = userdata[str(
-                    context.author.id)]["peridot"] + result
-                with open("database/userdata.json", 'w', encoding="utf-8") as file:
-                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
-                embed = discord.Embed(
-                    title="토큰 개봉",
-                    description=f"토큰을 개봉하여 **{result}** {PERIDOT_EMOJI}를 얻었습니다!",
-                    color=0x9C84EF
-                )
-                await context.send(embed=embed)
+                result = random.randint(1, 1000)
+                peridot_sum = peridot_sum + result
+
+            userdata[str(context.author.id)]["peridot"] = userdata[str(
+                context.author.id)]["peridot"] + peridot_sum
+            with open("database/userdata.json", 'w', encoding="utf-8") as file:
+                json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+            embed = discord.Embed(
+                title="토큰 개봉",
+                description=f"토큰을 `{amount}`개 개봉하여 총 **{result}** {PERIDOT_EMOJI}를 얻었습니다!",
+                color=0x9C84EF
+            )
+            await context.send(embed=embed)
 
 
 async def setup(bot):
