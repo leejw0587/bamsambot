@@ -252,7 +252,7 @@ class Inventory(commands.Cog, name="inventory"):
                 color=0xE02B2B
             )
             await context.send(embed=embed)
-        if userdata[str(context.author.id)]["token"] < amount:
+        elif userdata[str(context.author.id)]["token"] < amount:
             embed = discord.Embed(
                 title="Error!",
                 description="보유한 토큰보다 많이 개봉할 수 없습니다.",
