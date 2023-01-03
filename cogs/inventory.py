@@ -275,7 +275,7 @@ class Inventory(commands.Cog, name="inventory"):
 
             embed = discord.Embed(
                 title="토큰 개봉",
-                description=f"토큰을 `{amount}`개 개봉하여 총 **{result}** {PERIDOT_EMOJI}를 얻었습니다!",
+                description=f"토큰을 `{amount}`개 개봉하여 총 **{peridot_sum}** {PERIDOT_EMOJI}를 얻었습니다!",
                 color=0x9C84EF
             )
             await context.send(embed=embed)
