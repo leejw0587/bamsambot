@@ -64,11 +64,9 @@ class Moderation(commands.Cog, name="moderation"):
 
     @commands.hybrid_command(
         name="nick",
-        description="유저의 닉네임을 뱀샘크루에 맞게 변경합니다.",
+        description="유저의 닉네임을 뱀샘크루에 맞게 변경합니다. (창조자 전용)",
     )
-    @commands.has_permissions(manage_nicknames=True)
-    @commands.bot_has_permissions(manage_nicknames=True)
-    @checks.not_blacklisted()
+    @checks.is_owner
     @app_commands.describe(user="대상 유저", nickname="변경할 닉네임")
     async def nick(self, context: Context, user: discord.User, *, nickname: str = None) -> None:
         """
