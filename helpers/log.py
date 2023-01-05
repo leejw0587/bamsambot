@@ -36,3 +36,10 @@ def shop_buy(context, item):
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
     msg = f"[SHOP] {timecode} | <@{context.author.id}> bought {item}"
     return msg
+
+
+def clean(context, amount):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    msg = f"[INFO] {timecode} | <@{context.author.id}> cleaned `{amount}` message(s) in <#{context.channel.id}>"
+    return msg

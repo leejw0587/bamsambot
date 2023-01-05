@@ -317,6 +317,19 @@ class Moderation(commands.Cog, name="moderation"):
     #         )
     #         await context.send(embed=embed)
 
+    @commands.hybrid_command(
+        name="clean",
+        description="메시지를 청소합니다. (창조자 전용)"
+    )
+    @checks.is_owner()
+    async def clean(self, context: Context, amount: int):
+        await context.send(f"`{amount}`개의 메시지를 삭제합니다...", delete_after=5)
+        await context.channel.purge(limit=amount+1)
+
+        Log_channel = discord.utils.get(context.guild.channels,
+                                        id=self.bot.config["log_channel_id"])
+        await Log_channel.send(log.clean(context, amount))
+
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
