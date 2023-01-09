@@ -460,7 +460,7 @@ class General(commands.Cog, name="general"):
         else:
             embed = discord.Embed(color=0xe92b2b)
             embed.add_field(name="개인 채널 생성 요청",
-                            value="해당 명령어는 <#706453703745601546> 에서만 작동합니다.", inline=False)
+                            value="해당 명령어는 <#706526566104170607> 에서만 작동합니다.", inline=False)
             await context.send(embed=embed)
 
 
