@@ -414,7 +414,6 @@ class General(commands.Cog, name="general"):
 
         if context.channel.id == 706526566104170607:
             admin_channel = context.guild.get_channel(936533151721861201)
-            owner_role = context.guild.get_role(706453703745601546)
             category = context.guild.get_channel(706452195272556586)
 
             buttons = CreatePcButtons()
@@ -449,7 +448,6 @@ class General(commands.Cog, name="general"):
                 embed.add_field(name="개인 채널 생성 요청",
                                 value=f"개인 채널 생성 요청이 승인되었습니다.\n생성된 채널: <#{new_channel.id}>", inline=False)
                 await respond.edit(content=" ", embed=embed)
-                await context.author.remove_roles(owner_role)
 
             else:
                 embed = discord.Embed(color=0xe92b2b)
