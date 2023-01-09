@@ -14,6 +14,22 @@ from discord.ext.commands import Context
 from helpers import checks
 
 
+class CreatePcButtons(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.value = None
+
+    @discord.ui.button(label="승인", style=discord.ButtonStyle.green)
+    async def confirm(self, button: discord.ui.Button, interaction: discord.Interaction):
+        self.value = "승인"
+        self.stop()
+
+    @discord.ui.button(label="거부", style=discord.ButtonStyle.red)
+    async def refuse(self, button: discord.ui.Button, interaction: discord.Interaction):
+        self.value = "거부"
+        self.stop()
+
+
 class RockPaperScissors(discord.ui.Select):
     def __init__(self):
         options = [
@@ -388,6 +404,64 @@ class General(commands.Cog, name="general"):
     async def rock_paper_scissors(self, context: Context) -> None:
         view = RockPaperScissorsView()
         await context.send("가위, 바위, 보!", view=view)
+
+    @commands.hybrid_command(
+        name="createpc",
+        description="개인 채널 생성 요청을 보냅니다."
+    )
+    @commands.has_role(706453703745601546)
+    async def createpc(self, context: Context, channelname: str, genere: str, description: str, restrictions: discord.Role):
+
+        if context.channel.id == 706526566104170607:
+            admin_channel = context.guild.get_channel(936533151721861201)
+            owner_role = context.guild.get_role(706453703745601546)
+
+            buttons = CreatePcButtons()
+            embed = discord.Embed(color=0x9C84EF)
+            embed.add_field(
+                name="개인 채널 생성 요청", value=f"요청인: {context.author}\n채널 이름: {channelname}\n장르: {genere}\n설명: {description}\n역할 제한: <@&{restrictions.id}>", inline=False)
+            req_message = await admin_channel.send(embed=embed, view=buttons)
+            respond = await context.send("개인 채널 생성 요청을 성공적으로 전송하였습니다.\n잠시만 기다려주세요...")
+            await buttons.wait()
+            if buttons.value == "승인":
+                new_channel = await context.guild.create_text_channel(name=channelname)
+                await new_channel.set_permissions(context.guild.get_role(context.guild.id),
+                                                  send_messages=False,
+                                                  read_messages=False)
+                await new_channel.set_permissions(context.author,
+                                                  send_messages=True,
+                                                  read_messages=True,
+                                                  add_reactions=True,
+                                                  embed_links=True,
+                                                  attach_files=True,
+                                                  read_message_history=True,
+                                                  external_emojis=True)
+                await new_channel.set_permissions(restrictions,
+                                                  send_messages=False,
+                                                  read_messages=True,
+                                                  add_reactions=True,
+                                                  embed_links=True,
+                                                  attach_files=True,
+                                                  read_message_history=True,
+                                                  external_emojis=True)
+                embed = discord.Embed(color=0x17fd5c)
+                embed.add_field(name="개인 채널 생성 요청",
+                                value=f"개인 채널 생성 요청이 승인되었습니다.\n생성된 채널: <#{new_channel.id}>", inline=False)
+                await respond.edit(content=" ", embed=embed)
+                await context.author.remove_roles(owner_role)
+
+            else:
+                embed = discord.Embed(color=0xe92b2b)
+                embed.add_field(name="개인 채널 생성 요청",
+                                value="개인 채널 생성 요청이 거부되었습니다.", inline=False)
+                await respond.edit(content=" ", embed=embed)
+            await req_message.delete()
+
+        else:
+            embed = discord.Embed(color=0xe92b2b)
+            embed.add_field(name="개인 채널 생성 요청",
+                            value="해당 명령어는 <#706453703745601546> 에서만 작동합니다.", inline=False)
+            await context.send(embed=embed)
 
 
 async def setup(bot):
