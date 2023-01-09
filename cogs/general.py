@@ -415,6 +415,7 @@ class General(commands.Cog, name="general"):
         if context.channel.id == 706526566104170607:
             admin_channel = context.guild.get_channel(936533151721861201)
             owner_role = context.guild.get_role(706453703745601546)
+            category = context.guild.get_channel(706452195272556586)
 
             buttons = CreatePcButtons()
             embed = discord.Embed(color=0x9C84EF)
@@ -424,7 +425,7 @@ class General(commands.Cog, name="general"):
             respond = await context.send("개인 채널 생성 요청을 성공적으로 전송하였습니다.\n잠시만 기다려주세요...")
             await buttons.wait()
             if buttons.value == "승인":
-                new_channel = await context.guild.create_text_channel(name=channelname)
+                new_channel = await context.guild.create_text_channel(name=channelname, category=category)
                 await new_channel.set_permissions(context.guild.get_role(context.guild.id),
                                                   send_messages=False,
                                                   read_messages=False)
