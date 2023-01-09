@@ -156,6 +156,14 @@ async def on_command_error(context: Context, error) -> None:
             color=0xE02B2B
         )
         await context.send(embed=embed)
+    elif isinstance(error, commands.MissingRole):
+        embed = discord.Embed(
+            title="Error!",
+            description="당신은 이 명령어를 사용할 역할이 없습니다 `" + ", ".join(
+                error.missing_role) + "`",
+            color=0xE02B2B
+        )
+        await context.send(embed=embed)
     elif isinstance(error, commands.BotMissingPermissions):
         embed = discord.Embed(
             title="Error!",
