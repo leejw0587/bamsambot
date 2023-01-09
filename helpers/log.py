@@ -38,8 +38,8 @@ def shop_buy(context, item):
     return msg
 
 
-def clean(context, amount):
+def purge(context, amount):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[INFO] {timecode} | <@{context.author.id}> cleaned `{amount}` message(s) in <#{context.channel.id}>"
+    msg = f"[INFO] {timecode} | <@{context.author.id}> purged `{amount}` message(s) in <#{context.channel.id}>"
     return msg
