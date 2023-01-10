@@ -13,6 +13,9 @@ from discord.ext.commands import Context
 
 from helpers import checks
 
+PERIDOT_EMOJI = "<:peridot:722474684045721973>"
+TOKEN_EMOJI = "<:token:884035217252311051>"
+
 
 class CreatePcButtons(discord.ui.View):
     def __init__(self):
@@ -150,11 +153,6 @@ class General(commands.Cog, name="general"):
     )
     @checks.not_blacklisted()
     async def botinfo(self, context: Context) -> None:
-        """
-        Get some useful (or not) information about the bot.
-
-        :param context: The hybrid command context.
-        """
 
         config = self.bot.config
 
@@ -196,11 +194,6 @@ class General(commands.Cog, name="general"):
     )
     @checks.not_blacklisted()
     async def serverinfo(self, context: Context) -> None:
-        """
-        Get some useful (or not) information about the server.
-
-        :param context: The hybrid command context.
-        """
         roles = [role.name for role in context.guild.roles]
         if len(roles) > 50:
             roles = roles[:50]
@@ -243,11 +236,6 @@ class General(commands.Cog, name="general"):
     )
     @checks.not_blacklisted()
     async def ping(self, context: Context) -> None:
-        """
-        Check if the bot is alive.
-
-        :param context: The hybrid command context.
-        """
         embed = discord.Embed(
             title="🏓 Pong!",
             description=f"The bot latency is {round(self.bot.latency * 1000)}ms.",
@@ -255,106 +243,6 @@ class General(commands.Cog, name="general"):
         )
         await context.send(embed=embed)
 
-    # @commands.hybrid_command(
-    #     name="invite",
-    #     description="Get the invite link of the bot to be able to invite it.",
-    # )
-    # @checks.not_blacklisted()
-    # async def invite(self, context: Context) -> None:
-    #     """
-    #     Get the invite link of the bot to be able to invite it.
-
-    #     :param context: The hybrid command context.
-    #     """
-    #     embed = discord.Embed(
-    #         description=f"Invite me by clicking [here](https://discordapp.com/oauth2/authorize?&client_id={self.bot.config['application_id']}&scope=bot+applications.commands&permissions={self.bot.config['permissions']}).",
-    #         color=0xD75BF4
-    #     )
-    #     try:
-    #         # To know what permissions to give to your bot, please see here: https://discordapi.com/permissions.html and remember to not give Administrator permissions.
-    #         await context.author.send(embed=embed)
-    #         await context.send("I sent you a private message!")
-    #     except discord.Forbidden:
-    #         await context.send(embed=embed)
-
-    # @commands.hybrid_command(
-    #     name="server",
-    #     description="Get the invite link of the discord server of the bot for some support.",
-    # )
-    # @checks.not_blacklisted()
-    # async def server(self, context: Context) -> None:
-    #     """
-    #     Get the invite link of the discord server of the bot for some support.
-
-    #     :param context: The hybrid command context.
-    #     """
-    #     embed = discord.Embed(
-    #         description=f"Join the support server for the bot by clicking [here](https://discord.gg/mTBrXyWxAF).",
-    #         color=0xD75BF4
-    #     )
-    #     try:
-    #         await context.author.send(embed=embed)
-    #         await context.send("I sent you a private message!")
-    #     except discord.Forbidden:
-    #         await context.send(embed=embed)
-
-    # @commands.hybrid_command(
-    #     name="8ball",
-    #     description="Ask any question to the bot.",
-    # )
-    # @checks.not_blacklisted()
-    # @app_commands.describe(question="The question you want to ask.")
-    # async def eight_ball(self, context: Context, *, question: str) -> None:
-    #     """
-    #     Ask any question to the bot.
-
-    #     :param context: The hybrid command context.
-    #     :param question: The question that should be asked by the user.
-    #     """
-    #     answers = ["It is certain.", "It is decidedly so.", "You may rely on it.", "Without a doubt.",
-    #                "Yes - definitely.", "As I see, yes.", "Most likely.", "Outlook good.", "Yes.",
-    #                "Signs point to yes.", "Reply hazy, try again.", "Ask again later.", "Better not tell you now.",
-    #                "Cannot predict now.", "Concentrate and ask again later.", "Don't count on it.", "My reply is no.",
-    #                "My sources say no.", "Outlook not so good.", "Very doubtful."]
-    #     embed = discord.Embed(
-    #         title="**My Answer:**",
-    #         description=f"{random.choice(answers)}",
-    #         color=0x9C84EF
-    #     )
-    #     embed.set_footer(
-    #         text=f"The question was: {question}"
-    #     )
-    #     await context.send(embed=embed)
-
-    # @commands.hybrid_command(
-    #     name="bitcoin",
-    #     description="Get the current price of bitcoin.",
-    # )
-    # @checks.not_blacklisted()
-    # async def bitcoin(self, context: Context) -> None:
-    #     """
-    #     Get the current price of bitcoin.
-
-    #     :param context: The hybrid command context.
-    #     """
-    #     # This will prevent your bot from stopping everything when doing a web request - see: https://discordpy.readthedocs.io/en/stable/faq.html#how-do-i-make-a-web-request
-    #     async with aiohttp.ClientSession() as session:
-    #         async with session.get("https://api.coindesk.com/v1/bpi/currentprice/BTC.json") as request:
-    #             if request.status == 200:
-    #                 data = await request.json(
-    #                     content_type="application/javascript")  # For some reason the returned content is of type JavaScript
-    #                 embed = discord.Embed(
-    #                     title="Bitcoin price",
-    #                     description=f"The current price is {data['bpi']['USD']['rate']} :dollar:",
-    #                     color=0x9C84EF
-    #                 )
-    #             else:
-    #                 embed = discord.Embed(
-    #                     title="Error!",
-    #                     description="There is something wrong with the API, please try again later",
-    #                     color=0xE02B2B
-    #                 )
-    #             await context.send(embed=embed)
     @commands.hybrid_command(
         name="attendance",
         description="출석 체크 커맨드입니다.",
@@ -375,8 +263,13 @@ class General(commands.Cog, name="general"):
                 )
                 await context.send(embed=embed)
             else:
+
+                reward = random.randint(1, 100)
+
                 userdata[str(context.author.id)]["last_attendance"] = today
                 userdata[str(context.author.id)]["attendance"] += 1
+                userdata[str(context.author.id)]["peridot"] = userdata[str(
+                    context.author.id)]["peridot"] + int(reward)
                 with open("database/userdata.json", 'w', encoding="utf-8") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
@@ -385,9 +278,10 @@ class General(commands.Cog, name="general"):
 
                 embed = discord.Embed(
                     title="출석 완료!",
-                    description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회",
+                    description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n출석 보상: {reward} {PERIDOT_EMOJI}",
                     color=0x9C84EF
                 )
+
                 await context.send(embed=embed)
         except:
             embed = discord.Embed(
@@ -410,6 +304,7 @@ class General(commands.Cog, name="general"):
         description="개인 채널 생성 요청을 보냅니다."
     )
     @commands.has_role(706453703745601546)
+    @app_commands.describe(nickname="채널 주인의 한글 닉네임", channelname="채널 이름", genere="채널의 장르", description="채널 설명", restrictions="채널을 볼 수 있는 역할(제한 없음: @everyone)")
     async def createpc(self, context: Context, nickname: str, channelname: str, genere: str, description: str, restrictions: discord.Role):
 
         if context.channel.id == 706526566104170607:
