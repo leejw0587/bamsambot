@@ -43,3 +43,10 @@ def purge(context, amount):
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
     msg = f"[INFO] {timecode} | <@{context.author.id}> purged `{amount}` message(s) in <#{context.channel.id}>"
     return msg
+
+
+def got_answer(context):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    msg = f"[QUEST] {timecode} | <@{context.author.id}> got answer!"
+    return msg

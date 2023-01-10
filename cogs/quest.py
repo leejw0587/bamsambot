@@ -5,7 +5,7 @@ from discord.ext import commands
 from discord.ext.commands import Context
 from discord import app_commands
 
-from helpers import checks
+from helpers import checks, log
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 TOKEN_EMOJI = "<:token:884035217252311051>"
@@ -71,6 +71,10 @@ class Quest(commands.Cog, name="quest"):
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
                 QUEST_STATE = False
+
+                Log_channel = discord.utils.get(context.guild.channels,
+                                                id=self.bot.config["log_channel_id"])
+                await Log_channel.send(log.got_answer(context))
         else:
             embed = discord.Embed(
                 title="Error!",
