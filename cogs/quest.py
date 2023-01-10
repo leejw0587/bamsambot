@@ -19,7 +19,7 @@ QUEST_ANSWER_LIST = []
 QUEST_REWARDS = {
     "PERIDOT": 0,
     "TOKEN": 0,
-    "ROLEID": 0
+    "ROLEID": None
 }
 
 
