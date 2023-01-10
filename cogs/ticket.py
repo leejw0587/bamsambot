@@ -16,9 +16,9 @@ class SelectProblem(discord.ui.Select):
                 emoji="❔"
             ),
             discord.SelectOption(
-                label="지원",
-                description="기술적 지원이 필요할 때 선택해주세요",
-                emoji="🔧"
+                label="건의",
+                description="건의사항이 있을 때 선택해주세요",
+                emoji="🙏"
             ),
             discord.SelectOption(
                 label="신고",
@@ -47,8 +47,8 @@ class SelectProblem(discord.ui.Select):
 
         if self.values[0] == "질문":
             new_channel = await guild.create_text_channel(name=f'❔┃{user}-ticket')
-        elif self.values[0] == "지원":
-            new_channel = await guild.create_text_channel(name=f'🔧┃{user}-ticket')
+        elif self.values[0] == "건의":
+            new_channel = await guild.create_text_channel(name=f'🙏┃{user}-ticket')
         elif self.values[0] == "신고":
             new_channel = await guild.create_text_channel(name=f'🚫┃{user}-ticket')
 
