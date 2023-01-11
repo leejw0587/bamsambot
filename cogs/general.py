@@ -19,7 +19,7 @@ TOKEN_EMOJI = "<:token:884035217252311051>"
 
 class CreatePcButtons(discord.ui.View):
     def __init__(self):
-        super().__init__()
+        super().__init__(timeout=None)
         self.value = None
 
     @discord.ui.button(label="승인", style=discord.ButtonStyle.green)
