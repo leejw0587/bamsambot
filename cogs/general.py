@@ -319,7 +319,7 @@ class General(commands.Cog, name="general"):
             respond = await context.send("개인 채널 생성 요청을 성공적으로 전송하였습니다.\n잠시만 기다려주세요...")
             await buttons.wait()
             if buttons.value == "승인":
-                new_channel = await context.guild.create_text_channel(name=f"{nickname}ㆍ{channelname}", category=category)
+                new_channel = await context.guild.create_text_channel(name=f"{nickname}ㆍ{channelname}", topic={genere}, category=category)
                 await new_channel.set_permissions(context.guild.get_role(context.guild.id),
                                                   send_messages=False,
                                                   read_messages=False)
