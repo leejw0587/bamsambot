@@ -32,7 +32,6 @@ class QuestAnswerModal(ui.Modal, title='정답 제출'):
             DISPLAYROLE = "역할 없음"
         else:
             DISPLAYROLE = f"<@&{QUEST_REWARD_ROLE}>"
-        print(QUEST_ANSWER_LIST)
         user = interaction.user
         guild = interaction.guild
         Log_channel = guild.get_channel(config["log_channel_id"])
