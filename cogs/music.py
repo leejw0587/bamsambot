@@ -11,7 +11,7 @@ from discord.ext.commands import Context
 from helpers import embeds
 
 
-class Music(commands.Cog, name="music (WIP)"):
+class Music(commands.Cog, name="music"):
     def __init__(self, bot):
         self.bot = bot
         self.queue = []
