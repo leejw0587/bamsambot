@@ -11,7 +11,7 @@ from discord.ext.commands import Context
 from helpers import embeds
 
 
-class Music(commands.Cog, name="music"):
+class Music(commands.Cog, name="music (WIP)"):
     def __init__(self, bot):
         self.bot = bot
         self.queue = []
@@ -45,9 +45,15 @@ class Music(commands.Cog, name="music"):
                 try:
                     await player.play(next_track)
                 except:
-                    return await channel.send(embed=discord.Embed(title=f"Something went wrong while playing **{next_track.title}**", color=discord.Color.from_rgb(255, 255, 255)))
-
-                await channel.send(embed=discord.Embed(title=f"Now playing: {next_track.title}", color=discord.Color.from_rgb(255, 255, 255)))
+                    return await channel.send(embed=embeds.EmbedRed("BamsamMusic", "재생 도중 문제가 발생하였습니다."))
+                embed = discord.Embed(
+                    title=f":notes: {next_track.title}", color=embeds.Color.blurple())
+                embed.set_thumbnail(url=next_track.thumbnail)
+                embed.add_field(name="곡 길이", value=str(
+                    datetime.timedelta(seconds=int(next_track.length))), inline=True)
+                embed.add_field(
+                    name="링크", value=f"[클릭]({next_track.uri})", inline=True)
+                await channel.send(embed=embed)
             else:
                 pass
         else:
