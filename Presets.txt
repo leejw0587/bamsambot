@@ -1,0 +1,37 @@
+SUCCESS GREEN
+Hex: #23C552
+
+BLUE
+Hex: #00a8ff
+
+BLURPLE
+Hex: #9C84EF
+
+YELLOW
+Hex: #ffcc00
+
+ERROR RED
+Hex: #ff9966
+
+DARK RED
+Hex: #F84F31
+
+
+============================
+embed = discord.Embed(
+            title="Error!",
+            description=f"Test Error Message.",
+            color=0xE02B2B
+        )
+await context.send(embed=embed)
+
+---
+
+embed = discord.Embed(
+            title="TEST",
+            description=f"Test Blurple Message",
+            color=0x9C84EF
+        )
+await context.send(embed=embed)
+
+---

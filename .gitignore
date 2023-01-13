@@ -147,4 +147,7 @@ cython_debug/
 database/shop.json
 database/ticket.json
 database/userdata.json
+database/quest.json
 
+#Ds_Store
+.Ds_Store
