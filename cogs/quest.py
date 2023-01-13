@@ -3,7 +3,7 @@ import json
 
 from discord.ext import commands
 from discord.ext.commands import Context
-from discord import app_commands
+from discord import app_commands, ui
 
 from helpers import checks, log
 
@@ -23,6 +23,42 @@ QUEST_REWARDS = {
 }
 
 
+class QuestAnswerModal(ui.Modal, title='정답 제출'):
+    answer = ui.TextInput(label="여기에 정답을 입력해주세요",
+                          style=discord.TextStyle.short, required=True)
+
+    async def on_submit(self, interaction: discord.Interaction):
+        global QUEST_STATE
+        global QUEST_ANSWER_LIST
+        global QUEST_REWARDS
+        if self.answer in QUEST_ANSWER_LIST:
+            embed = discord.Embed(
+                title="정답!", description="정답입니다!", color=0x57c179)
+            embed.add_field(
+                name="보상", value=f"{QUEST_REWARDS['PERIDOT']} {PERIDOT_EMOJI}\n{QUEST_REWARDS['TOKEN']} {TOKEN_EMOJI}\n<@&{QUEST_REWARDS['ROLEID']}>", inline=False)
+            await interaction.response.send_message(embed=embed)
+
+            user = interaction.user
+            guild = interaction.guild
+            Log_channel = guild.get_channel(self.bot.config["log_channel_id"])
+
+            with open("database/userdata.json", encoding="utf-8") as file:
+                userdata = json.load(file)
+            userdata[str(user.id)]["peridot"] = userdata[str(
+                user.id)]["peridot"] + int(QUEST_REWARDS['PERIDOT'])
+            userdata[str(user.id)]["token"] = userdata[str(
+                user.id)]["token"] + int(QUEST_REWARDS['TOKEN'])
+            if QUEST_REWARDS["ROLEID"] is not None:
+                role = guild.get_role(int(QUEST_REWARDS["ROLEID"]))
+                await user.add_roles(role)
+            with open("database/userdata.json", 'w', encoding="utf-8") as file:
+                json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+            QUEST_STATE = False
+
+            await Log_channel.send(log.got_answer(user))
+
+
 class Quest(commands.Cog, name="quest"):
     def __init__(self, bot):
         self.bot = bot
@@ -40,48 +76,23 @@ class Quest(commands.Cog, name="quest"):
             )
             await context.send(embed=embed)
 
-    @quest.command(
-        name="answer",
-        description="퀘스트 정답을 제출합니다.",
-    )
-    @app_commands.describe(answer="제출할 정답")
-    async def quest_answer(self, context: Context, answer: str) -> None:
-        global QUEST_STATE
-        global QUEST_ANSWER_LIST
-        global QUEST_REWARDS
-        if QUEST_STATE == True:
-            if answer in QUEST_ANSWER_LIST:
-
-                embed = discord.Embed(
-                    title="정답!", description="정답입니다!", color=0x57c179)
-                embed.add_field(
-                    name="보상", value=f"{QUEST_REWARDS['PERIDOT']} {PERIDOT_EMOJI}\n{QUEST_REWARDS['TOKEN']} {TOKEN_EMOJI}\n<@&{QUEST_REWARDS['ROLEID']}>", inline=False)
-                await context.send(embed=embed)
-
-                with open("database/userdata.json", encoding="utf-8") as file:
-                    userdata = json.load(file)
-                userdata[str(context.author.id)]["peridot"] = userdata[str(
-                    context.author.id)]["peridot"] + int(QUEST_REWARDS['PERIDOT'])
-                userdata[str(context.author.id)]["token"] = userdata[str(
-                    context.author.id)]["token"] + int(QUEST_REWARDS['TOKEN'])
-                if QUEST_REWARDS["ROLEID"] is not None:
-                    role = context.guild.get_role(int(QUEST_REWARDS["ROLEID"]))
-                    await context.author.add_roles(role)
-                with open("database/userdata.json", 'w', encoding="utf-8") as file:
-                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
-
-                QUEST_STATE = False
-
-                Log_channel = discord.utils.get(context.guild.channels,
-                                                id=self.bot.config["log_channel_id"])
-                await Log_channel.send(log.got_answer(context))
-        else:
-            embed = discord.Embed(
-                title="Error!",
-                description="현재 활성화된 퀘스트가 없습니다.",
-                color=0xE02B2B
-            )
-            await context.send(embed=embed)
+    # @quest.command(
+    #     name="answer",
+    #     description="퀘스트 정답을 제출합니다.",
+    # )
+    # async def quest_answer(self, context: discord.Interaction) -> None:
+    #     global QUEST_STATE
+    #     global QUEST_ANSWER_LIST
+    #     global QUEST_REWARDS
+    #     if QUEST_STATE == True:
+    #         await context.response.send_modal(QuestAnswerModal())
+    #     else:
+    #         embed = discord.Embed(
+    #             title="Error!",
+    #             description="현재 활성화된 퀘스트가 없습니다.",
+    #             color=0xE02B2B
+    #         )
+    #         await context.response.send_message(embed=embed)
 
     @quest.command(
         name="addanswer",

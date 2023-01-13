@@ -62,7 +62,7 @@ class Moderation(commands.Cog, name="moderation"):
         total = await db_manager.add_warn(
             user.id, context.guild.id, context.author.id, reason)
         embed = discord.Embed(
-            title="유저 경고 완료.",
+            title="경고 추가",
             description=f"**{member}**(이)가 경고를 받았습니다!\n누적 경고: {total}",
             color=0x9C84EF
         )
@@ -72,11 +72,20 @@ class Moderation(commands.Cog, name="moderation"):
         )
         await context.send(embed=embed)
         try:
-            await member.send(f"**뱀샘크루에서 경고를 받았습니다!**\n경고 사유: ``{reason}``\n누적 경고: {total}")
+            embed = discord.Embed(
+                title="경고를 받았습니다!",
+                description=f"경고 사유: ``{reason}``\n누적 경고: {total}회",
+                color=0xE02B2B
+            )
+            await member.send(embed=embed)
         except:
             # Couldn't send a message in the private messages of the user
-            await context.send(f"{member.mention}(이)가 경고를 받았습니다!\n경고 사유: ``{reason}``")
-
+            embed = discord.Embed(
+                title=f"{member.name}이(가) 경고를 받았습니다!",
+                description=f"경고 사유: ``{reason}``",
+                color=0xE02B2B
+            )
+            await member.send(embed=embed)
         Log_channel = discord.utils.get(context.guild.channels,
                                         id=self.bot.config["log_channel_id"])
         await Log_channel.send(log.warning("add", context, user))
@@ -92,7 +101,7 @@ class Moderation(commands.Cog, name="moderation"):
         member = context.guild.get_member(user.id) or await context.guild.fetch_member(user.id)
         total = await db_manager.remove_warn(warn_id, user.id, context.guild.id)
         embed = discord.Embed(
-            title="유저의 경고가 제거되었습니다.",
+            title="경고 제거",
             description=f"**{member}** 에게 부여된 경고ID **#{warn_id}** 를 제거했습니다!\n누적 경고: {total}",
             color=0x9C84EF
         )

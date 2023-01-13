@@ -45,8 +45,8 @@ def purge(context, amount):
     return msg
 
 
-def got_answer(context):
+def got_answer(user):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[QUEST] {timecode} | <@{context.author.id}> got answer!"
+    msg = f"[QUEST] {timecode} | <@{user.id}> got answer!"
     return msg
