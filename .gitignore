@@ -153,3 +153,5 @@ database/
 
 #Ds_Store
 .Ds_Store
+database/userdata.json
+database/shop.json
