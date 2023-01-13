@@ -27,7 +27,7 @@ class QuestAnswerModal(ui.Modal, title='정답 제출'):
         QUEST_ANSWER_LIST = list(quest[ACTIVEQUEST]["answer"])
         QUEST_REWARD_PERIDOT = quest[ACTIVEQUEST]["peridot"]
         QUEST_REWARD_TOKEN = quest[ACTIVEQUEST]["token"]
-        QUEST_REWARD_ROLE = None
+        QUEST_REWARD_ROLE = quest[ACTIVEQUEST]["roleid"]
         if QUEST_REWARD_ROLE == None:
             DISPLAYROLE = "역할 없음"
         else:
