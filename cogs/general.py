@@ -303,12 +303,14 @@ class General(commands.Cog, name="general"):
         name="createpc",
         description="개인 채널 생성 요청을 보냅니다."
     )
-    @commands.has_role(706453703745601546)
+    # @commands.has_role(706453703745601546)
     @app_commands.describe(nickname="채널 주인의 한글 닉네임", channelname="채널 이름", genere="채널의 장르", description="채널 설명", restrictions="채널을 볼 수 있는 역할(제한 없음: @everyone)")
     async def createpc(self, context: Context, nickname: str, channelname: str, genere: str, description: str, restrictions: discord.Role):
 
         if context.channel.id == 706526566104170607:
+            # if context.channel.id == 958025710025453640: for dev server
             admin_channel = context.guild.get_channel(936533151721861201)
+            # admin_channel = context.guild.get_channel(1062130045340110978) for dev server
             category = context.guild.get_channel(706452195272556586)
 
             buttons = CreatePcButtons()
@@ -319,7 +321,7 @@ class General(commands.Cog, name="general"):
             respond = await context.send("개인 채널 생성 요청을 성공적으로 전송하였습니다.\n잠시만 기다려주세요...")
             await buttons.wait()
             if buttons.value == "승인":
-                new_channel = await context.guild.create_text_channel(name=f"{nickname}ㆍ{channelname}", topic={genere}, category=category)
+                new_channel = await context.guild.create_text_channel(name=f"{nickname}ㆍ{channelname}", topic=f"장르 : {genere}", category=category)
                 await new_channel.set_permissions(context.guild.get_role(context.guild.id),
                                                   send_messages=False,
                                                   read_messages=False)
