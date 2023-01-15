@@ -306,7 +306,7 @@ class General(commands.Cog, name="general"):
     )
     # @commands.has_role(706453703745601546)
     @app_commands.describe(nickname="채널 주인의 한글 닉네임", channelname="채널 이름", genere="채널의 장르", description="채널 설명", restrictions="채널을 볼 수 있는 역할")
-    async def createpc(self, context: Context, nickname: str, channelname: str, genere: str, description: str, restrictions: typing.Literal['모두', '인증', '변태', '그로테스크', '변태 + 그로테스크']):
+    async def createpc(self, context: Context, nickname: str, channelname: str, genere: str, description: str, restrictions: typing.Literal['모두', '인증', '변태', '그로테스크']):
 
         if context.channel.id == 706526566104170607:
             # if context.channel.id == 958025710025453640: for dev server
