@@ -318,7 +318,8 @@ class General(commands.Cog, name="general"):
             embed.add_field(
                 name="개인 채널 생성 요청", value=f"요청인: {context.author}({nickname})\n채널 이름: {channelname}\n장르: {genere}\n설명: {description}\n역할 제한: <@&{restrictions.id}>", inline=False)
             req_message = await admin_channel.send(embed=embed, view=buttons)
-            respond = await context.send("개인 채널 생성 요청을 성공적으로 전송하였습니다.\n잠시만 기다려주세요...")
+            respond = await context.channel.send("개인 채널 생성 요청을 성공적으로 전송하였습니다.\n잠시만 기다려주세요...")
+            await context.defer()
             await buttons.wait()
             if buttons.value == "승인":
                 new_channel = await context.guild.create_text_channel(name=f"{nickname}ㆍ{channelname}", topic=f"장르 : {genere}", category=category)
