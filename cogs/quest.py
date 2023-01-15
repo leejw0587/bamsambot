@@ -1,5 +1,6 @@
 import discord
 import json
+import typing
 
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -253,7 +254,7 @@ class Quest(commands.Cog, name="quest"):
     )
     @app_commands.describe(name="퀘스트 이름", key="수정할 대상", value="수정할 값")
     @checks.is_owner()
-    async def quest_active(self, context: Context, name: str, key: str, value: str = None) -> None:
+    async def quest_active(self, context: Context, name: str, key: typing.Literal['정답', '페리도트', '토큰', '역할'], value: str = None) -> None:
         with open("database/quest.json") as file:
             quest = json.load(file)
 
@@ -277,7 +278,7 @@ class Quest(commands.Cog, name="quest"):
             else:
                 embed = discord.Embed(
                     title="Key Error!",
-                    description=f"`정답/페리도트/토큰/역할`중 하나를 입력해주세요",
+                    description=f"`정답/페리도트/토큰/역할`중 하나를 선택해주세요",
                     color=0xE02B2B
                 )
                 await context.send(embed=embed)

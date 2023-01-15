@@ -363,7 +363,7 @@ class Music(commands.Cog, name="music"):
     # this command would queue a song if some args(search) is provided else it would just show the queue
     @commands.hybrid_command(
         name="queue",
-        describe="재생 목록을 보여줍니다."
+        description="재생 목록을 보여줍니다."
     )
     async def queue_command(self, context: Context, *, search=None):
         node = wavelink.NodePool.get_node()
