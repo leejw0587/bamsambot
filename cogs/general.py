@@ -4,6 +4,7 @@ import json
 import time
 import datetime
 import asyncio
+import typing
 
 import aiohttp
 import discord
@@ -304,8 +305,8 @@ class General(commands.Cog, name="general"):
         description="개인 채널 생성 요청을 보냅니다."
     )
     # @commands.has_role(706453703745601546)
-    @app_commands.describe(nickname="채널 주인의 한글 닉네임", channelname="채널 이름", genere="채널의 장르", description="채널 설명", restrictions="채널을 볼 수 있는 역할(제한 없음: @everyone)")
-    async def createpc(self, context: Context, nickname: str, channelname: str, genere: str, description: str, restrictions: discord.Role):
+    @app_commands.describe(nickname="채널 주인의 한글 닉네임", channelname="채널 이름", genere="채널의 장르", description="채널 설명", restrictions="채널을 볼 수 있는 역할")
+    async def createpc(self, context: Context, nickname: str, channelname: str, genere: str, description: str, restrictions: typing.Literal['모두', '인증', '변태', '그로테스크', '변태 + 그로테스크']):
 
         if context.channel.id == 706526566104170607:
             # if context.channel.id == 958025710025453640: for dev server
@@ -313,16 +314,33 @@ class General(commands.Cog, name="general"):
             # admin_channel = context.guild.get_channel(1062130045340110978) for dev server
             category = context.guild.get_channel(706452195272556586)
 
+            Check_RoleID = 390821573315002369
+            Pervert_RoleID = 470942757574279168
+            Grot_RoleID = 722663541437497354
+
             buttons = CreatePcButtons()
             embed = discord.Embed(color=0x9C84EF)
             embed.add_field(
-                name="개인 채널 생성 요청", value=f"요청인: {context.author}({nickname})\n채널 이름: {channelname}\n장르: {genere}\n설명: {description}\n역할 제한: <@&{restrictions.id}>", inline=False)
+                name="개인 채널 생성 요청", value=f"요청인: {context.author}({nickname})\n채널 이름: {channelname}\n장르: {genere}\n설명: {description}\n역할 제한: {restrictions}", inline=False)
             req_message = await admin_channel.send(embed=embed, view=buttons)
             respond = await context.channel.send("개인 채널 생성 요청을 성공적으로 전송하였습니다.\n잠시만 기다려주세요...")
             await context.defer()
             await buttons.wait()
             if buttons.value == "승인":
-                new_channel = await context.guild.create_text_channel(name=f"{nickname}ㆍ{channelname}", topic=f"장르 : {genere}", category=category)
+
+                NSFW = False
+                if restrictions == "모두":
+                    restrictions = context.guild.get_role(context.guild.id)
+                elif restrictions == "인증":
+                    restrictions = context.guild.get_role(Check_RoleID)
+                elif restrictions == "변태":
+                    restrictions = context.guild.get_role(Pervert_RoleID)
+                    NSFW = True
+                elif restrictions == "그로테스크":
+                    restrictions = context.guild.get_role(Grot_RoleID)
+                    NSFW = True
+
+                new_channel = await context.guild.create_text_channel(name=f"{nickname}ㆍ{channelname}", topic=f"장르 : {genere}", category=category, nsfw=NSFW)
                 await new_channel.set_permissions(context.guild.get_role(context.guild.id),
                                                   send_messages=False,
                                                   read_messages=False)
