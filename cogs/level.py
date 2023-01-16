@@ -7,6 +7,9 @@ from discord.ext import commands
 from discord.ext.commands import Context
 from helpers import checks, log
 
+_MAXXP = 10
+_MINXP = 1
+
 
 class Level(commands.Cog, name="level"):
     def __init__(self, bot):
@@ -23,7 +26,7 @@ class Level(commands.Cog, name="level"):
                     xp = userdata[str(message.author.id)]["xp"]
                     level = userdata[str(message.author.id)]["level"]
 
-                    increased_xp = xp + random.randint(0, 10)
+                    increased_xp = xp + random.randint(_MINXP, _MAXXP)
                     new_level = int(increased_xp/100)
 
                     userdata[str(message.author.id)]["xp"] = increased_xp
@@ -177,6 +180,72 @@ class Level(commands.Cog, name="level"):
             Log_channel = discord.utils.get(context.guild.channels,
                                             id=self.bot.config["log_channel_id"])
             await Log_channel.send(log.xp_set(context, user, xp))
+
+    @xp.command(
+        name="info",
+        description="경험치 드랍량을 확인합니다. (창조자 전용)",
+    )
+    @checks.is_owner()
+    async def xp_info(self, context: Context):
+        global _MAXXP
+        global _MINXP
+
+        embed = discord.Embed(
+            title="XP INFO",
+            description=f"Minimum: `{_MINXP}`\nMaximum: `{_MAXXP}`",
+            color=0x9C84EF
+        )
+        await context.send(embed=embed)
+
+    @xp.command(
+        name="min",
+        description="경험치 최소 드랍량을 설정합니다. (창조자 전용)",
+    )
+    @checks.is_owner()
+    async def xp_min(self, context: Context, amount: int):
+        if amount >= 0:
+            global _MINXP
+
+            _MINXP = amount
+
+            embed = discord.Embed(
+                title="XP",
+                description=f"경험치 최소 드랍량을 `{_MINXP}`(으)로 설정하였습니다.",
+                color=0x9C84EF
+            )
+            await context.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="Error!",
+                description=f"드랍량은 음수가 될 수 없습니다.",
+                color=0xE02B2B
+            )
+            await context.send(embed=embed)
+
+    @xp.command(
+        name="max",
+        description="경험치 최소 드랍량을 설정합니다. (창조자 전용)",
+    )
+    @checks.is_owner()
+    async def xp_max(self, context: Context, amount: int):
+        if amount >= 0:
+            global _MAXXP
+
+            _MAXXP = amount
+
+            embed = discord.Embed(
+                title="XP",
+                description=f"경험치 최대 드랍량을 `{_MAXXP}`(으)로 설정하였습니다.",
+                color=0x9C84EF
+            )
+            await context.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="Error!",
+                description=f"드랍량은 음수가 될 수 없습니다.",
+                color=0xE02B2B
+            )
+            await context.send(embed=embed)
 
 
 async def setup(bot):
