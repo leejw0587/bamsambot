@@ -50,3 +50,17 @@ def got_answer(user):
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
     msg = f"[QUEST] {timecode} | <@{user.id}> got answer!"
     return msg
+
+
+def level_set(context, user, level):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    msg = f"[LEVEL] {timecode} | <@{context.author.id}> set <@{user.id}>'s level as {level}"
+    return msg
+
+
+def xp_set(context, user, xp):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    msg = f"[LEVEL] {timecode} | <@{context.author.id}> set <@{user.id}>'s xp as {xp}"
+    return msg

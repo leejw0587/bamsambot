@@ -4,7 +4,7 @@ import random
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
-from helpers import checks, log
+from helpers import checks, log, formatter
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 TOKEN_EMOJI = "<:token:884035217252311051>"
@@ -50,10 +50,10 @@ class Inventory(commands.Cog, name="inventory"):
         USERID = userdata[str(user.id)]["userid"]
         PERIDOT = userdata[str(user.id)]["peridot"]
         TOKEN = userdata[str(user.id)]["token"]
-        XP = userdata[str(user.id)]["xp"]
+        XP = formatter.numtostr(userdata[str(user.id)]["xp"])
         LEVEL = userdata[str(user.id)]["level"]
 
-        TARGETXP = 0
+        TARGETXP = formatter.numtostr((LEVEL + 1) * 100)
         PERIDOT = format(PERIDOT, ',d')
 
         embed = discord.Embed(

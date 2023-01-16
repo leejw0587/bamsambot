@@ -143,16 +143,8 @@ cython_debug/
 # SQLITE database
 *.db
 
-# json database
-database/shop.json
-database/ticket.json
-database/userdata.json
-database/quest.json
-
+# database
 database/
 
 #Ds_Store
 .Ds_Store
-database/userdata.json
-database/shop.json
-database/userdata.json
