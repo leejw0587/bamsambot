@@ -117,10 +117,10 @@ async def on_command_completion(context: Context) -> None:
 
     if context.guild is not None:
         print(
-            f"{timecode} | Executed {executed_command} command by {context.author}")
+            f"[INFO] {timecode} | Executed {executed_command} command by {context.author}")
     else:
         print(
-            f"{timecode} | Executed {executed_command} command by {context.author} in DMs")
+            f"[INFO] {timecode} | Executed {executed_command} command by {context.author} in DMs")
 
 
 @bot.event
