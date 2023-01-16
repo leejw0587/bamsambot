@@ -25,6 +25,29 @@ class Music(commands.Cog, name="music"):
         await wavelink.NodePool.create_node(bot=self.bot, host="127.0.0.1", port="2333", password="youshallnotpass", region="asia")
 
     @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        if not member.id == self.bot.user.id:
+            return
+
+        elif before.channel is None:
+            node = wavelink.NodePool.get_node()
+            player = node.get_player(after.channel.guild)
+
+            voice = after.channel.guild.voice_client
+            time = 0
+            while True:
+                await asyncio.sleep(1)
+                time = time + 1
+                if voice.is_playing() and not voice.is_paused():
+                    time = 0
+                if time == 10:
+                    await voice.disconnect()
+                    self.queue.clear()
+                    await player.stop()
+                if not voice.is_connected():
+                    break
+
+    @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
         print(f"Node <{node.identifier}> is now Ready!")
 
