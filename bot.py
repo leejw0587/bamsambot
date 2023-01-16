@@ -9,6 +9,7 @@ import aiosqlite
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot, Context
+from datetime import datetime
 
 import exceptions
 
@@ -110,12 +111,16 @@ async def on_command_completion(context: Context) -> None:
     full_command_name = context.command.qualified_name
     split = full_command_name.split(" ")
     executed_command = str(split[0])
+
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+
     if context.guild is not None:
         print(
-            f"Executed {executed_command} command by {context.author} (ID: {context.author.id})")
+            f"{timecode} | Executed {executed_command} command by {context.author}")
     else:
         print(
-            f"Executed {executed_command} command by {context.author} (ID: {context.author.id}) in DMs")
+            f"{timecode} | Executed {executed_command} command by {context.author} in DMs")
 
 
 @bot.event
