@@ -193,7 +193,7 @@ class Inventory(commands.Cog, name="inventory"):
 
             embed = discord.Embed(
                 title="토큰 추가 완료",
-                description=f"**{user}**에게 **{amount}**{TOKEN_EMOJI}을 추가하였습니다.",
+                description=f"**{user}**에게 **{amount}** {TOKEN_EMOJI}을 추가하였습니다.",
                 color=0x9C84EF
             )
             await context.send(embed=embed)
