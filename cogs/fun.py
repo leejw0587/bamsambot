@@ -103,8 +103,9 @@ class Fun(commands.Cog, name="fun"):
 
             sa.save("cogs/assets/Quote/result.png")
             file = discord.File("cogs/assets/Quote/result.png")
-            await context.message.delete()
+
             await context.send(file=file)
+            await context.message.delete()
 
         except Exception as e:
             await context.send(f"`/quote`는 메시지 답장에서만 작동합니다.\n`{e}`")
