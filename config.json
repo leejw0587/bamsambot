@@ -3,7 +3,7 @@
   "token": "OTU4NjkwOTA2MjE3ODAzODA3.Gc7Hxi.ckOvNCJ6lf4ZJeyOvxdkhBX11rVaZYLV9StBHU",
   "test_token": "OTU4NjkwOTA2MjE3ODAzODA3.Gc7Hxi.ckOvNCJ6lf4ZJeyOvxdkhBX11rVaZYLV9StBHU",
   "main_token": "OTM1MDY3MTE3NDI0ODk4MDY4.G8CiYw.Br7mKUsUlnD0gEAlPCBPP_96qylAxLgEAvdGKI",
-  "version": "3.2.0 Stable",
+  "version": "3.2.2 Stable",
   "permissions": "8",
   "application_id": "958690906217803807",
   "sync_commands_globally": true,
