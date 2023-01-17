@@ -99,11 +99,13 @@ class Fun(commands.Cog, name="fun"):
             authorw, authorh = dr.textsize(
                 f"- {str(membername)}", font=font)
             dr.text((480-int(authorw/2), current_h+h2+10),
-                    f"- {str(membername)}", font=font, fill="#FFF")
+                    f"    - {str(membername)}", font=font, fill="#FFF")
 
             sa.save("cogs/assets/Quote/result.png")
             file = discord.File("cogs/assets/Quote/result.png")
+            await context.message.delete()
             await context.send(file=file)
+
         except Exception as e:
             await context.send(f"`/quote`는 메시지 답장에서만 작동합니다.\n`{e}`")
 
