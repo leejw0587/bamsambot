@@ -177,10 +177,17 @@ async def on_command_error(context: Context, error) -> None:
             color=0xE02B2B
         )
         await context.send(embed=embed)
-    elif isinstance(error, commands.MissingRequiredArgument):
+    elif isinstance(error, commands.CommandNotFound):
         embed = discord.Embed(
             title="Error!",
-            description=str(error).capitalize(),
+            description="알 수 없는 커맨드입니다.",
+            color=0xE02B2B
+        )
+        await context.send(embed=embed)
+    else:
+        embed = discord.Embed(
+            title="Error!",
+            description=f"커맨드를 실행하던 중 오류가 발생했습니다.\n`{error}`",
             color=0xE02B2B
         )
         await context.send(embed=embed)
