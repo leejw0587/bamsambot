@@ -14,7 +14,7 @@ class Fun(commands.Cog, name="fun"):
 
     @commands.command(
         name="quote",
-        description="Lorem ipsum"
+        description="메시지 답장에 사용하면 Quote 이미지를 만들어줍니다."
     )
     async def quote(self, context: Context) -> None:
         try:
