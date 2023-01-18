@@ -29,6 +29,7 @@ class VerifyButton(discord.ui.View):
 class Owner(commands.Cog, name="owner"):
     def __init__(self, bot):
         self.bot = bot
+        self.bot.add_view(VerifyButton())
 
     @commands.hybrid_command(
         name="load",
