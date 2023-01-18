@@ -282,7 +282,7 @@ class Owner(commands.Cog, name="owner"):
     )
     @checks.is_owner()
     async def verification(self, context: Context):
-        await context.send("Respond", delete_after=1)
+        await context.send("Wait a second...", delete_after=1)
         await context.channel.send(embed=embeds.EmbedBlurple(
             "인증", "아래 버튼을 눌러 인증을 진행해주세요."), view=VerifyButton())
 
