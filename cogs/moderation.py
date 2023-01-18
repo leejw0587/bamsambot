@@ -1,4 +1,6 @@
 import discord
+import chat_exporter
+import io
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -145,6 +147,39 @@ class Moderation(commands.Cog, name="moderation"):
         Log_channel = discord.utils.get(context.guild.channels,
                                         id=self.bot.config["log_channel_id"])
         await Log_channel.send(log.purge(context, amount))
+
+    @commands.hybrid_command(
+        name="transcript",
+        description="채팅창의 transcript를 생성합니다. (창조자 전용)"
+    )
+    @checks.is_owner()
+    async def transcript(self, context: Context, channel: discord.TextChannel):
+        # await context.defer()
+        # transcript = await chat_exporter.export(channel)
+
+        # if transcript is None:
+        #     return
+
+        # transcript_file = discord.File(
+        #     io.BytesIO(transcript.encode()),
+        #     filename=f"transcript-{channel.name}.html",
+        # )
+
+        # message = await context.send(file=transcript_file)
+        # link = await chat_exporter.link(message)
+
+        # await context.send("Click this link to view the transcript online: " + link)
+
+        await context.defer()
+        transcript = await chat_exporter.export(channel, tz_info="Asia/Seoul", bot=self.bot)
+
+        with open("cogs/assets/Transcripts/" + str(channel.id) + ".html", "w") as file:
+            file.write(str(transcript))
+
+        transcript_file = discord.File(io.BytesIO(transcript.encode()),
+                                       filename=f"{channel.name}.html")
+
+        await context.send(file=transcript_file)
 
 
 async def setup(bot):
