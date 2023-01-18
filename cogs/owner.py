@@ -7,20 +7,41 @@ from discord.ext.commands import Context
 from helpers import checks, db_manager, embeds
 
 
-class VerifyButton(discord.ui.View):
+class JoinButtonKR(discord.ui.View):
     def __init__(self) -> None:
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="인증 / Verify",
+        label="입장 / JOIN",
         style=discord.ButtonStyle.green,
-        custom_id="verify"
+        custom_id="joinkr"
     )
-    async def verify(self, interaction: discord.Interaction, button: discord.Button):
-        Check_Role = interaction.guild.get_role(390821573315002369)
+    async def joinkr(self, interaction: discord.Interaction, button: discord.Button):
+        Guest_Role = interaction.guild.get_role(404586184334114816)
 
-        if Check_Role not in interaction.user.roles:
-            await interaction.user.add_roles(Check_Role)
+        if Guest_Role not in interaction.user.roles:
+            await interaction.user.add_roles(Guest_Role)
+            await interaction.user.send(embed=embeds.EmbedGreen("입장", "뱀샘크루에 입장하였습니다!"))
+        else:
+            await interaction.user.send(embed=embeds.EmbedRed("입장", "이미 입장한 계정입니다!"))
+
+
+class JoinButtonJP(discord.ui.View):
+    def __init__(self) -> None:
+        super().__init__(timeout=None)
+
+    @discord.ui.button(
+        label="バートン / JOIN",
+        style=discord.ButtonStyle.green,
+        custom_id="joinjp"
+    )
+    async def joinjp(self, interaction: discord.Interaction, button: discord.Button):
+        Guest_Role = interaction.guild.get_role(404586184334114816)
+        Japanese_Role = interaction.guild.get_role(838611237880725575)
+
+        if Guest_Role not in interaction.user.roles:
+            await interaction.user.add_roles(Guest_Role)
+            await interaction.user.add_roles(Japanese_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("인증", "인증이 완료되었습니다!"))
         else:
             await interaction.user.send(embed=embeds.EmbedRed("인증", "이미 인증이 완료된 계정입니다!"))
@@ -29,7 +50,8 @@ class VerifyButton(discord.ui.View):
 class Owner(commands.Cog, name="owner"):
     def __init__(self, bot):
         self.bot = bot
-        self.bot.add_view(VerifyButton())
+        self.bot.add_view(JoinButtonKR())
+        self.bot.add_view(JoinButtonJP())
 
     @commands.hybrid_command(
         name="load",
@@ -276,15 +298,38 @@ class Owner(commands.Cog, name="owner"):
 
     #     await context.send("Initialized `userdata.json`")
 
-    @commands.hybrid_command(
-        name="verification",
-        description="인증 embed를 만듭니다. (창조자 전용)"
+    @commands.hybrid_group(
+        name="createjoin",
+        description="입장 embed를 만드는 커맨드입니다. (창조자 전용)"
+    )
+    async def createjoin(self, context: Context) -> None:
+        if context.invoked_subcommand is None:
+            embed = discord.Embed(
+                title="Error!",
+                description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`kr` - 한국어 입장 embed를 생성합니다.\n`jp` - 일본어 입장 embed를 생성합니다.",
+                color=0xE02B2B
+            )
+            await context.send(embed=embed)
+
+    @createjoin.command(
+        name="kr",
+        description="한국어 입장 embed를 생성합니다. (창조자 전용)"
     )
     @checks.is_owner()
-    async def verification(self, context: Context):
+    async def createjoin_kr(self, context: Context):
         await context.send("Wait a second...", delete_after=1)
         await context.channel.send(embed=embeds.EmbedBlurple(
-            "인증", "아래 버튼을 눌러 인증을 진행해주세요."), view=VerifyButton())
+            "입장", "아래 버튼을 눌러 뱀샘크루에 입장하세요."), view=JoinButtonKR())
+
+    @createjoin.command(
+        name="jp",
+        description="일본어 입장 embed를 생성합니다. (창조자 전용)"
+    )
+    @checks.is_owner()
+    async def createjoin_jp(self, context: Context):
+        await context.send("Wait a second...", delete_after=1)
+        await context.channel.send(embed=embeds.EmbedBlurple(
+            "입장", "아래 버튼을 눌러 뱀샘크루에 입장하세요."), view=JoinButtonJP())
 
 
 async def setup(bot):
