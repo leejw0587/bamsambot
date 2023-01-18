@@ -177,7 +177,7 @@ class Moderation(commands.Cog, name="moderation"):
             file.write(str(transcript))
 
         transcript_file = discord.File(io.BytesIO(transcript.encode()),
-                                       filename=f"{channel.name}.html")
+                                       filename=f"{str(channel.id)}.html")
 
         await context.send(file=transcript_file)
 
