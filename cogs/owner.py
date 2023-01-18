@@ -16,14 +16,14 @@ class VerifyButton(discord.ui.View):
         style=discord.ButtonStyle.green,
         custom_id="verify"
     )
-    async def verify(self, button: discord.Button, interaction: discord.Interaction):
+    async def verify(self, interaction: discord.Interaction, button: discord.Button):
         Check_Role = interaction.guild.get_role(390821573315002369)
 
         if Check_Role not in interaction.user.roles:
             await interaction.user.add_roles(Check_Role)
-            await interaction.user.send_message(embed=embeds.EmbedGreen("인증", "인증이 완료되었습니다!"))
+            await interaction.user.send(embed=embeds.EmbedGreen("인증", "인증이 완료되었습니다!"))
         else:
-            await interaction.user.send_message(embed=embeds.EmbedRed("인증", "이미 인증이 완료된 계정입니다!"))
+            await interaction.user.send(embed=embeds.EmbedRed("인증", "이미 인증이 완료된 계정입니다!"))
 
 
 class Owner(commands.Cog, name="owner"):
