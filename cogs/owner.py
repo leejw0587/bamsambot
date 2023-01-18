@@ -11,12 +11,12 @@ class VerifyButton(discord.ui.View):
     def __init__(self) -> None:
         super().__init__(timeout=None)
 
-    @discord.ui.Button(
+    @discord.ui.button(
         label="인증 / Verify",
         style=discord.ButtonStyle.green,
         custom_id="verify"
     )
-    async def verify(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def verify(self, button: discord.Button, interaction: discord.Interaction):
         Check_Role = interaction.guild.get_role(390821573315002369)
 
         if Check_Role not in interaction.user.roles:
