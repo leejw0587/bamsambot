@@ -64,3 +64,10 @@ def xp_set(context, user, xp):
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
     msg = f"[LEVEL] {timecode} | <@{context.author.id}> set <@{user.id}>'s xp as {xp}"
     return msg
+
+
+def quote(context, message):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    msg = f"[QUOTE] {timecode} | <@{context.author.id}> quoted <@{message.author.id}>'s message"
+    return msg

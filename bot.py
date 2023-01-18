@@ -56,8 +56,7 @@ intents.members = True
 intents.message_content = True
 
 
-bot = Bot(command_prefix=commands.when_mentioned_or(
-    config["prefix"]), intents=intents, help_command=None)
+bot = Bot(command_prefix=config["prefix"], intents=intents, help_command=None)
 
 
 async def init_db():
@@ -101,6 +100,24 @@ async def on_message(message: discord.Message) -> None:
     if message.author == bot.user or message.author.bot:
         return
     await bot.process_commands(message)
+
+
+@bot.event
+async def on_member_join(member):
+    welcome_channel = bot.get_channel(id=544913480252260382)
+
+    embed = discord.Embed(
+        title="WELCOME", description=f"{member.mention}님, 뱀샘크루에 오신 것을 환영합니다!\n<#412231022533410817> 한 번 확인해주세요!")
+    await welcome_channel.send(embed=embed)
+
+
+@bot.event
+async def on_member_remove(member):
+    welcome_channel = bot.get_channel(id=544913480252260382)
+
+    embed = discord.Embed(
+        title="GOOD BYE", description=f"{member.mention}님이 뱀샘크루를 떠났습니다.")
+    await welcome_channel.send(embed=embed)
 
 
 @bot.event

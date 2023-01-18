@@ -7,7 +7,7 @@ from discord.ext import commands
 from discord.ext.commands import Context
 from PIL import Image, ImageDraw, ImageFont
 
-from helpers import checks, embeds
+from helpers import checks, embeds, log
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 RATIO = 1.1
@@ -39,6 +39,7 @@ class Fun(commands.Cog, name="fun"):
     )
     async def quote(self, context: Context) -> None:
         try:
+
             msg = context.message.reference
             id = msg.message_id
             message = await context.fetch_message(id)
@@ -128,8 +129,12 @@ class Fun(commands.Cog, name="fun"):
             await context.message.delete()
             await context.send(file=file)
 
+            Log_channel = discord.utils.get(context.guild.channels,
+                                            id=self.bot.config["log_channel_id"])
+            await Log_channel.send(log.quote(context, message))
+
         except Exception as e:
-            await context.send(f"`/quote`는 메시지 답장에서만 작동합니다.\n`{e}`")
+            await context.send(f"`/quote`명령어 실행 중 오류가 발생했습니다.\n`{e}`")
 
     @commands.hybrid_command(
         name="coinflip",
