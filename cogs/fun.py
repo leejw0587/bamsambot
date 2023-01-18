@@ -152,10 +152,11 @@ class Fun(commands.Cog, name="fun"):
         userdata[str(context.author.id)]["peridot"] = userdata[str(
             context.author.id)]["peridot"] - bet
 
+        bet_str = format(bet, ',d')
         buttons = CoinFlipChoice()
         embed = discord.Embed(
             title="동전 던지기",
-            description=f"동전의 방향을 골라주세요.\n베팅: {bet} {PERIDOT_EMOJI}\n배당: `{RATIO}`배",
+            description=f"동전의 방향을 골라주세요.\n베팅: {bet_str} {PERIDOT_EMOJI}\n배당: `{RATIO}`배",
             color=0x9C84EF
         )
         message = await context.send(embed=embed, view=buttons)
@@ -163,17 +164,18 @@ class Fun(commands.Cog, name="fun"):
         result = random.choice(["앞면", "뒷면"])
         if buttons.value == result:
             reward = int(bet * RATIO)
+            reward_str = format(reward, ',d')
             userdata[str(context.author.id)]["peridot"] = userdata[str(
                 context.author.id)]["peridot"] + reward
             embed = discord.Embed(
                 title="맞았습니다!",
-                description=f"당신의 선택은 `{buttons.value}` 이고, 던진 결과는 `{result}` 입니다.\n{reward} {PERIDOT_EMOJI}를 얻었습니다.",
+                description=f"당신의 선택은 `{buttons.value}` 이고, 던진 결과는 `{result}` 입니다.\n{reward_str} {PERIDOT_EMOJI}를 얻었습니다.",
                 color=0x9C84EF
             )
         else:
             embed = discord.Embed(
                 title="틀렸습니다!",
-                description=f"당신의 선택은 `{buttons.value}` 이고, 던진 결과는 `{result}` 입니다.\n{bet} {PERIDOT_EMOJI}를 잃었습니다.",
+                description=f"당신의 선택은 `{buttons.value}` 이고, 던진 결과는 `{result}` 입니다.\n{bet_str} {PERIDOT_EMOJI}를 잃었습니다.",
                 color=0xE02B2B
             )
         await message.edit(embed=embed, view=None, content=None)
