@@ -104,7 +104,7 @@ async def on_message(message: discord.Message) -> None:
 
 @bot.event
 async def on_member_join(member):
-    welcome_channel = bot.get_channel(id=544913480252260382)
+    welcome_channel = bot.get_channel(544913480252260382)
 
     embed = discord.Embed(
         title="WELCOME", description=f"{member.mention}님, 뱀샘크루에 오신 것을 환영합니다!\n<#412231022533410817> 한 번 확인해주세요!")
@@ -113,7 +113,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_member_remove(member):
-    welcome_channel = bot.get_channel(id=544913480252260382)
+    welcome_channel = bot.get_channel(544913480252260382)
 
     embed = discord.Embed(
         title="GOOD BYE", description=f"{member.mention}님이 뱀샘크루를 떠났습니다.")
