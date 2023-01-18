@@ -281,7 +281,7 @@ class Owner(commands.Cog, name="owner"):
     )
     @checks.is_owner()
     async def verification(self, context: Context):
-        context.send(embed=embeds.EmbedBlurple(
+        await context.send(embed=embeds.EmbedBlurple(
             "인증", "아래 버튼을 눌러 인증을 진행해주세요."), view=VerifyButton())
 
 
