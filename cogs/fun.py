@@ -1,11 +1,32 @@
 import discord
 import requests
 import textwrap
+import random
+import json
 from discord.ext import commands
 from discord.ext.commands import Context
 from PIL import Image, ImageDraw, ImageFont
 
-from helpers import checks
+from helpers import checks, embeds
+
+PERIDOT_EMOJI = "<:peridot:722474684045721973>"
+RATIO = 1.1
+
+
+class CoinFlipChoice(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.value = None
+
+    @discord.ui.button(label="앞면", style=discord.ButtonStyle.blurple)
+    async def confirm(self, button: discord.ui.Button, interaction: discord.Interaction):
+        self.value = "앞면"
+        self.stop()
+
+    @discord.ui.button(label="뒷면", style=discord.ButtonStyle.blurple)
+    async def cancel(self, button: discord.ui.Button, interaction: discord.Interaction):
+        self.value = "뒷면"
+        self.stop()
 
 
 class Fun(commands.Cog, name="fun"):
@@ -109,6 +130,56 @@ class Fun(commands.Cog, name="fun"):
 
         except Exception as e:
             await context.send(f"`/quote`는 메시지 답장에서만 작동합니다.\n`{e}`")
+
+    @commands.hybrid_command(
+        name="coinflip",
+        description="동전 던지기 미니게임을 합니다."
+    )
+    @checks.is_owner()
+    async def coinflip(self, context: Context, bet: int = 0) -> None:
+        with open("database/userdata.json", encoding="utf-8") as file:
+            userdata = json.load(file)
+
+        if bet == 0:
+            pass
+        else:
+            if userdata[str(context.author.id)]["peridot"] >= bet:
+                pass
+            else:
+                await context.send(embed=embeds.EmbedRed("Error!", "페리도트가 부족합니다."))
+                return
+
+        userdata[str(context.author.id)]["peridot"] = userdata[str(
+            context.author.id)]["peridot"] - bet
+
+        buttons = CoinFlipChoice()
+        embed = discord.Embed(
+            title="동전 던지기",
+            description=f"동전의 방향을 골라주세요.\n베팅: {bet} {PERIDOT_EMOJI}\n배당: `{RATIO}`배",
+            color=0x9C84EF
+        )
+        message = await context.send(embed=embed, view=buttons)
+        await buttons.wait()
+        result = random.choice(["앞면", "뒷면"])
+        if buttons.value == result:
+            reward = int(bet * RATIO)
+            userdata[str(context.author.id)]["peridot"] = userdata[str(
+                context.author.id)]["peridot"] + reward
+            embed = discord.Embed(
+                title="맞았습니다!",
+                description=f"당신의 선택은 `{buttons.value}` 이고, 던진 결과는 `{result}` 입니다.\n{reward} {PERIDOT_EMOJI}를 얻었습니다.",
+                color=0x9C84EF
+            )
+        else:
+            embed = discord.Embed(
+                title="틀렸습니다!",
+                description=f"당신의 선택은 `{buttons.value}` 이고, 던진 결과는 `{result}` 입니다.\n{bet} {PERIDOT_EMOJI}를 잃었습니다.",
+                color=0xE02B2B
+            )
+        await message.edit(embed=embed, view=None, content=None)
+
+        with open("database/userdata.json", 'w', encoding="utf-8") as file:
+            json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
 
 async def setup(bot):
