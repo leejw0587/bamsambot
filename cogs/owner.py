@@ -42,9 +42,9 @@ class JoinButtonJP(discord.ui.View):
         if Guest_Role not in interaction.user.roles:
             await interaction.user.add_roles(Guest_Role)
             await interaction.user.add_roles(Japanese_Role)
-            await interaction.user.send(embed=embeds.EmbedGreen("인증", "인증이 완료되었습니다!"))
+            await interaction.user.send(embed=embeds.EmbedGreen("入場", "ベムセムクルーに入場しました！"))
         else:
-            await interaction.user.send(embed=embeds.EmbedRed("인증", "이미 인증이 완료된 계정입니다!"))
+            await interaction.user.send(embed=embeds.EmbedRed("入場", "すでに入場しているアカウントです！"))
 
 
 class Owner(commands.Cog, name="owner"):
@@ -329,7 +329,7 @@ class Owner(commands.Cog, name="owner"):
     async def createjoin_jp(self, context: Context):
         await context.send("Wait a second...", delete_after=1)
         await context.channel.send(embed=embeds.EmbedBlurple(
-            "입장", "아래 버튼을 눌러 뱀샘크루에 입장하세요."), view=JoinButtonJP())
+            "入場", "下のボタンを押してべムセムクルーに入場してください。"), view=JoinButtonJP())
 
 
 async def setup(bot):
