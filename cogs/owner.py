@@ -12,7 +12,7 @@ class JoinButtonKR(discord.ui.View):
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="입장 / JOIN",
+        label="JOIN",
         style=discord.ButtonStyle.green,
         custom_id="joinkr"
     )
@@ -31,7 +31,7 @@ class JoinButtonJP(discord.ui.View):
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="バートン / JOIN",
+        label="JOIN",
         style=discord.ButtonStyle.green,
         custom_id="joinjp"
     )
