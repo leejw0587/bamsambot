@@ -382,7 +382,7 @@ class General(commands.Cog, name="general"):
         name="세배",
         description="뱀샘봇에게 세배를 하여 세뱃돈을 받습니다."
     )
-    @commands.cooldown(1, 86400, commands.BucketType.user)
+    @commands.cooldown(1, 259200, commands.BucketType.user)
     @app_commands.describe(hard="열심히 세배를 할지 선택합니다.")
     async def 세배(self, context: Context, hard: bool = False):
         with open("database/userdata.json", encoding="utf-8") as file:
