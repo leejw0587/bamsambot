@@ -12,7 +12,7 @@ from discord import app_commands
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
 
-from helpers import checks
+from helpers import checks, embeds
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 TOKEN_EMOJI = "<:token:884035217252311051>"
@@ -377,6 +377,28 @@ class General(commands.Cog, name="general"):
             embed.add_field(name="개인 채널 생성 요청",
                             value="해당 명령어는 <#706526566104170607> 에서만 작동합니다.", inline=False)
             await context.send(embed=embed)
+
+    @commands.hybrid_command(
+        name="세배",
+        description="뱀샘봇에게 세배를 하여 세뱃돈을 받습니다."
+    )
+    @commands.cooldown(1, 86400, commands.BucketType.user)
+    @app_commands.describe(hard="열심히 세배를 할지 선택합니다.")
+    async def 세배(self, context: Context, hard: bool = False):
+        with open("database/userdata.json", encoding="utf-8") as file:
+            userdata = json.load(file)
+
+        if hard == False:
+            userdata[str(context.author.id)]["token"] = userdata[str(
+                context.author.id)]["token"] + 1
+            await context.send(embed=embeds.EmbedBlurple("세배", f"세배를 하여 2 {TOKEN_EMOJI}를 얻었습니다!"))
+        else:
+            userdata[str(context.author.id)]["token"] = userdata[str(
+                context.author.id)]["token"] + 3
+            await context.send(embed=embeds.EmbedBlurple("세배", f"열심히 세배를 하여 3 {TOKEN_EMOJI}를 얻었습니다!"))
+
+        with open("database/userdata.json", 'w', encoding="utf-8") as file:
+            json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
 
 async def setup(bot):
