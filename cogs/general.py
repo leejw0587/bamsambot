@@ -390,7 +390,7 @@ class General(commands.Cog, name="general"):
 
         if hard == False:
             userdata[str(context.author.id)]["token"] = userdata[str(
-                context.author.id)]["token"] + 1
+                context.author.id)]["token"] + 2
             await context.send(embed=embeds.EmbedBlurple("세배", f"세배를 하여 2 {TOKEN_EMOJI}를 얻었습니다!"))
         else:
             userdata[str(context.author.id)]["token"] = userdata[str(
