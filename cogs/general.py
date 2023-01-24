@@ -378,28 +378,6 @@ class General(commands.Cog, name="general"):
                             value="해당 명령어는 <#706526566104170607> 에서만 작동합니다.", inline=False)
             await context.send(embed=embed)
 
-    @commands.hybrid_command(
-        name="세배",
-        description="뱀샘봇에게 세배를 하여 세뱃돈을 받습니다."
-    )
-    @commands.cooldown(1, 259200, commands.BucketType.user)
-    @app_commands.describe(hard="열심히 세배를 할지 선택합니다.")
-    async def 세배(self, context: Context, hard: bool = False):
-        with open("database/userdata.json", encoding="utf-8") as file:
-            userdata = json.load(file)
-
-        if hard == False:
-            userdata[str(context.author.id)]["token"] = userdata[str(
-                context.author.id)]["token"] + 2
-            await context.send(embed=embeds.EmbedBlurple("세배", f"세배를 하여 2 {TOKEN_EMOJI}를 얻었습니다!"))
-        else:
-            userdata[str(context.author.id)]["token"] = userdata[str(
-                context.author.id)]["token"] + 3
-            await context.send(embed=embeds.EmbedBlurple("세배", f"열심히 세배를 하여 3 {TOKEN_EMOJI}를 얻었습니다!"))
-
-        with open("database/userdata.json", 'w', encoding="utf-8") as file:
-            json.dump(userdata, file, indent="\t", ensure_ascii=False)
-
 
 async def setup(bot):
     await bot.add_cog(General(bot))

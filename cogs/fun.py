@@ -3,6 +3,8 @@ import requests
 import textwrap
 import random
 import json
+import asyncio
+from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 from PIL import Image, ImageDraw, ImageFont
@@ -187,6 +189,62 @@ class Fun(commands.Cog, name="fun"):
 
         with open("database/userdata.json", 'w', encoding="utf-8") as file:
             json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+    # @commands.hybrid_command(
+    #     name="slots",
+    #     description="슬롯머신을 돌립니다."
+    # )
+    # @app_commands.describe(bet="베팅할 페리도트")
+    # async def slots(self, context: Context, bet: int = 0):
+
+    #     round = 10
+
+    #     with open("database/userdata.json", encoding="utf-8") as file:
+    #         userdata = json.load(file)
+    #     if bet == 0:
+    #         pass
+    #     else:
+    #         if userdata[str(context.author.id)]["peridot"] >= bet:
+    #             pass
+    #         else:
+    #             await context.send(embed=embeds.EmbedRed("Error!", "페리도트가 부족합니다."))
+    #             return
+
+    #     userdata[str(context.author.id)]["peridot"] = userdata[str(
+    #         context.author.id)]["peridot"] - bet
+
+    #     slots = ['chocolate_bar', 'bell',
+    #              'tangerine', 'apple', 'cherries', 'seven']
+
+    #     msg = await context.send("슬롯 머신 준비중...")
+
+    #     for i in range(round):
+    #         await asyncio.sleep(0.3)
+    #         if i <= round - 7:
+    #             slot1 = slots[random.randint(0, 5)]
+    #         if i <= round - 5:
+    #             slot2 = slots[random.randint(0, 5)]
+    #         if i <= round - 3:
+    #             slot3 = slots[random.randint(0, 5)]
+    #         if i <= round - 1:
+    #             slot4 = slots[random.randint(0, 5)]
+    #         slotOutput = f"|\t:{slot1}:\t|\t:{slot2}:\t|\t:{slot3}:\t|\t:{slot4}:\t|\n"
+    #         await msg.edit(content=slotOutput)
+
+    #     await asyncio.sleep(1)
+    #     if slot1 == slot2 and slot2 == slot3 and slot3 == slot4 and slot4 != 'seven':
+    #         result = '$$ GREAT $$'
+
+    #     elif slot1 == 'seven' and slot2 == 'seven' and slot3 == 'seven' and slot4 == 'seven':
+    #         result = '$$ JACKPOT $$'
+
+    #     elif slot1 == slot2 and slot3 == slot4 or slot1 == slot3 and slot2 == slot4 or slot1 == slot4 and slot2 == slot3:
+    #         result = '$ NICE $'
+
+    #     else:
+    #         result = "Nothing"
+
+    #     await msg.edit(content=slotOutput + result)
 
 
 async def setup(bot):
