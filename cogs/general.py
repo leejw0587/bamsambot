@@ -331,10 +331,11 @@ class General(commands.Cog, name="general"):
             # Download video
             path = download(link, hex)
 
+            await context.send(file=discord.File(path))
+            os.remove(path)
             # Send it
-            with open(path, "rb") as file_:
-                await context.send(file=discord.File(file_))
-                await os.remove(path)
+            # with open(path, "rb") as file_:
+
             # Delete it
             # os.remove(f'cogs/assets/Videos/{hex}.mp4')
         else:
