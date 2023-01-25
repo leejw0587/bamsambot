@@ -334,9 +334,9 @@ class General(commands.Cog, name="general"):
             # Send it
             with open(path, "rb") as file_:
                 await context.send(file=discord.File(file_))
-            file_.close()
+                await os.remove(file_)
             # Delete it
-            os.remove(f'cogs/assets/Videos/{hex}.mp4')
+            # os.remove(f'cogs/assets/Videos/{hex}.mp4')
         else:
             await context.send(embed=embeds.EmbedRed("Error!", "릴스 링크만 지원합니다."))
 
