@@ -331,6 +331,17 @@ class Owner(commands.Cog, name="owner"):
         await context.channel.send(embed=embeds.EmbedBlurple(
             "入場", "下のボタンを押してべムセムクルーに入場してください。"), view=JoinButtonJP())
 
+    @commands.hybrid_command(
+        name="newupdate",
+        description="업데이트 알림 메시지를 보냅니다. (개발자 전용)"
+    )
+    @checks.is_dev()
+    async def newupdate(self, context: Context):
+        update_channel = context.guild.get_channel(764042960861396993)
+        config = self.bot.config
+        notion_link = "https://leejw0587.notion.site/BamsamBot-Release-Notes-72edee56e020443e8de2441d486fccc8"
+        await update_channel.send(embed=embeds.EmbedBlurple("New Update!", f"뱀샘봇의 새로운 버전(`{config['version']}`)이 업데이트 되었습니다.\n업데이트 내용은 [여기]({notion_link})서 확인하세요."))
+
 
 async def setup(bot):
     await bot.add_cog(Owner(bot))

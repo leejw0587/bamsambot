@@ -5,6 +5,9 @@ import random
 import json
 import asyncio
 import openai
+import secrets
+from io import BytesIO
+from PIL import Image
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -210,9 +213,16 @@ class Fun(commands.Cog, name="fun"):
             image_url = response['data'][0]['url']
             return image_url
 
+        path = "cogs/assets/Images/" + secrets.token_hex(nbytes=12) + ".png"
+
         await context.defer()
         try:
-            await context.send(create_response(prompt))
+            res = requests.get(create_response(prompt))
+
+            with open(path, 'wb') as image:
+                image.write(res.content)
+
+            await context.send(file=discord.File(path))
         except Exception as e:
             await context.send(embed=embeds.EmbedRed("Error!", f"이미지 생성 중 오류가 발생했습니다:\n`{e}`"))
 

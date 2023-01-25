@@ -19,6 +19,12 @@ class UserNotInformant(commands.CheckFailure):
         super().__init__(self.message)
 
 
+class UserNotDeveloper(commands.CheckFailure):
+    def __init__(self, message="해당 유저는 개발자가 아닙니다!"):
+        self.message = message
+        super().__init__(self.message)
+
+
 class UserNotHasCheck(commands.CheckFailure):
     def __init__(self, message="해당 유저가 인증 역할을 보유하고 있지 않습니다!"):
         self.message = message

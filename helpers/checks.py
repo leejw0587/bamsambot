@@ -32,6 +32,15 @@ def is_informant() -> Callable[[T], T]:
     return commands.check(predicate)
 
 
+def is_dev() -> Callable[[T], T]:
+    async def predicate(context: commands.Context) -> bool:
+        if context.author.id is not 424546094182039552:
+            raise UserNotDeveloper
+        return True
+
+    return commands.check(predicate)
+
+
 def not_blacklisted() -> Callable[[T], T]:
     async def predicate(context: commands.Context) -> bool:
         if await db_manager.is_blacklisted(context.author.id):
