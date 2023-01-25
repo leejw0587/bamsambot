@@ -4,6 +4,7 @@ import textwrap
 import random
 import json
 import asyncio
+import openai
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -13,6 +14,10 @@ from helpers import checks, embeds, log
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 RATIO = 1.1
+
+with open("config.json") as file:
+    config = json.load(file)
+openai.api_key = config["openai_api_key"]
 
 
 class CoinFlipChoice(discord.ui.View):
@@ -189,6 +194,27 @@ class Fun(commands.Cog, name="fun"):
 
         with open("database/userdata.json", 'w', encoding="utf-8") as file:
             json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+    @commands.hybrid_command(
+        name="image",
+        description="글과 관련된 이미지를 만들어줍니다."
+    )
+    @app_commands.describe(prompt="만들 이미지에 대한 설명 (영어만 지원)")
+    async def image(self, context: Context, prompt: str):
+        def create_response(prompt):
+            response = openai.Image.create(
+                prompt=prompt,
+                n=1,
+                size="1024x1024"
+            )
+            image_url = response['data'][0]['url']
+            return image_url
+
+        await context.defer()
+        try:
+            await context.send(create_response(prompt))
+        except Exception as e:
+            await context.send(embed=embeds.EmbedRed("Error!", f"이미지 생성 중 오류가 발생했습니다:\n`{e}`"))
 
     # @commands.hybrid_command(
     #     name="slots",
