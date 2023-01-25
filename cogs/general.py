@@ -300,6 +300,7 @@ class General(commands.Cog, name="general"):
 
         regexes = []
         state = False
+        hex = secrets.token_hex(nbytes=12)
         for s in regexes_pre:
             regexes.append(re.compile(s))
 
@@ -320,6 +321,7 @@ class General(commands.Cog, name="general"):
             path = glob.glob(f'cogs/assets/Videos/{filename}.*')[0]
 
             return path
+
         for regex in regexes:
             matches = re.search(regex, link)
             if matches:
@@ -327,14 +329,14 @@ class General(commands.Cog, name="general"):
 
         if state:
             # Download video
-            path = download(link, secrets.token_hex(nbytes=12))
+            path = download(link, hex)
 
             # Send it
             with open(path, "rb") as file_:
                 await context.send(file=discord.File(file_))
 
             # Delete it
-            os.remove(path)
+            os.remove(f'cogs/assets/Videos/{hex}.mp4')
         else:
             await context.send(embed=embeds.EmbedRed("Error!", "릴스 링크만 지원합니다."))
 
