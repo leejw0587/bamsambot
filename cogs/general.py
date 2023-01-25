@@ -331,13 +331,9 @@ class General(commands.Cog, name="general"):
             # Download video
             path = download(link, hex)
 
-            await context.send(file=discord.File(path))
+            await context.send(f"{link}", file=discord.File(path))
             os.remove(path)
-            # Send it
-            # with open(path, "rb") as file_:
 
-            # Delete it
-            # os.remove(f'cogs/assets/Videos/{hex}.mp4')
         else:
             await context.send(embed=embeds.EmbedRed("Error!", "릴스 링크만 지원합니다."))
 
