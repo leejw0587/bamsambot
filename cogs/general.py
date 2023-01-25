@@ -331,7 +331,7 @@ class General(commands.Cog, name="general"):
             # Download video
             path = download(link, hex)
 
-            await context.send(f"{link}", file=discord.File(path))
+            await context.send(file=discord.File(path))
             os.remove(path)
 
         else:
