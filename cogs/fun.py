@@ -321,6 +321,7 @@ class Fun(commands.Cog, name="fun"):
                 image.write(res.content)
 
             await context.send(file=discord.File(path))
+            image.close()
             os.remove(path)
         except Exception as e:
             await context.send(embed=embeds.EmbedRed("Error!", f"이미지 생성 중 오류가 발생했습니다:\n`{e}`"))
