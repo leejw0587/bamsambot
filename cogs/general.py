@@ -326,18 +326,15 @@ class General(commands.Cog, name="general"):
                 state = bool(matches)
 
         if state:
-            try:
-                # Download video
-                path = download(link, secrets.token_hex(nbytes=12))
+            # Download video
+            path = download(link, secrets.token_hex(nbytes=12))
 
-                # Send it
-                with open(path, "rb") as file_:
-                    await context.send(file=discord.File(file_))
+            # Send it
+            with open(path, "rb") as file_:
+                await context.send(file=discord.File(file_))
 
-                # Delete it
-                os.remove(path)
-            except:
-                await context.send(embed=embeds.EmbedRed("Error!", "유효하지 않은 링크입니다."))
+            # Delete it
+            os.remove(path)
         else:
             await context.send(embed=embeds.EmbedRed("Error!", "릴스 링크만 지원합니다."))
 
