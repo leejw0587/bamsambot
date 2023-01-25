@@ -34,7 +34,7 @@ def is_informant() -> Callable[[T], T]:
 
 def is_dev() -> Callable[[T], T]:
     async def predicate(context: commands.Context) -> bool:
-        if context.author.id is not 424546094182039552:
+        if context.author.id != 424546094182039552:
             raise UserNotDeveloper
         return True
 
