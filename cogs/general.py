@@ -334,7 +334,7 @@ class General(commands.Cog, name="general"):
             # Send it
             with open(path, "rb") as file_:
                 await context.send(file=discord.File(file_))
-                await os.remove(file_)
+                await os.remove(path)
             # Delete it
             # os.remove(f'cogs/assets/Videos/{hex}.mp4')
         else:
