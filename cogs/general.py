@@ -5,9 +5,14 @@ import time
 import datetime
 import asyncio
 import typing
-
+import yt_dlp
+import re
+import glob
 import aiohttp
 import discord
+import os
+import secrets
+from yt_dlp import YoutubeDL
 from discord import app_commands
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
@@ -32,95 +37,6 @@ class CreatePcButtons(discord.ui.View):
     async def refuse(self, button: discord.ui.Button, interaction: discord.Interaction):
         self.value = "거부"
         self.stop()
-
-
-class RockPaperScissors(discord.ui.Select):
-    def __init__(self):
-        options = [
-            discord.SelectOption(
-                label="가위", description="가위를 냅니다", emoji="✂️"
-            ),
-            discord.SelectOption(
-                label="바위", description="바위를 냅니다", emoji="🪨"
-            ),
-            discord.SelectOption(
-                label="보", description="보를 냅니다.", emoji="🧻"
-            ),
-        ]
-        super().__init__(
-            placeholder="무엇을 낼지 선택해주세요",
-            min_values=1,
-            max_values=1,
-            options=options,
-        )
-
-    async def callback(self, interaction: discord.Interaction):
-        choices = {
-            "바위": 0,
-            "보": 1,
-            "가위": 2,
-        }
-        user_choice = self.values[0].lower()
-
-        user_choice_index = choices[user_choice]
-        user_win = False
-
-        user_choice_emoji = ""
-        if user_choice_index == 0:
-            user_choice_emoji = "🪨"
-        elif user_choice_index == 1:
-            user_choice_emoji = "🧻"
-        elif user_choice_index == 2:
-            user_choice_emoji = "✂️"
-        user_choice = user_choice + " " + user_choice_emoji
-
-        bot_choice = random.choice(list(choices.keys()))
-        bot_choice_index = choices[bot_choice]
-
-        bot_choice_emoji = ""
-        if bot_choice_index == 0:
-            bot_choice_emoji = "🪨"
-        elif bot_choice_index == 1:
-            bot_choice_emoji = "🧻"
-        elif bot_choice_index == 2:
-            bot_choice_emoji = "✂️"
-        bot_choice = bot_choice + " " + bot_choice_emoji
-
-        result_embed = discord.Embed(color=0x9C84EF)
-        result_embed.set_author(
-            name=interaction.user.name,
-            icon_url=interaction.user.avatar.url
-        )
-
-        if user_choice_index == bot_choice_index:
-            result_embed.description = f"**비겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0xF59E42
-        elif user_choice_index == 0 and bot_choice_index == 2:
-            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0x9C84EF
-            user_win = True
-        elif user_choice_index == 1 and bot_choice_index == 0:
-            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0x9C84EF
-            user_win = True
-        elif user_choice_index == 2 and bot_choice_index == 1:
-            result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0x9C84EF
-            user_win = True
-        else:
-            result_embed.description = f"**뱀샘봇이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0xE02B2B
-
-        if user_win == True:
-            pass
-
-        await interaction.response.edit_message(embed=result_embed, content=None, view=None)
-
-
-class RockPaperScissorsView(discord.ui.View):
-    def __init__(self):
-        super().__init__()
-        self.add_item(RockPaperScissors())
 
 
 class General(commands.Cog, name="general"):
@@ -293,14 +209,6 @@ class General(commands.Cog, name="general"):
             await context.send(embed=embed)
 
     @commands.hybrid_command(
-        name="rps",
-        description="뱀샘봇과 가위바위보를 합니다."
-    )
-    async def rock_paper_scissors(self, context: Context) -> None:
-        view = RockPaperScissorsView()
-        await context.send("가위, 바위, 보!", view=view)
-
-    @commands.hybrid_command(
         name="createpc",
         description="개인 채널 생성 요청을 보냅니다."
     )
@@ -377,6 +285,61 @@ class General(commands.Cog, name="general"):
             embed.add_field(name="개인 채널 생성 요청",
                             value="해당 명령어는 <#706526566104170607> 에서만 작동합니다.", inline=False)
             await context.send(embed=embed)
+
+    @commands.hybrid_command(
+        name="reels",
+        description="릴스를 보기 쉽게 보내줍니다."
+    )
+    @app_commands.describe(link="영상 링크")
+    async def reels(self, context: Context, link: str):
+        regexes_pre = [
+            'https:\/\/www\.instagram\.com\/reel\/([a-zA-Z0-9_\-]*)',
+            # 'https:\/\/www\.tiktok\.com\/@[A-z]*\/video\/([a-zA-Z0-9_\-]*)',
+            # 'https:\/\/www\.youtube\.com\/shorts\/([a-zA-Z0-9_\-]*)'
+        ]
+
+        regexes = []
+        state = False
+        for s in regexes_pre:
+            regexes.append(re.compile(s))
+
+        await context.defer()
+
+        def download(url, filename):
+            opts = {
+                'outtmpl': f'cogs/assets/Videos/{filename}.%(ext)s',
+                # 'cookiefile': 'cookies.txt',
+                'quiet': True,
+                # 'format': '--all-formats'
+            }
+
+            with YoutubeDL(opts) as ytdl:
+                ytdl.download([url])
+
+            # Get filename (extension is unknown)
+            path = glob.glob(f'cogs/assets/Videos/{filename}.*')[0]
+
+            return path
+        for regex in regexes:
+            matches = re.search(regex, link)
+            if matches:
+                state = bool(matches)
+
+        if state:
+            try:
+                # Download video
+                path = download(link, secrets.token_hex(nbytes=12))
+
+                # Send it
+                with open(path, "rb") as file_:
+                    await context.send(file=discord.File(file_))
+
+                # Delete it
+                os.remove(path)
+            except:
+                await context.send(embed=embeds.EmbedRed("Error!", "유효하지 않은 링크입니다."))
+        else:
+            await context.send(embed=embeds.EmbedRed("Error!", "릴스 링크만 지원합니다."))
 
 
 async def setup(bot):
