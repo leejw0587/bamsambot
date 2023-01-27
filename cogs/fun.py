@@ -139,7 +139,6 @@ class Fun(commands.Cog, name="fun"):
     )
     async def quote(self, context: Context) -> None:
         try:
-
             msg = context.message.reference
             id = msg.message_id
             message = await context.fetch_message(id)

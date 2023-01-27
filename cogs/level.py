@@ -5,7 +5,7 @@ import random
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
-from helpers import checks, log
+from helpers import checks, log, embeds
 
 _MAXXP = 10
 _MINXP = 1
@@ -49,8 +49,11 @@ class Level(commands.Cog, name="level"):
     #     description="레벨 순위를 확인합니다."
     # )
     # async def leaderboard(self, context: Context) -> None:
+    #     await context.defer()
     #     with open("database/userdata.json", encoding="utf-8") as file:
     #         userdata = json.load(file)
+
+    #     lim = 10
 
     #     lb = {}
     #     total_xp = []
@@ -66,7 +69,8 @@ class Level(commands.Cog, name="level"):
     #     index = 1
 
     #     embed = discord.Embed(
-    #         title="Bamsam Leaderboard"
+    #         title="Bamsam Leaderboard",
+    #         color=embeds.Color.blurple()
     #     )
 
     #     for amt in total_xp:
@@ -82,7 +86,7 @@ class Level(commands.Cog, name="level"):
     #                             value=f"**Level: {level} | XP: {xp}**",
     #                             inline=False)
 
-    #         if index == 5:
+    #         if index == lim:
     #             break
     #         else:
     #             index += 1
