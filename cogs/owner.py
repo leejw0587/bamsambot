@@ -175,7 +175,7 @@ class Owner(commands.Cog, name="owner"):
     )
     @app_commands.describe(message="보낼 메시지")
     @checks.is_owner()
-    async def embed(self, context: Context, *, message: str, color: int = None) -> None:
+    async def embed(self, context: Context, *, message: str, color: str = None) -> None:
         res = await context.send("Sending Embed ...")
         await res.delete()
         message = message.split("[br]")
