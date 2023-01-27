@@ -51,7 +51,7 @@ class General(commands.Cog, name="general"):
     async def help(self, context: Context) -> None:
         prefix = self.bot.config["prefix"]
         embed = discord.Embed(
-            title="Help", description="뱀샘봇의 커맨드들: ", color=0x9C84EF)
+            title="Help", description="뱀샘봇의 커맨드들: ", color=discord.Color.purple())
         for i in self.bot.cogs:
             cog = self.bot.get_cog(i.lower())
             commands = cog.get_commands()
@@ -75,7 +75,7 @@ class General(commands.Cog, name="general"):
 
         embed = discord.Embed(
             description="Dev By xDxD#6779",
-            color=0x9C84EF
+            color=discord.Color.light_gray()
         )
         embed.set_author(
             name="Bot Information"
@@ -120,7 +120,7 @@ class General(commands.Cog, name="general"):
         embed = discord.Embed(
             title="**Server Name:**",
             description=f"{context.guild}",
-            color=0x9C84EF
+            color=discord.Color.light_gray
         )
         if context.guild.icon is not None:
             embed.set_thumbnail(
@@ -156,7 +156,7 @@ class General(commands.Cog, name="general"):
         embed = discord.Embed(
             title="🏓 Pong!",
             description=f"The bot latency is {round(self.bot.latency * 1000)}ms.",
-            color=0x9C84EF
+            color=discord.Color.random()
         )
         await context.send(embed=embed)
 
@@ -176,7 +176,7 @@ class General(commands.Cog, name="general"):
                 embed = discord.Embed(
                     title="Error!",
                     description=f"오늘({today})이미 출석을 했습니다!\n누적 출석 횟수: `{attendance_count}`회",
-                    color=0xE02B2B
+                    color=discord.Color.red()
                 )
                 await context.send(embed=embed)
             else:
@@ -196,7 +196,7 @@ class General(commands.Cog, name="general"):
                 embed = discord.Embed(
                     title="출석 완료!",
                     description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n출석 보상: {reward} {PERIDOT_EMOJI}",
-                    color=0x9C84EF
+                    color=discord.Color.blurple()
                 )
 
                 await context.send(embed=embed)
@@ -204,7 +204,7 @@ class General(commands.Cog, name="general"):
             embed = discord.Embed(
                 title="Error!",
                 description="유저를 찾을 수 없습니다.\n`/inventory`커맨드를 한 번 실행한 후 다시 시도해주세요.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -227,7 +227,7 @@ class General(commands.Cog, name="general"):
             Grot_RoleID = 722663541437497354
 
             buttons = CreatePcButtons()
-            embed = discord.Embed(color=0x9C84EF)
+            embed = discord.Embed(color=discord.Color.blue())
             embed.add_field(
                 name="개인 채널 생성 요청", value=f"요청인: {context.author}({nickname})\n채널 이름: {channelname}\n장르: {genere}\n설명: {description}\n역할 제한: {restrictions}", inline=False)
             req_message = await admin_channel.send(embed=embed, view=buttons)
@@ -268,20 +268,20 @@ class General(commands.Cog, name="general"):
                                                   attach_files=True,
                                                   read_message_history=True,
                                                   external_emojis=True)
-                embed = discord.Embed(color=0x17fd5c)
+                embed = discord.Embed(color=discord.Color.green())
                 embed.add_field(name="개인 채널 생성 요청",
                                 value=f"개인 채널 생성 요청이 승인되었습니다.\n생성된 채널: <#{new_channel.id}>", inline=False)
                 await respond.edit(content=" ", embed=embed)
 
             else:
-                embed = discord.Embed(color=0xe92b2b)
+                embed = discord.Embed(color=discord.Color.red())
                 embed.add_field(name="개인 채널 생성 요청",
                                 value="개인 채널 생성 요청이 거부되었습니다.", inline=False)
                 await respond.edit(content=" ", embed=embed)
             await req_message.delete()
 
         else:
-            embed = discord.Embed(color=0xe92b2b)
+            embed = discord.Embed(color=discord.Color.brand_red)
             embed.add_field(name="개인 채널 생성 요청",
                             value="해당 명령어는 <#706526566104170607> 에서만 작동합니다.", inline=False)
             await context.send(embed=embed)

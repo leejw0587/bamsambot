@@ -26,14 +26,14 @@ class Moderation(commands.Cog, name="moderation"):
             embed = discord.Embed(
                 title="닉네임 변경 완료!",
                 description=f"`{member}`의 닉네임을 `{nickname}`(으)로 설정하였습니다!",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
         except:
             embed = discord.Embed(
                 title="Error!",
                 description="오류가 발생하였습니다. 다시 시도해주세요.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -48,7 +48,7 @@ class Moderation(commands.Cog, name="moderation"):
             embed = discord.Embed(
                 title="Error!",
                 description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`add` - 유저에게 경고를 추가합니다.\n`remove` - 유저로부터 경고를 제거합니다.\n`list` - 유저의 모든 경고를 확인합니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -64,9 +64,9 @@ class Moderation(commands.Cog, name="moderation"):
         total = await db_manager.add_warn(
             user.id, context.guild.id, context.author.id, reason)
         embed = discord.Embed(
-            title="경고 추가",
+            title="경고",
             description=f"**{member}**(이)가 경고를 받았습니다!\n누적 경고: {total}",
-            color=0x9C84EF
+            color=discord.Color.red()
         )
         embed.add_field(
             name="사유:",
@@ -77,7 +77,7 @@ class Moderation(commands.Cog, name="moderation"):
             embed = discord.Embed(
                 title="경고를 받았습니다!",
                 description=f"경고 사유: ``{reason}``\n누적 경고: {total}회",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await member.send(embed=embed)
         except:
@@ -85,7 +85,7 @@ class Moderation(commands.Cog, name="moderation"):
             embed = discord.Embed(
                 title=f"{member.name}이(가) 경고를 받았습니다!",
                 description=f"경고 사유: ``{reason}``",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await member.send(embed=embed)
         Log_channel = discord.utils.get(context.guild.channels,
@@ -105,7 +105,7 @@ class Moderation(commands.Cog, name="moderation"):
         embed = discord.Embed(
             title="경고 제거",
             description=f"**{member}** 에게 부여된 경고ID **#{warn_id}** 를 제거했습니다!\n누적 경고: {total}",
-            color=0x9C84EF
+            color=discord.Color.orange()
         )
         await context.send(embed=embed)
 
@@ -124,7 +124,7 @@ class Moderation(commands.Cog, name="moderation"):
         warnings_list = await db_manager.get_warnings(user.id, context.guild.id)
         embed = discord.Embed(
             title=f"{user}의 경고 목록",
-            color=0x9C84EF
+            color=discord.Color.orange()
         )
         description = ""
         if len(warnings_list) == 0:

@@ -71,14 +71,14 @@ class Owner(commands.Cog, name="owner"):
             embed = discord.Embed(
                 title="Error!",
                 description=f"Could not load the `{cog}` cog.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
             return
         embed = discord.Embed(
             title="Load",
             description=f"Successfully loaded the `{cog}` cog.",
-            color=0x9C84EF
+            color=discord.Color.green()
         )
         await context.send(embed=embed)
 
@@ -99,14 +99,14 @@ class Owner(commands.Cog, name="owner"):
             embed = discord.Embed(
                 title="Error!",
                 description=f"Could not unload the `{cog}` cog.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
             return
         embed = discord.Embed(
             title="Unload",
             description=f"Successfully unloaded the `{cog}` cog.",
-            color=0x9C84EF
+            color=discord.Color.green()
         )
         await context.send(embed=embed)
 
@@ -127,14 +127,14 @@ class Owner(commands.Cog, name="owner"):
             embed = discord.Embed(
                 title="Error!",
                 description=f"Could not reload the `{cog}` cog.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
             return
         embed = discord.Embed(
             title="Reload",
             description=f"Successfully reloaded the `{cog}` cog.",
-            color=0x9C84EF
+            color=discord.Color.green()
         )
         await context.send(embed=embed)
 
@@ -149,7 +149,7 @@ class Owner(commands.Cog, name="owner"):
         """
         embed = discord.Embed(
             description="Shutting down. Bye! :wave:",
-            color=0x9C84EF
+            color=discord.Color.greyple()
         )
         await context.send(embed=embed)
         await self.bot.close()
@@ -180,7 +180,7 @@ class Owner(commands.Cog, name="owner"):
         await res.delete()
         message = message.split("[br]")
         if color == None:
-            color = 0x9C84EF
+            color = discord.Color.blurple()
         else:
             color = int(color, 16)
         embed = discord.Embed(
@@ -313,7 +313,7 @@ class Owner(commands.Cog, name="owner"):
             embed = discord.Embed(
                 title="Error!",
                 description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`kr` - 한국어 입장 embed를 생성합니다.\n`jp` - 일본어 입장 embed를 생성합니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 

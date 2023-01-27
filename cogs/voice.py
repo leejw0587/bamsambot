@@ -36,7 +36,7 @@ class voice(commands.Cog):
                         embed = discord.Embed(
                             title="Error!",
                             description=f"개인 보이스 채널을 너무 빨리 만들지 말아주세요!",
-                            color=0xE02B2B
+                            color=discord.Color.red()
                         )
                         await member.send(embed=embed)
                         await asyncio.sleep(15)
@@ -164,7 +164,7 @@ class voice(commands.Cog):
             embed = discord.Embed(
                 title="Error!",
                 description=f"유저가 소유한 채널을 찾을 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -175,7 +175,7 @@ class voice(commands.Cog):
             embed = discord.Embed(
                 title="채널 잠금",
                 description=f"채널 잠금 설정이 활성화되었습니다.",
-                color=0x9C84EF
+                color=discord.Color.blurple()
             )
             await context.send(embed=embed)
         conn.commit()
@@ -192,7 +192,7 @@ class voice(commands.Cog):
             embed = discord.Embed(
                 title="Error!",
                 description=f"유저가 소유한 채널을 찾을 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -203,7 +203,7 @@ class voice(commands.Cog):
             embed = discord.Embed(
                 title="채널 잠금",
                 description=f"채널 잠금 설정이 비활성화되었습니다.",
-                color=0x9C84EF
+                color=discord.Color.blurple()
             )
             await context.send(embed=embed)
         conn.commit()

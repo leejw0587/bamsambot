@@ -73,7 +73,7 @@ class SelectProblem(discord.ui.Select):
                                           external_emojis=True,
                                           manage_messages=True)
         await new_channel.send(f"<@&{creator.id}>")
-        embed = discord.Embed(color=0x9C84EF)
+        embed = discord.Embed(color=discord.Color.blurple())
         embed.add_field(
             name=f"새로운 티켓 - {user}", value="곧 어드민이 도착할 예정입니다. 잠시만 기다려주세요.", inline=False)
         await new_channel.send(embed=embed)
@@ -128,7 +128,7 @@ class Ticket(commands.Cog, name="ticket"):
 
             button = CloseBtn()
             em = discord.Embed(
-                title="BAMSAMBOT", description="정말 이 티켓을 종료하시겠습니까?", color=0xff9966)
+                title="BAMSAMBOT", description="정말 이 티켓을 종료하시겠습니까?", color=discord.Color.red())
 
             msg = await context.send(embed=em, view=button)
             await button.wait()
@@ -143,7 +143,7 @@ class Ticket(commands.Cog, name="ticket"):
 
         else:
             em = discord.Embed(
-                title="ERROR", description="`/close`는 활성화된 티켓 채팅방에서만 작동합니다.", color=0xff9966)
+                title="Error!", description="`/close`는 활성화된 티켓 채팅방에서만 작동합니다.", color=discord.Color.red())
             await context.send(embed=em, view=None)
 
 

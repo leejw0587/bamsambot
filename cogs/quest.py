@@ -40,13 +40,13 @@ class QuestAnswerModal(ui.Modal, title='정답 제출'):
         embed = discord.Embed(
             title="정답 제출 완료",
             description=f"DM을 확인해주세요.",
-            color=0x9C84EF
+            color=discord.Color.blurple()
         )
         await interaction.response.send_message(embed=embed)
 
         if ANSWER in QUEST_ANSWER_LIST:
             embed = discord.Embed(
-                title="정답!", description="정답입니다!", color=0x23C552)
+                title="정답!", description="정답입니다!", color=discord.Color.green())
             embed.add_field(
                 name="보상 목록", value=f"{QUEST_REWARD_PERIDOT} {PERIDOT_EMOJI}\n{QUEST_REWARD_TOKEN} {TOKEN_EMOJI}\n{DISPLAYROLE}", inline=False)
             await user.send(embed=embed)
@@ -72,7 +72,7 @@ class QuestAnswerModal(ui.Modal, title='정답 제출'):
             embed = discord.Embed(
                 title="오답!",
                 description=f"오답입니다.\n입력한 답: `{self.answer}`",
-                color=0xF84F31
+                color=discord.Color.red()
             )
             await user.send(embed=embed)
 
@@ -90,7 +90,7 @@ class Quest(commands.Cog, name="quest"):
             embed = discord.Embed(
                 title="Error!",
                 description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`answer` - 퀘스트 정답을 제출합니다.\n`addanswer` - 정답을 추가합니다.\n`removeanswer` - 정답을 제거합니다.\n`setreward` - 보상을 설정합니다.\n`resetreward` - 보상을 초기화합니다.\n`init` - 퀘스트를 초기화합니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -108,7 +108,7 @@ class Quest(commands.Cog, name="quest"):
             embed = discord.Embed(
                 title="Error!",
                 description="현재 활성화된 퀘스트가 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -125,7 +125,7 @@ class Quest(commands.Cog, name="quest"):
         active_quest = quest["__ACTIVE_QUEST"]
 
         embed = discord.Embed(
-            title="퀘스트 목록", description=f"활성화된 퀘스트: {active_quest}", color=0x9C84EF)
+            title="퀘스트 목록", description=f"활성화된 퀘스트: {active_quest}", color=discord.Color.blue())
         for i in quest:
             if i == "__ACTIVE_QUEST":
                 pass
@@ -170,7 +170,7 @@ class Quest(commands.Cog, name="quest"):
         embed = discord.Embed(
             title="퀘스트 생성 완료",
             description=f"새로운 퀘스트를 생성했습니다: `{name}`",
-            color=0x9C84EF
+            color=discord.Color.green()
         )
         await context.send(embed=embed)
 
@@ -187,7 +187,7 @@ class Quest(commands.Cog, name="quest"):
             embed = discord.Embed(
                 title="Error!",
                 description=f"퀘스트가 존재하지 않습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -198,7 +198,7 @@ class Quest(commands.Cog, name="quest"):
             embed = discord.Embed(
                 title="퀘스트 제거 완료",
                 description=f"`{name}`을(를) 제거했습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
 
@@ -215,7 +215,7 @@ class Quest(commands.Cog, name="quest"):
             embed = discord.Embed(
                 title="Error!",
                 description=f"퀘스트가 존재하지 않습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -225,7 +225,7 @@ class Quest(commands.Cog, name="quest"):
             embed = discord.Embed(
                 title="퀘스트 활성화",
                 description=f"{name}을(를) 활성화하였습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
 
@@ -244,7 +244,7 @@ class Quest(commands.Cog, name="quest"):
         embed = discord.Embed(
             title="퀘스트 비활성화",
             description=f"퀘스트를 비활성화하였습니다.",
-            color=0x9C84EF
+            color=discord.Color.orange()
         )
         await context.send(embed=embed)
 
@@ -262,7 +262,7 @@ class Quest(commands.Cog, name="quest"):
             embed = discord.Embed(
                 title="Error!",
                 description=f"퀘스트가 존재하지 않습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -279,7 +279,7 @@ class Quest(commands.Cog, name="quest"):
                 embed = discord.Embed(
                     title="Key Error!",
                     description=f"`정답/페리도트/토큰/역할`중 하나를 선택해주세요",
-                    color=0xE02B2B
+                    color=discord.Color.red()
                 )
                 await context.send(embed=embed)
                 return
@@ -290,7 +290,7 @@ class Quest(commands.Cog, name="quest"):
             embed = discord.Embed(
                 title="퀘스트 수정",
                 description=f"{name}의 {key}을(를) {value}(으)로 설정하였습니다.",
-                color=0x9C84EF
+                color=discord.Color.blurple()
             )
             await context.send(embed=embed)
 

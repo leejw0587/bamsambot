@@ -24,7 +24,7 @@ class Shop(commands.Cog, name="shop"):
             embed = discord.Embed(
                 title="Error!",
                 description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`list` - 상점에 등록된 아이템을 확인합니다.\n`buy` - 등록된 아이템을 구매합니다.\n`add` - 상점에 아이템을 추가합니다.\n`remove` - 상점에서 아이템을 제거합니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -36,7 +36,7 @@ class Shop(commands.Cog, name="shop"):
         with open('database/shop.json') as file:
             shopdata = json.load(file)
         embed = discord.Embed(title="BAMSAM SHOP",
-                              description="`/shop buy <이름>`: 해당 아이템 구매\n\n· - ┈┈━━ ˚ . ✿ . ˚ ━━┈┈ - · ·", color=0xee63f8)
+                              description="`/shop buy <이름>`: 해당 아이템 구매\n\n· - ┈┈━━ ˚ . ✿ . ˚ ━━┈┈ - · ·", color=discord.Color.purple())
         embed.set_thumbnail(url=context.guild.icon)
         for i in shopdata:
             ITEMNAME = shopdata[i]["NAME"]
@@ -76,7 +76,7 @@ class Shop(commands.Cog, name="shop"):
             embed = discord.Embed(
                 title="Shop",
                 description=f"존재하지 않는 아이템입니다.",
-                color=0x9C84EF
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
             return
@@ -84,7 +84,7 @@ class Shop(commands.Cog, name="shop"):
             embed = discord.Embed(
                 title="Shop",
                 description=f"재고가 부족합니다.",
-                color=0x9C84EF
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
             return
@@ -92,7 +92,7 @@ class Shop(commands.Cog, name="shop"):
             embed = discord.Embed(
                 title="Shop",
                 description=f"페리도트가 부족합니다.",
-                color=0x9C84EF
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
             return
@@ -101,7 +101,7 @@ class Shop(commands.Cog, name="shop"):
                 embed = discord.Embed(
                     title="Shop",
                     description=f"인증 칭호를 가진 사람만 구매할 수 있는 아이템입니다.",
-                    color=0x9C84EF
+                    color=discord.Color.red()
                 )
                 await context.send(embed=embed)
                 return
@@ -128,7 +128,7 @@ class Shop(commands.Cog, name="shop"):
         embed = discord.Embed(
             title="Shop",
             description=f"`{item}`을(를) 구매하였습니다.",
-            color=0x9C84EF
+            color=discord.Color.green()
         )
         await context.send(embed=embed)
         Log_channel = discord.utils.get(context.guild.channels,
@@ -165,7 +165,7 @@ class Shop(commands.Cog, name="shop"):
         embed = discord.Embed(
             title="Shop",
             description=f"`{item}`을(를) 상점에 등록하였습니다.",
-            color=0x9C84EF
+            color=discord.Color.green()
         )
         await context.send(embed=embed)
 
@@ -183,7 +183,7 @@ class Shop(commands.Cog, name="shop"):
             embed = discord.Embed(
                 title="Shop",
                 description=f"존재하지 않는 아이템입니다.",
-                color=0x9C84EF
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
             return
@@ -195,7 +195,7 @@ class Shop(commands.Cog, name="shop"):
             embed = discord.Embed(
                 title="Shop",
                 description=f"`{item}`을(를) 삭제했습니다.",
-                color=0x9C84EF
+                color=discord.Color.orange()
             )
             await context.send(embed=embed)
 

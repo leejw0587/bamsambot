@@ -57,7 +57,7 @@ class Inventory(commands.Cog, name="inventory"):
         PERIDOT = format(PERIDOT, ',d')
 
         embed = discord.Embed(
-            title=None, description=f"Lv. {LEVEL}\n「 {XP} / {TARGETXP} EXP 」", color=0xa83bb0)
+            title=None, description=f"Lv. {LEVEL}\n「 {XP} / {TARGETXP} EXP 」", color=discord.Color.random())
         embed.set_author(name=f"{USERNAME}'s Inventory",
                          icon_url=user.avatar)
         embed.add_field(
@@ -73,7 +73,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="Error!",
                 description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`add` - 유저에게 페리도트를 추가합니다.\n`remove` - 유저로부터 페리도트를 제거합니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -91,7 +91,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="Error!",
                 description="유저를 찾을 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -105,7 +105,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="페리도트 추가 완료",
                 description=f"**{user}**에게 **{amount}** {PERIDOT_EMOJI}를 추가하였습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
             Log_channel = discord.utils.get(context.guild.channels,
@@ -126,7 +126,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="Error!",
                 description="유저를 찾을 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -134,7 +134,7 @@ class Inventory(commands.Cog, name="inventory"):
                 embed = discord.Embed(
                     title="Error!",
                     description="최종 페리도트는 음수가 될 수 없습니다.",
-                    color=0xE02B2B
+                    color=discord.Color.red()
                 )
                 await context.send(embed=embed)
             else:
@@ -148,7 +148,7 @@ class Inventory(commands.Cog, name="inventory"):
                 embed = discord.Embed(
                     title="페리도트 제거 완료",
                     description=f"**{user}**로부터 **{amount}** {PERIDOT_EMOJI}를 제거하였습니다.",
-                    color=0x9C84EF
+                    color=discord.Color.green()
                 )
                 await context.send(embed=embed)
                 Log_channel = discord.utils.get(context.guild.channels,
@@ -164,7 +164,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="Error!",
                 description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`add` - 유저에게 토큰을 추가합니다.\n`remove` - 유저로부터 토큰을 제거합니다.\n`open` - 토큰을 개봉합니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -182,7 +182,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="Error!",
                 description="유저를 찾을 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -194,7 +194,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="토큰 추가 완료",
                 description=f"**{user}**에게 **{amount}** {TOKEN_EMOJI}을 추가하였습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
             Log_channel = discord.utils.get(context.guild.channels,
@@ -215,7 +215,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="Error!",
                 description="유저를 찾을 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -223,7 +223,7 @@ class Inventory(commands.Cog, name="inventory"):
                 embed = discord.Embed(
                     title="Error!",
                     description="최종 토큰은 음수가 될 수 없습니다.",
-                    color=0xE02B2B
+                    color=discord.Color.red()
                 )
                 await context.send(embed=embed)
             else:
@@ -235,7 +235,7 @@ class Inventory(commands.Cog, name="inventory"):
                 embed = discord.Embed(
                     title="토큰 제거 완료",
                     description=f"**{user}**로부터 **{amount}** {TOKEN_EMOJI}을 제거하였습니다.",
-                    color=0x9C84EF
+                    color=discord.Color.green()
                 )
                 await context.send(embed=embed)
                 Log_channel = discord.utils.get(context.guild.channels,
@@ -254,14 +254,14 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="Error!",
                 description="개봉할 토큰이 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         elif userdata[str(context.author.id)]["token"] < amount:
             embed = discord.Embed(
                 title="Error!",
                 description="보유한 토큰보다 많이 개봉할 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
         else:
@@ -283,7 +283,7 @@ class Inventory(commands.Cog, name="inventory"):
             embed = discord.Embed(
                 title="토큰 개봉",
                 description=f"토큰을 `{amount}`개 개봉하여 총 **{peridot_sum}** {PERIDOT_EMOJI}를 얻었습니다!",
-                color=0x9C84EF
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 

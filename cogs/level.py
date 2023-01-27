@@ -102,7 +102,7 @@ class Level(commands.Cog, name="level"):
             embed = discord.Embed(
                 title="Error!",
                 description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`set` - 유저의 레벨을 설정합니다",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -120,7 +120,7 @@ class Level(commands.Cog, name="level"):
             embed = discord.Embed(
                 title="Error!",
                 description="유저를 찾을 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -132,7 +132,7 @@ class Level(commands.Cog, name="level"):
             embed = discord.Embed(
                 title="레벨 설정 완료",
                 description=f"**{user}**의 레벨을 {level}(으)로 설정하였습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
             Log_channel = discord.utils.get(context.guild.channels,
@@ -148,7 +148,7 @@ class Level(commands.Cog, name="level"):
             embed = discord.Embed(
                 title="Error!",
                 description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`set` - 유저의 경험치를 설정합니다",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -166,7 +166,7 @@ class Level(commands.Cog, name="level"):
             embed = discord.Embed(
                 title="Error!",
                 description="유저를 찾을 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -178,7 +178,7 @@ class Level(commands.Cog, name="level"):
             embed = discord.Embed(
                 title="레벨 설정 완료",
                 description=f"**{user}**의 경험치를 {xp}(으)로 설정하였습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
             Log_channel = discord.utils.get(context.guild.channels,
@@ -197,7 +197,7 @@ class Level(commands.Cog, name="level"):
         embed = discord.Embed(
             title="XP INFO",
             description=f"Minimum: `{_MINXP}`\nMaximum: `{_MAXXP}`",
-            color=0x9C84EF
+            color=discord.Color.blurple()
         )
         await context.send(embed=embed)
 
@@ -215,14 +215,14 @@ class Level(commands.Cog, name="level"):
             embed = discord.Embed(
                 title="XP",
                 description=f"경험치 최소 드랍량을 `{_MINXP}`(으)로 설정하였습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
         else:
             embed = discord.Embed(
                 title="Error!",
                 description=f"드랍량은 음수가 될 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 
@@ -240,14 +240,14 @@ class Level(commands.Cog, name="level"):
             embed = discord.Embed(
                 title="XP",
                 description=f"경험치 최대 드랍량을 `{_MAXXP}`(으)로 설정하였습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
             await context.send(embed=embed)
         else:
             embed = discord.Embed(
                 title="Error!",
                 description=f"드랍량은 음수가 될 수 없습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
             await context.send(embed=embed)
 

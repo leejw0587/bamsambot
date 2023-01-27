@@ -76,7 +76,7 @@ class RockPaperScissors(discord.ui.Select):
             bot_choice_emoji = "✂️"
         bot_choice = bot_choice + " " + bot_choice_emoji
 
-        result_embed = discord.Embed(color=0x9C84EF)
+        result_embed = discord.Embed(color=discord.Color.blue())
         result_embed.set_author(
             name=interaction.user.name,
             icon_url=interaction.user.avatar.url
@@ -84,22 +84,22 @@ class RockPaperScissors(discord.ui.Select):
 
         if user_choice_index == bot_choice_index:
             result_embed.description = f"**비겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0xF59E42
+            result_embed.colour = discord.colour.blue()
         elif user_choice_index == 0 and bot_choice_index == 2:
             result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0x9C84EF
+            result_embed.colour = discord.Color.green()
             user_win = True
         elif user_choice_index == 1 and bot_choice_index == 0:
             result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0x9C84EF
+            result_embed.colour = discord.Color.green()
             user_win = True
         elif user_choice_index == 2 and bot_choice_index == 1:
             result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0x9C84EF
+            result_embed.colour = discord.Color.green()
             user_win = True
         else:
             result_embed.description = f"**뱀샘봇이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = 0xE02B2B
+            result_embed.colour = discord.Color.red()
 
         if user_win == True:
             pass
@@ -269,7 +269,7 @@ class Fun(commands.Cog, name="fun"):
         embed = discord.Embed(
             title="동전 던지기",
             description=f"동전의 방향을 골라주세요.\n베팅: {bet_str} {PERIDOT_EMOJI}\n배당: `{RATIO}`배",
-            color=0x9C84EF
+            color=discord.Color.blurple()
         )
         message = await context.send(embed=embed, view=buttons)
         await buttons.wait()
@@ -282,13 +282,13 @@ class Fun(commands.Cog, name="fun"):
             embed = discord.Embed(
                 title="맞았습니다!",
                 description=f"당신의 선택은 `{buttons.value}` 이고, 던진 결과는 `{result}` 입니다.\n{reward_str} {PERIDOT_EMOJI}를 얻었습니다.",
-                color=0x9C84EF
+                color=discord.Color.green()
             )
         else:
             embed = discord.Embed(
                 title="틀렸습니다!",
                 description=f"당신의 선택은 `{buttons.value}` 이고, 던진 결과는 `{result}` 입니다.\n{bet_str} {PERIDOT_EMOJI}를 잃었습니다.",
-                color=0xE02B2B
+                color=discord.Color.red()
             )
         await message.edit(embed=embed, view=None, content=None)
 
