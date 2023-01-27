@@ -164,7 +164,9 @@ class Owner(commands.Cog, name="owner"):
         :param context: The hybrid command context.
         :param message: The message that should be repeated by the bot.
         """
-        await context.send(message)
+        await context.defer(ephemeral=True)
+        message = message.split("[br]")
+        await context.channel.send("\n".join(message))
 
     @commands.hybrid_command(
         name="embed",
@@ -177,11 +179,13 @@ class Owner(commands.Cog, name="owner"):
         :param context: The hybrid command context.
         :param message: The message that should be repeated by the bot.
         """
+        await context.defer(ephemeral=True)
+        message = message.split("[br]")
         embed = discord.Embed(
-            description=message,
+            description="\n".join(message),
             color=0x9C84EF
         )
-        await context.send(embed=embed)
+        await context.channel.send(embed=embed)
 
     # @commands.hybrid_group(
     #     name="blacklist",
