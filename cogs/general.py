@@ -13,7 +13,8 @@ import discord
 import os
 import secrets
 from yt_dlp import YoutubeDL
-from discord import app_commands
+from datetime import datetime
+from discord import app_commands, ui
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
 
@@ -37,6 +38,32 @@ class CreatePcButtons(discord.ui.View):
     async def refuse(self, button: discord.ui.Button, interaction: discord.Interaction):
         self.value = "거부"
         self.stop()
+
+
+class ReportModal(ui.Modal, title='개발자에게 연락'):
+    type = ui.TextInput(label="종류", style=discord.TextStyle.short,
+                        placeholder="버그 / 신고 / 건의", required=True, max_length=10)
+    content = ui.TextInput(label="내용", style=discord.TextStyle.long,
+                           placeholder="여기에 내용을 입력해주세요", required=True)
+
+    async def on_submit(self, interaction: discord.Interaction) -> None:
+        dev = interaction.guild.get_member(424546094182039552)
+        embed = discord.Embed(
+            title="New Contact",
+            description=f"From {interaction.user}",
+            timestamp=datetime.now(),
+            color=discord.Color.blue()
+        )
+        embed.add_field(name="Type", value=self.type, inline=False)
+        embed.add_field(name="Content", value=self.content, inline=False)
+        await dev.send(embed=embed)
+
+        embed = discord.Embed(
+            title="전송 완료",
+            description=f"`{self.type}`에 관한 연락이 전송되었습니다.\n이 메시지는 3초 후 삭제됩니다.",
+            color=discord.Color.blue()
+        )
+        await interaction.response.send_message(embed=embed, delete_after=3)
 
 
 class General(commands.Cog, name="general"):
@@ -336,6 +363,13 @@ class General(commands.Cog, name="general"):
 
         else:
             await context.send(embed=embeds.EmbedRed("Error!", "릴스 링크만 지원합니다."))
+
+    @commands.hybrid_command(
+        name="report",
+        description="개발자에게 익명으로 메시지를 보냅니다."
+    )
+    async def report(self, context: Context):
+        await context.interaction.response.send_modal(ReportModal())
 
 
 async def setup(bot):
