@@ -2,7 +2,6 @@ import platform
 import random
 import json
 import time
-import datetime
 import asyncio
 import typing
 import yt_dlp
@@ -13,7 +12,7 @@ import discord
 import os
 import secrets
 from yt_dlp import YoutubeDL
-from datetime import datetime
+from datetime import datetime, date
 from discord import app_commands, ui
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
@@ -195,7 +194,7 @@ class General(commands.Cog, name="general"):
         with open("database/userdata.json", encoding="utf-8") as file:
             userdata = json.load(file)
 
-        today = str(datetime.date.today())
+        today = str(date.today())
         try:
             attendance_count = userdata[str(context.author.id)]["attendance"]
 
