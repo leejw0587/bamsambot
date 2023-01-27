@@ -1,5 +1,6 @@
 import discord
 import json
+import typing
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -174,16 +175,17 @@ class Owner(commands.Cog, name="owner"):
     )
     @app_commands.describe(message="보낼 메시지")
     @checks.is_owner()
-    async def embed(self, context: Context, *, message: str) -> None:
-        """
-        :param context: The hybrid command context.
-        :param message: The message that should be repeated by the bot.
-        """
-        await context.defer(ephemeral=True)
+    async def embed(self, context: Context, *, message: str, color: int = None) -> None:
+        res = await context.send("Sending Embed ...")
+        await res.delete()
         message = message.split("[br]")
+        if color == None:
+            color = 0x9C84EF
+        else:
+            color = int(color, 16)
         embed = discord.Embed(
             description="\n".join(message),
-            color=0x9C84EF
+            color=color
         )
         await context.channel.send(embed=embed)
 
