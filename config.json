@@ -1,15 +1,15 @@
 {
   "prefix": "/",
-  "openai_api_key": "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",
-  "test_token": "OTU4NjkwOTA2MjE3ODAzODA3.Gc7Hxi.ckOvNCJ6lf4ZJeyOvxdkhBX11rVaZYLV9StBHU",
-  "main_token": "OTM1MDY3MTE3NDI0ODk4MDY4.G8CiYw.Br7mKUsUlnD0gEAlPCBPP_96qylAxLgEAvdGKI",
-  "version": "3.5.1",
+  "openai_api_key": "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",
+  "main_token": "MTA3MDk0NTc2MTQ4MDY3OTQ3NQ.GciprI.Kh1JhRWbGtliiVii3axqZn2Gsm-1bA9oDkZbe0",
+  "test_token": "MTA3MDk0NTc2MTQ4MDY3OTQ3NQ.GgNc_1.rVU4FpBTAUzOwlITe6ixkBm4nlDrvnmqbn8fJA",
+  "version": "3.6.0",
   "permissions": "8",
-  "application_id": "958690906217803807",
+  "application_id": "1070945112168861786",
   "sync_commands_globally": true,
   "owners": [
     424546094182039552, 290827188033421312, 677126170768048128, 345226722943172608
   ],
   "informants": [424546094182039552, 290827188033421312, 299463289333743617, 401334507241996289],
-  "log_channel_id": 1026400764408635402
+  "log_channel_id": 1070942724062199848
 }
