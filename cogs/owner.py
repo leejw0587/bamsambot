@@ -8,12 +8,12 @@ from discord.ext.commands import Context
 from helpers import checks, db_manager, embeds
 
 
-class JoinButtonKR(discord.ui.View):
+class JoinButton(discord.ui.View):
     def __init__(self) -> None:
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="입장 / JOIN",
+        label="한국인으로 입장",
         style=discord.ButtonStyle.green,
         custom_id="joinkr"
     )
@@ -21,18 +21,13 @@ class JoinButtonKR(discord.ui.View):
         Guest_Role = interaction.guild.get_role(1070680657166090330)
 
         if Guest_Role not in interaction.user.roles:
-            await interaction.user.add_roles(Guest_Role)
+            # await interaction.user.add_roles(Guest_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("입장", "뱀샘크루에 입장하였습니다!"))
         else:
             await interaction.user.send(embed=embeds.EmbedRed("입장", "이미 입장한 계정입니다!"))
 
-
-class JoinButtonJP(discord.ui.View):
-    def __init__(self) -> None:
-        super().__init__(timeout=None)
-
     @discord.ui.button(
-        label="入場 / JOIN",
+        label="Join as Japanese",
         style=discord.ButtonStyle.green,
         custom_id="joinjp"
     )
@@ -47,12 +42,26 @@ class JoinButtonJP(discord.ui.View):
         else:
             await interaction.user.send(embed=embeds.EmbedRed("入場", "すでに入場しているアカウントです！"))
 
+    @discord.ui.button(
+        label="Join as Sub-ACC",
+        style=discord.ButtonStyle.green,
+        custom_id="joinsub"
+    )
+    async def joinsub(self, interaction: discord.Interaction, button: discord.Button):
+        SubACC_Role = interaction.guild.get_role(
+            1070676839074381904)  # 취급주의 역할
+
+        if SubACC_Role not in interaction.user.roles:
+            await interaction.user.add_roles(SubACC_Role)
+            await interaction.user.send(embed=embeds.EmbedGreen("Join", "You have joined Bamsam Crew!"))
+        else:
+            await interaction.user.send(embed=embeds.EmbedRed("Join", "You have already joined Bamsam Crew!"))
+
 
 class Owner(commands.Cog, name="owner"):
     def __init__(self, bot):
         self.bot = bot
-        self.bot.add_view(JoinButtonKR())
-        self.bot.add_view(JoinButtonJP())
+        self.bot.add_view(JoinButton())
 
     @commands.hybrid_command(
         name="load",
@@ -189,153 +198,14 @@ class Owner(commands.Cog, name="owner"):
         )
         await context.channel.send(embed=embed)
 
-    # @commands.hybrid_group(
-    #     name="blacklist",
-    #     description="블랙리스트를 관리합니다.",
-    # )
-    # @checks.is_owner()
-    # async def blacklist(self, context: Context) -> None:
-    #     """
-    #     Lets you add or remove a user from not being able to use the bot.
-
-    #     :param context: The hybrid command context.
-    #     """
-    #     if context.invoked_subcommand is None:
-    #         embed = discord.Embed(
-    #             title="Blacklist",
-    #             description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`add` - 유저를 블랙리스트에 추가합니다.\n`remove` - 유저를 블랙리스트에서 제거합니다.",
-    #             color=0xE02B2B
-    #         )
-    #         await context.send(embed=embed)
-
-    # @blacklist.command(
-    #     base="blacklist",
-    #     name="add",
-    #     description="유저가 봇을 사용할 수 없도록 합니다.",
-    # )
-    # @app_commands.describe(user="The user that should be added to the blacklist")
-    # @checks.is_owner()
-    # async def blacklist_add(self, context: Context, user: discord.User) -> None:
-    #     """
-    #     Lets you add a user from not being able to use the bot.
-
-    #     :param context: The hybrid command context.
-    #     :param user: The user that should be added to the blacklist.
-    #     """
-    #     user_id = user.id
-    #     if await db_manager.is_blacklisted(user_id):
-    #         embed = discord.Embed(
-    #             title="Error!",
-    #             description=f"**{user.name}** is not in the blacklist.",
-    #             color=0xE02B2B
-    #         )
-    #         await context.send(embed=embed)
-    #         return
-    #     total = await db_manager.add_user_to_blacklist(user_id)
-    #     embed = discord.Embed(
-    #         title="User Blacklisted",
-    #         description=f"**{user.name}** has been successfully added to the blacklist",
-    #         color=0x9C84EF
-    #     )
-    #     embed.set_footer(
-    #         text=f"There are now {total} {'user' if total == 1 else 'users'} in the blacklist"
-    #     )
-    #     await context.send(embed=embed)
-
-    # @blacklist.command(
-    #     base="blacklist",
-    #     name="remove",
-    #     description="Lets you remove a user from not being able to use the bot.",
-    # )
-    # @app_commands.describe(user="The user that should be removed from the blacklist.")
-    # @checks.is_owner()
-    # async def blacklist_remove(self, context: Context, user: discord.User) -> None:
-    #     """
-    #     Lets you remove a user from not being able to use the bot.
-
-    #     :param context: The hybrid command context.
-    #     :param user: The user that should be removed from the blacklist.
-    #     """
-    #     user_id = user.id
-    #     if not await db_manager.is_blacklisted(user_id):
-    #         embed = discord.Embed(
-    #             title="Error!",
-    #             description=f"**{user.name}** is already in the blacklist.",
-    #             color=0xE02B2B
-    #         )
-    #         await context.send(embed=embed)
-    #         return
-    #     total = await db_manager.remove_user_from_blacklist(user_id)
-    #     embed = discord.Embed(
-    #         title="User removed from blacklist",
-    #         description=f"**{user.name}** has been successfully removed from the blacklist",
-    #         color=0x9C84EF
-    #     )
-    #     embed.set_footer(
-    #         text=f"There are now {total} {'user' if total == 1 else 'users'} in the blacklist"
-    #     )
-    #     await context.send(embed=embed)
-    # @commands.hybrid_command(
-    #     name="initialize",
-    #     description="initialize all userdata (창조자 전용)",
-    # )
-    # @checks.is_owner()
-    # async def initialize(self, context: Context) -> None:
-    #     if context.author
-    #     with open("database/userdata.json", encoding="utf-8") as file:
-    #         userdata = json.load(file)
-    #     for guild in self.bot.guilds:
-    #         for member in guild.members:
-    #             newUser = {
-    #                 str(member.id): {
-    #                     "username": str(member),
-    #                     "userid": str(member.id),
-    #                     "peridot": 1000,
-    #                     "token": 0,
-    #                     "xp": 0,
-    #                     "level": 0,
-    #                     "attendance": 0,
-    #                     "last_attendance": ""
-    #                 }
-    #             }
-    #             userdata.update(newUser)
-    #             with open("database/userdata.json", 'w', encoding="utf-8") as file:
-    #                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
-
-    #     await context.send("Initialized `userdata.json`")
-
-    @commands.hybrid_group(
+    @commands.hybrid_command(
         name="createjoin",
         description="입장 embed를 만드는 커맨드입니다. (창조자 전용)"
     )
     async def createjoin(self, context: Context) -> None:
-        if context.invoked_subcommand is None:
-            embed = discord.Embed(
-                title="Error!",
-                description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`kr` - 한국어 입장 embed를 생성합니다.\n`jp` - 일본어 입장 embed를 생성합니다.",
-                color=discord.Color.red()
-            )
-            await context.send(embed=embed)
-
-    @createjoin.command(
-        name="kr",
-        description="한국어 입장 embed를 생성합니다. (창조자 전용)"
-    )
-    @checks.is_owner()
-    async def createjoin_kr(self, context: Context):
         await context.send("Wait a second...", delete_after=1)
         await context.channel.send(embed=embeds.EmbedBlurple(
-            "입장", "아래 버튼을 눌러 뱀샘크루에 입장하세요."), view=JoinButtonKR())
-
-    @createjoin.command(
-        name="jp",
-        description="일본어 입장 embed를 생성합니다. (창조자 전용)"
-    )
-    @checks.is_owner()
-    async def createjoin_jp(self, context: Context):
-        await context.send("Wait a second...", delete_after=1)
-        await context.channel.send(embed=embeds.EmbedBlurple(
-            "入場", "下のボタンを押してべムセムクルーに入場してください。"), view=JoinButtonJP())
+            "입장 / 入場", "아래 버튼을 눌러 뱀샘크루에 입장하세요.\n下のボタンを押してべムセムクルーに入場してください。"), view=JoinButton())
 
     @commands.hybrid_command(
         name="newupdate",
