@@ -242,15 +242,15 @@ class General(commands.Cog, name="general"):
     @app_commands.describe(nickname="채널 주인의 한글 닉네임", channelname="채널 이름", genere="채널의 장르", description="채널 설명", restrictions="채널을 볼 수 있는 역할")
     async def createpc(self, context: Context, nickname: str, channelname: str, genere: str, description: str, restrictions: typing.Literal['모두', '인증', '변태', '그로테스크']):
 
-        if context.channel.id == 706526566104170607:
+        if context.channel.id == 1070686335498723439:
             # if context.channel.id == 958025710025453640: for dev server
-            admin_channel = context.guild.get_channel(936533151721861201)
+            admin_channel = context.guild.get_channel(1071266892993548298)
             # admin_channel = context.guild.get_channel(1062130045340110978) for dev server
-            category = context.guild.get_channel(706452195272556586)
+            category = context.guild.get_channel(1070683365814050847)
 
-            Check_RoleID = 390821573315002369
-            Pervert_RoleID = 470942757574279168
-            Grot_RoleID = 722663541437497354
+            Check_RoleID = 1070680727009632297
+            Pervert_RoleID = 1070680631450812467
+            Grot_RoleID = 1070680559317160066
 
             buttons = CreatePcButtons()
             embed = discord.Embed(color=discord.Color.blue())

@@ -18,7 +18,7 @@ class JoinButtonKR(discord.ui.View):
         custom_id="joinkr"
     )
     async def joinkr(self, interaction: discord.Interaction, button: discord.Button):
-        Guest_Role = interaction.guild.get_role(404586184334114816)
+        Guest_Role = interaction.guild.get_role(1070680657166090330)
 
         if Guest_Role not in interaction.user.roles:
             await interaction.user.add_roles(Guest_Role)
@@ -37,8 +37,8 @@ class JoinButtonJP(discord.ui.View):
         custom_id="joinjp"
     )
     async def joinjp(self, interaction: discord.Interaction, button: discord.Button):
-        Guest_Role = interaction.guild.get_role(404586184334114816)
-        Japanese_Role = interaction.guild.get_role(838611237880725575)
+        Guest_Role = interaction.guild.get_role(1070680657166090330)
+        Japanese_Role = interaction.guild.get_role(1070677016870928495)
 
         if Guest_Role not in interaction.user.roles:
             await interaction.user.add_roles(Guest_Role)
@@ -343,7 +343,7 @@ class Owner(commands.Cog, name="owner"):
     )
     @checks.is_dev()
     async def newupdate(self, context: Context):
-        update_channel = context.guild.get_channel(764042960861396993)
+        update_channel = context.guild.get_channel(1070686029377450105)
         config = self.bot.config
         notion_link = "https://leejw0587.notion.site/BamsamBot-Release-Notes-72edee56e020443e8de2441d486fccc8"
         await update_channel.send(embed=embeds.EmbedBlurple("New Update!", f"뱀샘봇의 새로운 버전(`{config['version']}`)이 업데이트 되었습니다.\n업데이트 내용은 [여기]({notion_link})서 확인하세요."))

@@ -69,7 +69,7 @@ class Shop(commands.Cog, name="shop"):
         with open('database/userdata.json') as file:
             userdata = json.load(file)
 
-        CHECKROLE = context.guild.get_role(390821573315002369)
+        CHECKROLE = context.guild.get_role(1070680727009632297)
         buyer_peridot = int(userdata[str(context.author.id)]["peridot"])
 
         if item not in shopdata:
