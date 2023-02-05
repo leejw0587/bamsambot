@@ -100,7 +100,7 @@ class General(commands.Cog, name="general"):
         config = self.bot.config
 
         embed = discord.Embed(
-            description="Dev By xDxD#6779",
+            description="Dev By xDxD#9999",
             color=discord.Color.light_gray()
         )
         embed.set_author(
@@ -108,7 +108,7 @@ class General(commands.Cog, name="general"):
         )
         embed.add_field(
             name="Owner:",
-            value="xDxD#6779",
+            value="xDxD#9999",
             inline=True
         )
         embed.add_field(
