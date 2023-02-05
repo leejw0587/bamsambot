@@ -381,6 +381,34 @@ class Fun(commands.Cog, name="fun"):
 
     #     await msg.edit(content=slotOutput + result)
 
+    @commands.command(
+        name="pin",
+        description="메시지를 박제합니다. (명예의 전당 전용)"
+    )
+    async def pin(self, context: Context) -> None:
+        if context.channel.id == 1070686733336842351:  # 명예의 전당 채팅방 id
+            try:
+                msg = context.message.reference
+                id = msg.message_id
+                message = await context.fetch_message(id)
+
+                await message.pin()
+                embed = discord.Embed(
+                    title="박제",
+                    description=f"{context.author.mention}님이 [메시지]({message.jump_url})를 박제했습니다.",
+                    color=discord.Color.gold()
+                )
+                await context.send(embed=embed)
+            except Exception as e:
+                await context.send(f"`/pin` 명령어 실행 중 오류가 발생했습니다.\n`{e}`")
+        else:
+            embed = discord.Embed(
+                title="박제",
+                description=f"박제 명령어는 <#1070686733336842351>에서만 작동합니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(Fun(bot))
