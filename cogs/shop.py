@@ -141,11 +141,13 @@ class Shop(commands.Cog, name="shop"):
     )
     @app_commands.describe(item="아이템 이름", roleid="역할ID", price="가격", amount="개수", condition="구매 조건")
     @checks.is_owner()
-    async def shop_add(self, context: Context, item: str, roleid: str, price: int, amount: int, condition: typing.Literal['인증 칭호 보유'] = None) -> None:
+    async def shop_add(self, context: Context, item: str, roleid: str, price: int, amount: int, condition: typing.Literal['없음', '인증 칭호 보유']) -> None:
         with open('database/shop.json') as file:
             shopdata = json.load(file)
 
-        if condition == "인증 칭호 보유":
+        if condition == "없음":
+            condition = None
+        elif condition == "인증 칭호 보유":
             condition = "CHECK"
 
         newItem = {

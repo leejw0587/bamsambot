@@ -41,13 +41,13 @@ def is_dev() -> Callable[[T], T]:
     return commands.check(predicate)
 
 
-def not_blacklisted() -> Callable[[T], T]:
-    async def predicate(context: commands.Context) -> bool:
-        if await db_manager.is_blacklisted(context.author.id):
-            raise UserBlacklisted
-        return True
+# def not_blacklisted() -> Callable[[T], T]:
+#     async def predicate(context: commands.Context) -> bool:
+#         if await db_manager.is_blacklisted(context.author.id):
+#             raise UserBlacklisted
+#         return True
 
-    return commands.check(predicate)
+#     return commands.check(predicate)
 
 
 def has_check_role() -> Callable[[T], T]:
