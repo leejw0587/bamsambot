@@ -376,7 +376,7 @@ class General(commands.Cog, name="general"):
     )
     async def donate(self, context: Context):
         embed = discord.Embed(
-            title="DONATE",
+            title=":money_with_wings: DONATE",
             description=f"[여기](https://lnk.at/leejw0587)를 눌러 후원을 할 수 있어요.\n후원받은 금액은 다양하게 사용돼요.",
             color=discord.Color.brand_green()
         )
