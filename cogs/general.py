@@ -370,6 +370,18 @@ class General(commands.Cog, name="general"):
     async def report(self, context: Context):
         await context.interaction.response.send_modal(ReportModal())
 
+    @commands.hybrid_command(
+        name='donate',
+        description='개발자에게 후원할 수 있는 링크를 받습니다.'
+    )
+    async def donate(self, context: Context):
+        embed = discord.Embed(
+            title="DONATE",
+            description=f"[여기](https://lnk.at/leejw0587)를 눌러 후원을 할 수 있어요.\n후원받은 금액은 다양하게 사용돼요.",
+            color=discord.Color.brand_green()
+        )
+        await context.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(General(bot))

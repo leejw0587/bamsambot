@@ -11,13 +11,13 @@ from discord.ext.commands import Context
 from helpers import embeds
 
 
-class Music(commands.Cog, name="music"):
+class Music(commands.Cog, name="Bamsam music"):
     def __init__(self, bot):
         self.bot = bot
         self.queue = []
         self.position = 0
         self.repeat = False
-        self.repeatMode = "NONE"
+        self.repeatMode = "ONE"
         self.playingTextChannel = 0
 
     @commands.Cog.listener()
@@ -60,7 +60,13 @@ class Music(commands.Cog, name="music"):
 
     @commands.Cog.listener()
     async def on_wavelink_track_end(self, player: wavelink.Player, track: wavelink.Track, reason):
-        if str(reason) == "FINISHED":
+        if self.repeat == True:
+            try:
+                await player.play(track)
+            except:
+                return await channel.send(embed=embeds.EmbedRed("Bamsam Music", "재생 도중 문제가 발생하였습니다."))
+
+        elif str(reason) == "FINISHED":
             if not len(self.queue) == 0:
                 next_track: wavelink.Track = self.queue[0]
                 channel = self.bot.get_channel(self.playingTextChannel)
@@ -68,9 +74,9 @@ class Music(commands.Cog, name="music"):
                 try:
                     await player.play(next_track)
                 except:
-                    return await channel.send(embed=embeds.EmbedRed("BamsamMusic", "재생 도중 문제가 발생하였습니다."))
+                    return await channel.send(embed=embeds.EmbedRed("Bamsam Music", "재생 도중 문제가 발생하였습니다."))
                 embed = discord.Embed(
-                    title=f":notes: {next_track.title}", color=embeds.Color.blurple())
+                    title=f":notes: {next_track.title}", color=discord.Color.blurple())
                 embed.set_thumbnail(url=next_track.thumbnail)
                 embed.add_field(name="곡 길이", value=str(
                     datetime.timedelta(seconds=int(next_track.length))), inline=True)
@@ -95,10 +101,10 @@ class Music(commands.Cog, name="music"):
 
         if player is not None:
             if player.is_connected():
-                return await context.send(embed=embeds.EmbedRed("BamsamMusic", "이미 음성 채널에 연결되어 있습니다."))
+                return await context.send(embed=embeds.EmbedRed("Bamsam Music", "이미 음성 채널에 연결되어 있습니다."))
 
         await channel.connect(cls=wavelink.Player)
-        await context.send(embed=embeds.EmbedBlurple("BamsamMusic", f"`{channel.name}`에 연결하였습니다."))
+        await context.send(embed=embeds.EmbedBlurple("Bamsam Music", f"`{channel.name}`에 연결하였습니다."))
 
     @commands.hybrid_command(
         name="leave",
@@ -109,11 +115,11 @@ class Music(commands.Cog, name="music"):
         player = node.get_player(context.guild)
 
         if player is None:
-            return await context.send(embed=embeds.EmbedRed("BamsamMusic", "연결된 음성 채널이 없습니다."))
+            return await context.send(embed=embeds.EmbedRed("Bamsam Music", "연결된 음성 채널이 없습니다."))
 
         await player.disconnect()
 
-        await context.send(embed=embeds.EmbedBlurple("BamsamMusic", f"음성 채널과 연결이 해제되었습니다."))
+        await context.send(embed=embeds.EmbedBlurple("Bamsam Music", f"음성 채널과 연결이 해제되었습니다."))
 
     @commands.hybrid_command(
         name="play",
@@ -124,7 +130,7 @@ class Music(commands.Cog, name="music"):
         try:
             search = await wavelink.YouTubeTrack.search(query=query, return_first=True)
         except:
-            return await context.reply(embed=embeds.EmbedRed("BamsamMusic", "검색 도중 문제가 발생하였습니다."))
+            return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "검색 도중 문제가 발생하였습니다."))
 
         node = wavelink.NodePool.get_node()
         player = node.get_player(context.guild)
@@ -138,12 +144,12 @@ class Music(commands.Cog, name="music"):
             try:
                 await vc.play(search)
             except:
-                return await context.reply(embed=embeds.EmbedRed("BamsamMusic", "재생 도중 문제가 발생하였습니다."))
+                return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "재생 도중 문제가 발생하였습니다."))
         else:
             self.queue.append(search)
 
         embed = discord.Embed(
-            title=f":notes: {search}", color=embeds.Color.blurple())
+            title=f":notes: {search}", color=embeds.discord.Color.blurple())
         embed.set_thumbnail(url=search.thumbnail)
         embed.add_field(name="곡 길이", value=str(
             datetime.timedelta(seconds=int(search.length))), inline=True)
@@ -160,15 +166,16 @@ class Music(commands.Cog, name="music"):
         player = node.get_player(context.guild)
 
         if player is None:
-            return await context.send(embed=embeds.EmbedRed("BamsamMusic", "연결된 음성 채널이 없습니다."))
+            return await context.send(embed=embeds.EmbedRed("Bamsam Music", "연결된 음성 채널이 없습니다."))
 
         self.queue.clear()
+        self.repeat = False
 
         if player.is_playing():
             await player.stop()
-            return await context.send(embed=embeds.EmbedBlurple("BamsamMusic", f"재생을 중지하였습니다."))
+            return await context.send(embed=embeds.EmbedBlurple("Bamsam Music", f"재생을 중지하였습니다."))
         else:
-            return await context.send(embed=embeds.EmbedRed("BamsamMusic", "재생중인 노래가 없습니다."))
+            return await context.send(embed=embeds.EmbedRed("Bamsam Music", "재생중인 노래가 없습니다."))
 
     @commands.hybrid_command(
         name="pause",
@@ -179,16 +186,16 @@ class Music(commands.Cog, name="music"):
         player = node.get_player(context.guild)
 
         if player is None:
-            return await context.send(embed=embeds.EmbedRed("BamsamMusic", "연결된 음성 채널이 없습니다."))
+            return await context.send(embed=embeds.EmbedRed("Bamsam Music", "연결된 음성 채널이 없습니다."))
 
         if not player.is_paused():
             if player.is_playing():
                 await player.pause()
-                return await context.send(embed=embeds.EmbedBlurple("BamsamMusic", f"재생을 일시중지하였습니다."))
+                return await context.send(embed=embeds.EmbedBlurple("Bamsam Music", f"재생을 일시중지하였습니다."))
             else:
-                return await context.send(embed=embeds.EmbedRed("BamsamMusic", "재생중인 노래가 없습니다."))
+                return await context.send(embed=embeds.EmbedRed("Bamsam Music", "재생중인 노래가 없습니다."))
         else:
-            return await context.send(embed=embeds.EmbedRed("BamsamMusic", "이미 일시중지 상태입니다."))
+            return await context.send(embed=embeds.EmbedRed("Bamsam Music", "이미 일시중지 상태입니다."))
 
     @commands.hybrid_command(
         name="resume",
@@ -199,17 +206,17 @@ class Music(commands.Cog, name="music"):
         player = node.get_player(context.guild)
 
         if player is None:
-            return await context.send(embed=embeds.EmbedRed("BamsamMusic", "연결된 음성 채널이 없습니다."))
+            return await context.send(embed=embeds.EmbedRed("Bamsam Music", "연결된 음성 채널이 없습니다."))
 
         if player.is_paused():
             await player.resume()
-            return await context.send(embed=embeds.EmbedBlurple("BamsamMusic", f"재생을 다시 시작합니다."))
+            return await context.send(embed=embeds.EmbedBlurple("Bamsam Music", f"재생을 다시 시작합니다."))
         else:
             if not len(self.queue) == 0:
                 track: wavelink.Track = self.queue[0]
                 player.play(track)
                 embed = discord.Embed(
-                    title=f":notes: {track}", color=embeds.Color.blurple())
+                    title=f":notes: {track}", color=discord.Color.blurple())
                 embed.set_thumbnail(url=track.thumbnail)
                 embed.add_field(name="곡 길이", value=str(
                     datetime.timedelta(seconds=int(track.length))), inline=True)
@@ -217,7 +224,7 @@ class Music(commands.Cog, name="music"):
                     name="링크", value=f"[클릭]({track.uri})", inline=True)
                 return await context.reply(embed=embed)
             else:
-                return await context.send(embed=embeds.EmbedRed("BamsamMusic", "일시중지 상태가 아닙니다."))
+                return await context.send(embed=embeds.EmbedRed("Bamsam Music", "일시중지 상태가 아닙니다."))
 
     @commands.hybrid_command(
         name="volume",
@@ -226,15 +233,15 @@ class Music(commands.Cog, name="music"):
     @app_commands.describe(volume="설정할 볼륨")
     async def volume(self, context: Context, volume: int):
         if volume > 100:
-            return await context.send(embed=embeds.EmbedRed("BamsamMusic", "볼륨은 0과 100사이의 정수로만 설정 가능합니다."))
+            return await context.send(embed=embeds.EmbedRed("Bamsam Music", "볼륨은 0과 100사이의 정수로만 설정 가능합니다."))
         elif volume < 1:
-            return await context.send(embed=embeds.EmbedRed("BamsamMusic", "볼륨은 0과 100사이의 정수로만 설정 가능합니다."))
+            return await context.send(embed=embeds.EmbedRed("Bamsam Music", "볼륨은 0과 100사이의 정수로만 설정 가능합니다."))
 
         node = wavelink.NodePool.get_node()
         player = node.get_player(context.guild)
 
         await player.set_volume(volume)
-        await context.send(embed=embeds.EmbedBlurple("BamsamMusic", f"볼륨을 {volume}(으)로 설정하였습니다."))
+        await context.send(embed=embeds.EmbedBlurple("Bamsam Music", f"볼륨을 {volume}(으)로 설정하였습니다."))
 
     # @commands.hybrid_command(name="playnow", aliases=["pn"])
     # async def play_now_command(self, context: Context, *, search: str):
@@ -267,18 +274,18 @@ class Music(commands.Cog, name="music"):
         player = node.get_player(context.guild)
 
         if player is None:
-            return await context.reply(embed=embeds.EmbedRed("BamsamMusic", "연결된 음성 채널이 없습니다."))
+            return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "연결된 음성 채널이 없습니다."))
 
         if player.is_playing():
             mbed = discord.Embed(
-                title=f"Now Playing: {player.track}",
+                title=f"재생 중: {player.track}",
                 # you can add url as one the arugument over here, if you want the user to be able to open the video in youtube
                 # url = f"{player.track.info['uri']}"
                 color=discord.Color.from_rgb(255, 255, 255)
             )
 
             embed = discord.Embed(
-                title=f":notes: {player.track}", color=embeds.Color.blurple())
+                title=f":notes: {player.track}", color=discord.Color.blurple())
             embed.set_thumbnail(url=player.track.thumbnail)
             embed.add_field(name="곡 길이", value=str(
                 datetime.timedelta(seconds=int(player.track.length))), inline=True)
@@ -287,7 +294,7 @@ class Music(commands.Cog, name="music"):
             return await context.reply(embed=embed)
 
         else:
-            await context.reply(embed=embeds.EmbedRed("BamsamMusic", "재생중인 노래가 없습니다."))
+            await context.reply(embed=embeds.EmbedRed("Bamsam Music", "재생중인 노래가 없습니다."))
 
     @commands.hybrid_command(
         name="search",
@@ -298,16 +305,16 @@ class Music(commands.Cog, name="music"):
         try:
             tracks = await wavelink.YouTubeTrack.search(query=query)
         except:
-            return await context.reply(embed=embeds.EmbedRed("BamsamMusic", "검색 도중 문제가 발생하였습니다."))
+            return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "검색 도중 문제가 발생하였습니다."))
 
         if tracks is None:
-            return await context.reply(embed=embeds.EmbedBlurple("BamsamMusic", "검색 결과를 찾지 못했습니다."))
+            return await context.reply(embed=embeds.EmbedBlurple("Bamsam Music", "검색 결과를 찾지 못했습니다."))
 
         embed = discord.Embed(
             title="노래를 골라주세요: ",
             description=(
                 "\n".join(f"**{i+1}. {t.title}**" for i, t in enumerate(tracks[:5]))),
-            color=embeds.Color.blurple()
+            color=discord.Color.blurple()
         )
         msg = await context.reply(embed=embed)
 
@@ -351,44 +358,45 @@ class Music(commands.Cog, name="music"):
             try:
                 await vc.play(choosed_track)
             except:
-                return await context.reply(embed=discord.Embed(embed=embeds.EmbedRed("BamsamMusic", "재생 중 문제가 발생하였습니다.")))
+                return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "재생 중 문제가 발생하였습니다."))
         else:
             self.queue.append(choosed_track)
 
-        await context.reply(embed=embeds.EmbedBlurple("BamsamMusic", f"`{choosed_track.title}`을(를) 재생목록에 추가하였습니다."))
+        await context.reply(embed=embeds.EmbedBlurple("Bamsam Music", f"`{choosed_track.title}`을(를) 재생목록에 추가하였습니다."))
 
     @commands.hybrid_command(
         name="skip",
         description="재생중인 노래를 건너뜁니다."
     )
-    async def skip_command(self, context: Context):
+    async def skip(self, context: Context):
         node = wavelink.NodePool.get_node()
         player = node.get_player(context.guild)
 
         if not len(self.queue) == 0:
             next_track: wavelink.Track = self.queue[0]
             try:
+                await context.reply(embed=embeds.EmbedBlurple("Bamsam Music", f"`{player.track.title}`을(를) 건너뜁니다."))
                 await player.play(next_track)
             except:
-                return await context.reply(embed=discord.Embed(embed=embeds.EmbedRed("BamsamMusic", "재생 중 문제가 발생하였습니다.")))
+                return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "재생 중 문제가 발생하였습니다."))
 
             embed = discord.Embed(
-                title=f":notes: {next_track.title}", color=embeds.Color.blurple())
+                title=f":notes: {next_track.title}", color=discord.Color.blurple())
             embed.set_thumbnail(url=next_track.thumbnail)
             embed.add_field(name="곡 길이", value=str(
                 datetime.timedelta(seconds=int(next_track.length))), inline=True)
             embed.add_field(
                 name="링크", value=f"[클릭]({next_track.uri})", inline=True)
-            await context.reply(embed=embed)
+            await context.channel.send(embed=embed)
         else:
-            await context.reply(embed=discord.Embed(embed=embeds.EmbedRed("BamsamMusic", "재생목록이 비어있습니다.")))
+            await context.reply(embed=embeds.EmbedRed("Bamsam Music", "다음에 재생할 노래가 없습니다."))
 
     # this command would queue a song if some args(search) is provided else it would just show the queue
     @commands.hybrid_command(
         name="queue",
         description="재생 목록을 보여줍니다."
     )
-    async def queue_command(self, context: Context, *, search=None):
+    async def queue(self, context: Context, *, search=None):
         node = wavelink.NodePool.get_node()
         player = node.get_player(context.guild)
 
@@ -398,16 +406,16 @@ class Music(commands.Cog, name="music"):
                     title=f":notes: {player.track}" if player.is_playing else "재생목록: ",
                     description="\n".join(f"**{i+1}. {track}**" for i, track in enumerate(self.queue[:10])) if not player.is_playing else "**재생목록: **\n"+"\n".join(
                         f"**{i+1}. {track}**" for i, track in enumerate(self.queue[:10])),
-                    color=embeds.Color.blurple()
+                    color=discord.Color.blurple()
                 )
                 return await context.reply(embed=embed)
             else:
-                return await context.reply(embed=embeds.EmbedRed("BamsamMusic", "재생목록이 비어있습니다."))
+                return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "재생목록이 비어있습니다."))
         else:
             try:
                 track = await wavelink.YoutubeTrack.search(query=search, return_first=True)
             except:
-                return await context.reply(embed=embeds.EmbedRed("BamsamMusic", "검색 중 문제가 발생하였습니다."))
+                return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "검색 중 문제가 발생하였습니다."))
 
             if not context.voice_client:
                 vc: wavelink.Player = await context.author.voice.channel(cls=wavelink.Player)
@@ -419,11 +427,32 @@ class Music(commands.Cog, name="music"):
                 try:
                     await vc.play(track)
                 except:
-                    return await context.reply(embed=embeds.EmbedRed("BamsamMusic", "재생 중 문제가 발생하였습니다."))
+                    return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "재생 중 문제가 발생하였습니다."))
             else:
                 self.queue.append(track)
 
-            await context.reply(embed=embeds.EmbedBlurple("BamsamMusic", f"{track.title}을(를) 재생목록에 추가하였습니다."))
+            await context.reply(embed=embeds.EmbedBlurple("Bamsam Music", f"{track.title}을(를) 재생목록에 추가하였습니다."))
+
+    @commands.hybrid_command(
+        name='loop',
+        description='현재 노래에 대해 반복재생 여부를 설정합니다.'
+    )
+    async def loop(self, context: Context):
+        node = wavelink.NodePool.get_node()
+        player = node.get_player(context.guild)
+
+        if player.track == None:
+            return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "재생중인 노래가 없습니다."))
+        else:
+            try:
+                if self.repeat == True:
+                    self.repeat = False
+                    await context.reply(embed=embeds.EmbedBlurple("Bamsam Music", f"`{player.track.title}`의 반복재생을 종료합니다."))
+                else:
+                    self.repeat = True
+                    await context.reply(embed=embeds.EmbedBlurple("Bamsam Music", f"`{player.track.title}`을(를) 반복재생합니다."))
+            except:
+                return await context.reply(embed=embeds.EmbedRed("Bamsam Music", "반복재생 중 문제가 발생하였습니다."))
 
 
 async def setup(bot):
