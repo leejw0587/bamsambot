@@ -466,7 +466,6 @@ class General(commands.Cog, name="general"):
     )
     async def code_redeem(self, context: Context):
         await context.interaction.response.send_modal(RedeemModal())
-        await context.defer()
 
     @code.command(
         name='create',
