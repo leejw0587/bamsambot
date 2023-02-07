@@ -42,7 +42,6 @@ class Moderation(commands.Cog, name="moderation"):
         description="유저의 경고를 관리합니다. (창조자 전용)",
     )
     @checks.is_informant()
-    @checks.not_blacklisted()
     async def warning(self, context: Context) -> None:
         if context.invoked_subcommand is None:
             embed = discord.Embed(
@@ -56,7 +55,6 @@ class Moderation(commands.Cog, name="moderation"):
         name="add",
         description="유저에게 경고를 추가합니다. (창조자 전용)",
     )
-    @checks.not_blacklisted()
     @checks.is_informant()
     @app_commands.describe(user="대상 유저", reason="경고 사유")
     async def warning_add(self, context: Context, user: discord.User, *, reason: str = "명시되지 않음") -> None:
@@ -96,7 +94,6 @@ class Moderation(commands.Cog, name="moderation"):
         name="remove",
         description="유저의 경고를 제거합니다. (창조자 전용)",
     )
-    @checks.not_blacklisted()
     @checks.is_informant()
     @app_commands.describe(user="대상 유저", warn_id="제거할 경고ID")
     async def warning_remove(self, context: Context, user: discord.User, warn_id: int) -> None:
@@ -118,7 +115,6 @@ class Moderation(commands.Cog, name="moderation"):
         description="유저의 경고 목록을 나타냅니다. (창조자 전용)",
     )
     @checks.is_informant()
-    @checks.not_blacklisted()
     @app_commands.describe(user="대상 유저")
     async def warning_list(self, context: Context, user: discord.User):
         warnings_list = await db_manager.get_warnings(user.id, context.guild.id)

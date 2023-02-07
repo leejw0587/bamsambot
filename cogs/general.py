@@ -73,7 +73,6 @@ class General(commands.Cog, name="general"):
         name="help",
         description="실행 가능한 모든 커맨드를 표시합니다."
     )
-    @checks.not_blacklisted()
     async def help(self, context: Context) -> None:
         prefix = self.bot.config["prefix"]
         embed = discord.Embed(
@@ -94,7 +93,6 @@ class General(commands.Cog, name="general"):
         name="botinfo",
         description="봇에 대한 정보를 나타냅니다",
     )
-    @checks.not_blacklisted()
     async def botinfo(self, context: Context) -> None:
 
         config = self.bot.config
@@ -135,7 +133,6 @@ class General(commands.Cog, name="general"):
         name="serverinfo",
         description="서버에 대한 정보를 나타냅니다.",
     )
-    @checks.not_blacklisted()
     async def serverinfo(self, context: Context) -> None:
         roles = [role.name for role in context.guild.roles]
         if len(roles) > 50:
@@ -177,7 +174,6 @@ class General(commands.Cog, name="general"):
         name="ping",
         description="봇의 레이턴시를 확인합니다.",
     )
-    @checks.not_blacklisted()
     async def ping(self, context: Context) -> None:
         embed = discord.Embed(
             title="🏓 Pong!",

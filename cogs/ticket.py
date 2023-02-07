@@ -110,7 +110,6 @@ class Ticket(commands.Cog, name="ticket"):
         name="ticket",
         description="새로운 티켓을 생성합니다."
     )
-    @checks.not_blacklisted()
     async def ticket(self, context: Context) -> None:
         await context.send(" ", view=SelectProblemView())
 
@@ -118,7 +117,6 @@ class Ticket(commands.Cog, name="ticket"):
         name="close",
         description="활성화된 티켓을 종료합니다."
     )
-    @checks.not_blacklisted()
     async def close(self, context: Context) -> None:
         with open("database/ticket.json") as file:
             ticket_json = json.load(file)
