@@ -1,6 +1,7 @@
 import platform
 import random
 import json
+import string
 import time
 import asyncio
 import typing
@@ -63,6 +64,74 @@ class ReportModal(ui.Modal, title='개발자에게 연락'):
             color=discord.Color.blue()
         )
         await interaction.response.send_message(embed=embed, delete_after=3)
+
+
+class RedeemModal(ui.Modal, title='코드 등록'):
+    code = ui.TextInput(label="코드", style=discord.TextStyle.short,
+                        placeholder="여기에 코드를 입력해주세요", required=True, max_length=16)
+
+    async def on_submit(self, interaction: discord.Interaction) -> None:
+        code = str(self.code)
+
+        with open('database/codes.json') as file:
+            codes = json.load(file)
+
+        if code in codes:
+            reward = codes[code]
+
+            with open("database/codes.json", 'w') as file:
+                del (codes[code])
+                json.dump(codes, file, indent="\t",
+                          ensure_ascii=False)
+
+            with open('database/userdata.json') as file:
+                userdata = json.load(file)
+
+            if reward['rewardType'] == "PERIDOT":
+                userdata[str(interaction.user.id)]["peridot"] = userdata[str(
+                    interaction.user.id)]["peridot"] + reward['reward']
+
+                peridot = format(int(reward['reward']), ',d')
+                REWARD = f"{peridot} {PERIDOT_EMOJI}"
+
+            elif reward['rewardType'] == "TOKEN":
+                userdata[str(interaction.user.id)]["token"] = userdata[str(
+                    interaction.user.id)]["token"] + reward['reward']
+
+                token = format(int(reward['reward']), ',d')
+                REWARD = f"{token} {TOKEN_EMOJI}"
+
+            elif reward['rewardType'] == "ROLE":
+                role = interaction.guild.get_role(reward['reward'])
+                await interaction.user.add_roles(role)
+
+                REWARD = f"<@&{reward['reward']}>"
+
+            with open("database/userdata.json", 'w') as file:
+                json.dump(userdata, file, indent="\t",
+                          ensure_ascii=False)
+
+            embed = discord.Embed(
+                title="코드 등록 완료",
+                description=f"코드를 성공적으로 등록했습니다.\n보상 종류: {reward['rewardTypeKR']}\n보상: {REWARD}",
+                color=discord.Color.green()
+            )
+            await interaction.user.send(embed=embed)
+
+        else:
+            embed = discord.Embed(
+                title="코드 등록 실패",
+                description=f"올바르지 않은 코드입니다.",
+                color=discord.Color.red()
+            )
+            await interaction.user.send(embed=embed)
+
+        embed = discord.Embed(
+            title="코드 등록",
+            description=f"DM을 확인해주세요.",
+            color=discord.Color.blue()
+        )
+        return await interaction.response.send_message(embed=embed, delete_after=5)
 
 
 class General(commands.Cog, name="general"):
@@ -376,6 +445,132 @@ class General(commands.Cog, name="general"):
             description=f"[여기](https://lnk.at/leejw0587)를 눌러 후원을 할 수 있어요.\n후원받은 금액은 다양하게 사용돼요.",
             color=discord.Color.brand_green()
         )
+        await context.send(embed=embed)
+
+    @commands.hybrid_group(
+        name='code',
+        description='선물 코드 관련 기능을 제공합니다.'
+    )
+    async def code(self, context: Context) -> None:
+        if context.invoked_subcommand is None:
+            embed = discord.Embed(
+                title="Error!",
+                description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`redeem` - 코드를 등록합니다.\n`create` - 새로운 코드를 등록합니다.\n`remove` - 등록된 코드를 제거합니다.\n`list` - 등록된 코드를 확인합니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+
+    @code.command(
+        name="redeem",
+        description="코드를 등록합니다.",
+    )
+    async def code_redeem(self, context: Context):
+        await context.interaction.response.send_modal(RedeemModal())
+
+    @code.command(
+        name='create',
+        description='새로운 코드를 생성합니다. (창조자 전용)'
+    )
+    @app_commands.describe(type="보상 종류", reward="주어질 보상")
+    @checks.is_owner()
+    async def code_create(self, context: Context, type: typing.Literal['페리도트', '토큰', '역할'], reward: str):
+        with open('database/codes.json') as file:
+            codes = json.load(file)
+
+        if type == '페리도트':
+            rewardType = "PERIDOT"
+            rewardStr = format(int(reward), ',d') + PERIDOT_EMOJI
+        elif type == '토큰':
+            rewardType = "TOKEN"
+            rewardStr = format(int(reward), ',d') + TOKEN_EMOJI
+        elif type == '역할':
+            rewardType = "ROLE"
+            rewardStr = f"<@&{reward}>"
+
+        char = string.ascii_uppercase + string.digits
+        code = ''.join(random.choice(char) for x in range(16))
+
+        newCode = {
+            code: {
+                "code": code,
+                "rewardType": rewardType,
+                "rewardTypeKR": type,
+                "reward": int(reward)
+            }
+        }
+
+        codes.update(newCode)
+
+        with open("database/codes.json", 'w') as file:
+            json.dump(codes, file, indent="\t",
+                      ensure_ascii=False)
+
+        await context.send(embed=embeds.EmbedBlurple("코드 생성", f"새로운 코드를 생성했습니다.\n코드: `{code}`\n보상 종류: `{type}`\n보상: {rewardStr}"))
+
+    @code.command(
+        name='remove',
+        description='생성된 코드를 삭제합니다. (창조자 전용)'
+    )
+    @app_commands.describe(code="삭제할 코드")
+    @checks.is_owner()
+    async def code_remove(self, context: Context, code: str):
+        with open('database/codes.json') as file:
+            codes = json.load(file)
+
+        if code in codes:
+            with open("database/codes.json", 'w') as file:
+                del (codes[code])
+                json.dump(codes, file, indent="\t",
+                          ensure_ascii=False)
+            embed = discord.Embed(
+                title="코드",
+                description=f"`{code}`를 삭제했습니다.",
+                color=discord.Color.orange()
+            )
+            await context.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="코드",
+                description=f"존재하지 않는 코드입니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+            return
+
+    @code.command(
+        name='list',
+        description='생성된 코드의 목록을 보여줍니다. (창조자 전용)'
+    )
+    @checks.is_owner()
+    async def code_list(self, context: Context):
+        with open('database/codes.json') as file:
+            codes = json.load(file)
+
+        embed = discord.Embed(
+            title="코드",
+            description="< 사용 가능한 코드 목록 >",
+            color=discord.Color.brand_green()
+        )
+        for i in codes:
+            CODE = codes[i]['code']
+            REWARDTYPEKR = codes[i]['rewardTypeKR']
+            REWARDTYPE = codes[i]['rewardType']
+
+            if REWARDTYPE == "PERIDOT":
+                REWARD = f"{codes[i]['reward']} {PERIDOT_EMOJI}"
+
+            elif REWARDTYPE == "TOKEN":
+                REWARD = f"{codes[i]['reward']} {TOKEN_EMOJI}"
+
+            elif REWARDTYPE == "ROLE":
+                REWARD = f"<@&{codes[i]['reward']}>"
+
+            embed.add_field(
+                name=f"`{CODE}`",
+                value=f"보상 종류: `{REWARDTYPEKR}`\n보상: {REWARD}",
+                inline=False
+            )
+
         await context.send(embed=embed)
 
 
