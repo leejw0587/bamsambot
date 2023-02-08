@@ -3,6 +3,10 @@ from discord.ext import commands
 from datetime import datetime
 
 
+def LOG_CHANNEL():
+    return int(1070942724062199848)
+
+
 def new_ticket(user):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
@@ -70,4 +74,11 @@ def quote(context, message):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
     msg = f"[QUOTE] {timecode} | <@{context.author.id}> quoted <@{message.author.id}>'s message"
+    return msg
+
+
+def redeem(user, reward, code):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    msg = f"[REDEEM] {timecode} | <@{user.id}> got {reward} using `{code}`"
     return msg

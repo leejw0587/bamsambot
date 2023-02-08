@@ -18,7 +18,7 @@ from discord import app_commands, ui
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
 
-from helpers import checks, embeds
+from helpers import checks, embeds, log
 
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 TOKEN_EMOJI = "<:token:884035217252311051>"
@@ -118,6 +118,9 @@ class RedeemModal(ui.Modal, title='코드 등록'):
             )
             await interaction.user.send(embed=embed)
 
+            Log_channel = discord.utils.get(interaction.guild.channels,
+                                            id=log.LOG_CHANNEL())
+            await Log_channel.send(log.redeem(interaction.user, REWARD, code))
         else:
             embed = discord.Embed(
                 title="코드 등록 실패",
@@ -479,10 +482,10 @@ class General(commands.Cog, name="general"):
 
         if type == '페리도트':
             rewardType = "PERIDOT"
-            rewardStr = format(int(reward), ',d') + PERIDOT_EMOJI
+            rewardStr = f"{format(int(reward), ',d')} {PERIDOT_EMOJI}"
         elif type == '토큰':
             rewardType = "TOKEN"
-            rewardStr = format(int(reward), ',d') + TOKEN_EMOJI
+            rewardStr = f"{format(int(reward), ',d')} {TOKEN_EMOJI}"
         elif type == '역할':
             rewardType = "ROLE"
             rewardStr = f"<@&{reward}>"
@@ -557,10 +560,10 @@ class General(commands.Cog, name="general"):
             REWARDTYPE = codes[i]['rewardType']
 
             if REWARDTYPE == "PERIDOT":
-                REWARD = f"{codes[i]['reward']} {PERIDOT_EMOJI}"
+                REWARD = f"{format(int(codes[i]['reward']), ',d')} {PERIDOT_EMOJI}"
 
             elif REWARDTYPE == "TOKEN":
-                REWARD = f"{codes[i]['reward']} {TOKEN_EMOJI}"
+                REWARD = f"{format(int(codes[i]['reward']), ',d')} {TOKEN_EMOJI}"
 
             elif REWARDTYPE == "ROLE":
                 REWARD = f"<@&{codes[i]['reward']}>"
