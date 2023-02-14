@@ -1,6 +1,7 @@
 import discord
 import json
 import typing
+import asyncio
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -19,10 +20,12 @@ class JoinButton(discord.ui.View):
     )
     async def joinkr(self, interaction: discord.Interaction, button: discord.Button):
         Guest_Role = interaction.guild.get_role(1070680657166090330)
+        Temp_Role = interaction.guild.get_role(1075031832409677914)
         user = interaction.user
 
         if Guest_Role not in interaction.user.roles:
             await interaction.user.add_roles(Guest_Role)
+            await interaction.user.remove_roles(Temp_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("입장", "뱀샘크루에 입장하였습니다!"))
 
             with open("database/userdata.json", encoding="utf-8") as file:
@@ -57,11 +60,13 @@ class JoinButton(discord.ui.View):
     async def joinjp(self, interaction: discord.Interaction, button: discord.Button):
         Guest_Role = interaction.guild.get_role(1070680657166090330)
         Japanese_Role = interaction.guild.get_role(1070677016870928495)
+        Temp_Role = interaction.guild.get_role(1075031832409677914)
         user = interaction.user
 
         if Guest_Role not in interaction.user.roles:
             await interaction.user.add_roles(Guest_Role)
             await interaction.user.add_roles(Japanese_Role)
+            await interaction.user.remove_roles(Temp_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("入場", "ベムセムクルーに入場しました！"))
 
             with open("database/userdata.json", encoding="utf-8") as file:
@@ -96,10 +101,12 @@ class JoinButton(discord.ui.View):
     async def joinsub(self, interaction: discord.Interaction, button: discord.Button):
         SubACC_Role = interaction.guild.get_role(
             1070676839074381904)  # 취급주의 역할
+        Temp_Role = interaction.guild.get_role(1075031832409677914)
         user = interaction.user
 
         if SubACC_Role not in interaction.user.roles:
             await interaction.user.add_roles(SubACC_Role)
+            await interaction.user.remove_roles(Temp_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("Join", "You have joined Bamsam Crew!"))
 
             with open("database/userdata.json", encoding="utf-8") as file:
@@ -289,18 +296,41 @@ class Owner(commands.Cog, name="owner"):
         await update_channel.send(embed=embeds.EmbedBlurple("New Update!", f"뱀샘봇의 새로운 버전(`{config['version']}`)이 업데이트 되었습니다.\n업데이트 내용은 [여기]({notion_link})에서 확인하세요."))
 
     @commands.hybrid_command(
-        name="createname"
+        name="createname",
+        description="닉네임 embed를 만드는 커맨드입니다. (창조자 전용)"
     )
     @checks.is_dev()
     async def createname(self, context: Context):
         await context.send("Wait a second...", delete_after=1)
 
-        embed = discord.Embed()
-        embed.add_field(
-            name="Nickname", value="뱀샘크루에서 사용할 닉네임을 적어주세요. 닉네임은 아래와 같이 표시됩니다.\nべムセムクルーで使うニックネームを書いてください。 ニックネームは以下のように表示されます。", inline=False)
-        embed.add_field(name="༺ৡۣۜ͜ ৡ Nickname ৡۣۜ͜ ৡ༻",
-                        value=None, inline=True)
+        embed = discord.Embed(
+            title="Nickname",
+            description="뱀샘크루에서 사용할 닉네임을 적어주세요. 닉네임은 아래와 같이 표시됩니다.\nべムセムクルーで使うニックネームを書いてください。 ニックネームは以下のように表示されます。\n\n**`༺ৡۣۜ͜ ৡ Nickname ৡۣۜ͜ ৡ༻`**",
+            color=discord.Color.blurple()
+        )
         await context.channel.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.channel.id == 1075031666160046190:
+            if message.author == self.bot.user or message.author.bot:
+                return
+            else:
+                nickname = "༺ৡۣۜ͜ ৡ " + message.content + " ৡۣۜ͜ ৡ༻"
+                await message.author.edit(nick=nickname)
+                await message.delete()
+
+                embed = discord.Embed(
+                    title="Nickname",
+                    description=f"닉네임이 `{message.content}`으(로) 설정되었습니다. <#1071340194244087819>로 이동하여 인증을 진행해주세요."
+                )
+                await message.channel.send(content=message.author.mention, embed=embed, delete_after=5)
+
+                Temp_Role = message.guild.get_role(1075031832409677914)
+                await message.author.add_roles(Temp_Role)
+
+        else:
+            return
 
 
 async def setup(bot):
