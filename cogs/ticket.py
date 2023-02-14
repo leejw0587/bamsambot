@@ -25,6 +25,11 @@ class SelectProblem(discord.ui.Select):
                 description="유저를 신고할 때 선택해주세요",
                 emoji="🚫"
             ),
+            discord.SelectOption(
+                label="역할 복구",
+                description="역할 복구가 필요할 때 선택해주세요",
+                emoji="🚀"
+            )
         ]
         super().__init__(
             placeholder="현재 문제 상황을 선택해주세요",
@@ -113,7 +118,7 @@ class Ticket(commands.Cog, name="ticket"):
         description="새로운 티켓을 생성합니다."
     )
     async def ticket(self, context: Context) -> None:
-        await context.send(" ", view=SelectProblemView())
+        await context.send(" ", view=SelectProblemView(), delete_after=30)
 
     @commands.hybrid_command(
         name="close",
