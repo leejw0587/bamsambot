@@ -3,7 +3,7 @@
   "openai_api_key": "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",
   "main_token": "MTA3MDk0NTExMjE2ODg2MTc4Ng.Gr-G95.bB3yAOJ55PdEEASCktsr-bgD8OPvFrUxsFhaSU",
   "test_token": "MTA3MDk0NTc2MTQ4MDY3OTQ3NQ.GgNc_1.rVU4FpBTAUzOwlITe6ixkBm4nlDrvnmqbn8fJA",
-  "version": "R - 3.7.1",
+  "version": "R - 3.7.2",
   "permissions": "8",
   "application_id": "1070945112168861786",
   "sync_commands_globally": true,

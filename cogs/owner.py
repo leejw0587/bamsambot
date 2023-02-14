@@ -19,10 +19,33 @@ class JoinButton(discord.ui.View):
     )
     async def joinkr(self, interaction: discord.Interaction, button: discord.Button):
         Guest_Role = interaction.guild.get_role(1070680657166090330)
+        user = interaction.user
 
         if Guest_Role not in interaction.user.roles:
             await interaction.user.add_roles(Guest_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("입장", "뱀샘크루에 입장하였습니다!"))
+
+            with open("database/userdata.json", encoding="utf-8") as file:
+                userdata = json.load(file)
+            if str(user.id) in userdata:
+                pass
+            else:
+                newUser = {
+                    str(user.id): {
+                        "username": str(user),
+                        "userid": str(user.id),
+                        "peridot": 0,
+                        "token": 0,
+                        "xp": 0,
+                        "level": 0,
+                        "attendance": 0,
+                        "last_attendance": ""
+                    }
+                }
+                userdata.update(newUser)
+                with open("database/userdata.json", 'w', encoding="utf-8") as file:
+                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
         else:
             await interaction.user.send(embed=embeds.EmbedRed("입장", "이미 입장한 계정입니다!"))
 
@@ -34,11 +57,34 @@ class JoinButton(discord.ui.View):
     async def joinjp(self, interaction: discord.Interaction, button: discord.Button):
         Guest_Role = interaction.guild.get_role(1070680657166090330)
         Japanese_Role = interaction.guild.get_role(1070677016870928495)
+        user = interaction.user
 
         if Guest_Role not in interaction.user.roles:
             await interaction.user.add_roles(Guest_Role)
             await interaction.user.add_roles(Japanese_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("入場", "ベムセムクルーに入場しました！"))
+
+            with open("database/userdata.json", encoding="utf-8") as file:
+                userdata = json.load(file)
+            if str(user.id) in userdata:
+                pass
+            else:
+                newUser = {
+                    str(user.id): {
+                        "username": str(user),
+                        "userid": str(user.id),
+                        "peridot": 0,
+                        "token": 0,
+                        "xp": 0,
+                        "level": 0,
+                        "attendance": 0,
+                        "last_attendance": ""
+                    }
+                }
+                userdata.update(newUser)
+                with open("database/userdata.json", 'w', encoding="utf-8") as file:
+                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
         else:
             await interaction.user.send(embed=embeds.EmbedRed("入場", "すでに入場しているアカウントです！"))
 
@@ -50,10 +96,33 @@ class JoinButton(discord.ui.View):
     async def joinsub(self, interaction: discord.Interaction, button: discord.Button):
         SubACC_Role = interaction.guild.get_role(
             1070676839074381904)  # 취급주의 역할
+        user = interaction.user
 
         if SubACC_Role not in interaction.user.roles:
             await interaction.user.add_roles(SubACC_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("Join", "You have joined Bamsam Crew!"))
+
+            with open("database/userdata.json", encoding="utf-8") as file:
+                userdata = json.load(file)
+            if str(user.id) in userdata:
+                pass
+            else:
+                newUser = {
+                    str(user.id): {
+                        "username": str(user),
+                        "userid": str(user.id),
+                        "peridot": 0,
+                        "token": 0,
+                        "xp": 0,
+                        "level": 0,
+                        "attendance": 0,
+                        "last_attendance": ""
+                    }
+                }
+                userdata.update(newUser)
+                with open("database/userdata.json", 'w', encoding="utf-8") as file:
+                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
         else:
             await interaction.user.send(embed=embeds.EmbedRed("Join", "You have already joined Bamsam Crew!"))
 
@@ -202,6 +271,7 @@ class Owner(commands.Cog, name="owner"):
         name="createjoin",
         description="입장 embed를 만드는 커맨드입니다. (창조자 전용)"
     )
+    @checks.is_dev()
     async def createjoin(self, context: Context) -> None:
         await context.send("Wait a second...", delete_after=1)
         await context.channel.send(embed=embeds.EmbedBlurple(
@@ -217,6 +287,20 @@ class Owner(commands.Cog, name="owner"):
         config = self.bot.config
         notion_link = "https://leejw0587.notion.site/BamsamBot-Release-Notes-72edee56e020443e8de2441d486fccc8"
         await update_channel.send(embed=embeds.EmbedBlurple("New Update!", f"뱀샘봇의 새로운 버전(`{config['version']}`)이 업데이트 되었습니다.\n업데이트 내용은 [여기]({notion_link})에서 확인하세요."))
+
+    @commands.hybrid_command(
+        name="createname"
+    )
+    @checks.is_dev()
+    async def createname(self, context: Context):
+        await context.send("Wait a second...", delete_after=1)
+
+        embed = discord.Embed()
+        embed.add_field(
+            name="Nickname", value="뱀샘크루에서 사용할 닉네임을 적어주세요. 닉네임은 아래와 같이 표시됩니다.\nべムセムクルーで使うニックネームを書いてください。 ニックネームは以下のように表示されます。", inline=False)
+        embed.add_field(name="༺ৡۣۜ͜ ৡ Nickname ৡۣۜ͜ ৡ༻",
+                        value=None, inline=True)
+        await context.channel.send(embed=embed)
 
 
 async def setup(bot):

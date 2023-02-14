@@ -82,7 +82,9 @@ class SelectProblem(discord.ui.Select):
         await new_channel.send(f"<@&{creator.id}>")
         embed = discord.Embed(color=discord.Color.blurple())
         embed.add_field(
-            name=f"새로운 티켓 - {user}", value="곧 어드민이 도착할 예정입니다. 잠시만 기다려주세요.", inline=False)
+            name=f"**[{self.values[0]}]** 새로운 티켓 - {user}",
+            value="곧 어드민이 도착할 예정입니다. 잠시만 기다려주세요.",
+            inline=False)
         await new_channel.send(embed=embed)
 
         ticket_json["ticket_channel_ids"].append(new_channel.id)
