@@ -51,6 +51,8 @@ class SelectProblem(discord.ui.Select):
             new_channel = await guild.create_text_channel(name=f'🙏┃{user}-ticket')
         elif self.values[0] == "신고":
             new_channel = await guild.create_text_channel(name=f'🚫┃{user}-ticket')
+        elif self.values[0] == "역할 복구":
+            new_channel = await guild.create_text_channel(name=f'🚀┃{user}-ticket')
 
         await new_channel.set_permissions(guild.get_role(guild.id),
                                           send_messages=False,
