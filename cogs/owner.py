@@ -21,7 +21,7 @@ class JoinButton(discord.ui.View):
         Guest_Role = interaction.guild.get_role(1070680657166090330)
 
         if Guest_Role not in interaction.user.roles:
-            # await interaction.user.add_roles(Guest_Role)
+            await interaction.user.add_roles(Guest_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("입장", "뱀샘크루에 입장하였습니다!"))
         else:
             await interaction.user.send(embed=embeds.EmbedRed("입장", "이미 입장한 계정입니다!"))
