@@ -320,14 +320,15 @@ class Owner(commands.Cog, name="owner"):
                 await message.author.edit(nick=nickname)
                 await message.delete()
 
+                Temp_Role = message.guild.get_role(1075031832409677914)
+                await message.author.add_roles(Temp_Role)
+
+                await asyncio.sleep(1)
                 embed = discord.Embed(
                     title="Nickname",
                     description=f"닉네임이 `{message.content}`으(로) 설정되었습니다. <#1071340194244087819>로 이동하여 인증을 진행해주세요.\nニックネームが`{message.content}`に設定されました。 <#1071340194244087819>に移動して認証を進めてください。"
                 )
                 await message.channel.send(content=message.author.mention, embed=embed, delete_after=5)
-
-                Temp_Role = message.guild.get_role(1075031832409677914)
-                await message.author.add_roles(Temp_Role)
 
         else:
             return
