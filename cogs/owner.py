@@ -322,7 +322,7 @@ class Owner(commands.Cog, name="owner"):
 
                 embed = discord.Embed(
                     title="Nickname",
-                    description=f"닉네임이 `{message.content}`으(로) 설정되었습니다. <#1071340194244087819>로 이동하여 인증을 진행해주세요.\nニックネームが{message.content}に設定されました。 <#1071340194244087819>に移動して認証を進めてください。"
+                    description=f"닉네임이 `{message.content}`으(로) 설정되었습니다. <#1071340194244087819>로 이동하여 인증을 진행해주세요.\nニックネームが`{message.content}`に設定されました。 <#1071340194244087819>に移動して認証を進めてください。"
                 )
                 await message.channel.send(content=message.author.mention, embed=embed, delete_after=5)
 
