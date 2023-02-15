@@ -49,15 +49,16 @@ class SelectProblem(discord.ui.Select):
         guild = interaction.guild
         creator = guild.get_role(int(ticket_json["creator_role_id"]))
         log_channel = guild.get_channel(config["log_channel_id"])
+        category = guild.get_channel(1075358759397900439)
 
         if self.values[0] == "질문":
-            new_channel = await guild.create_text_channel(name=f'❔┃{user}-ticket')
+            new_channel = await guild.create_text_channel(name=f'❔┃{user}-ticket', category=category)
         elif self.values[0] == "건의":
-            new_channel = await guild.create_text_channel(name=f'🙏┃{user}-ticket')
+            new_channel = await guild.create_text_channel(name=f'🙏┃{user}-ticket', category=category)
         elif self.values[0] == "신고":
-            new_channel = await guild.create_text_channel(name=f'🚫┃{user}-ticket')
+            new_channel = await guild.create_text_channel(name=f'🚫┃{user}-ticket', category=category)
         elif self.values[0] == "역할 복구":
-            new_channel = await guild.create_text_channel(name=f'🚀┃{user}-ticket')
+            new_channel = await guild.create_text_channel(name=f'🚀┃{user}-ticket', category=category)
 
         await new_channel.set_permissions(guild.get_role(guild.id),
                                           send_messages=False,
@@ -82,7 +83,7 @@ class SelectProblem(discord.ui.Select):
         await new_channel.send(f"<@&{creator.id}>")
         embed = discord.Embed(color=discord.Color.blurple())
         embed.add_field(
-            name=f"**[{self.values[0]}]** 새로운 티켓 - {user}",
+            name=f"**[{self.values[0]}]** - {user}",
             value="곧 어드민이 도착할 예정입니다. 잠시만 기다려주세요.",
             inline=False)
         await new_channel.send(embed=embed)
