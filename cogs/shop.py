@@ -114,6 +114,11 @@ class Shop(commands.Cog, name="shop"):
         else:
             shopdata[item]["AMOUNT"] -= 1
 
+        if shopdata[item]["NAME"] == "인증":
+            Guest_Role = context.guild.get_role(1070680657166090330)
+            if Guest_Role in context.author.roles:  # Checking if user has Guest role
+                await context.author.remove_roles(Guest_Role)
+
         userdata[str(context.author.id)
                  ]["peridot"] -= int(shopdata[item]["PRICE"])
         role = context.guild.get_role(int(shopdata[item]["ID"]))
