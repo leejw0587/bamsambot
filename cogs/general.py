@@ -474,11 +474,14 @@ class General(commands.Cog, name="general"):
         name='create',
         description='새로운 코드를 생성합니다. (창조자 전용)'
     )
-    @app_commands.describe(type="보상 종류", reward="주어질 보상")
+    @app_commands.describe(code="커스텀 코드 또는 'RANDOM'", type="보상 종류", reward="주어질 보상")
     @checks.is_owner()
-    async def code_create(self, context: Context, type: typing.Literal['페리도트', '토큰', '역할'], reward: str):
+    async def code_create(self, context: Context, code: str, type: typing.Literal['페리도트', '토큰', '역할'], reward: str):
         with open('database/codes.json') as file:
             codes = json.load(file)
+        if code == 'RANDOM':
+            char = string.ascii_uppercase + string.digits
+            code = ''.join(random.choice(char) for x in range(16))
 
         if type == '페리도트':
             rewardType = "PERIDOT"
@@ -489,9 +492,6 @@ class General(commands.Cog, name="general"):
         elif type == '역할':
             rewardType = "ROLE"
             rewardStr = f"<@&{reward}>"
-
-        char = string.ascii_uppercase + string.digits
-        code = ''.join(random.choice(char) for x in range(16))
 
         newCode = {
             code: {
