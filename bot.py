@@ -153,14 +153,14 @@ async def on_command_error(context: Context, error) -> None:
         embed = discord.Embed(
             title="진정하세요!",
             description=f"{f'{round(hours)} 시간' if round(hours) > 0 else ''} {f'{round(minutes)} 분' if round(minutes) > 0 else ''} {f'{round(seconds)} 초' if round(seconds) > 0 else ''} 뒤에 이 커맨드를 다시 사용할 수 있습니다.",
-            color=0xE02B2B
+            color=discord.Color.yellow()
         )
         await context.send(embed=embed)
     elif isinstance(error, exceptions.UserBlacklisted):
         embed = discord.Embed(
             title="Error!",
             description="당신은 블랙리스트에 포함되어 있습니다.",
-            color=0xE02B2B
+            color=discord.Color.red()
         )
         await context.send(embed=embed)
     elif isinstance(error, exceptions.UserNotOwner):
@@ -168,7 +168,7 @@ async def on_command_error(context: Context, error) -> None:
         embed = discord.Embed(
             title="Error!",
             description="창조자만 이 명령어를 사용할 수 있습니다.",
-            color=0xE02B2B
+            color=discord.Color.red()
         )
         await context.send(embed=embed)
     elif isinstance(error, commands.MissingPermissions):
@@ -176,14 +176,14 @@ async def on_command_error(context: Context, error) -> None:
             title="Error!",
             description="당신은 이 명령어를 사용할 권한이 없습니다. `" + ", ".join(
                 error.missing_permissions) + "`",
-            color=0xE02B2B
+            color=discord.Color.red()
         )
         await context.send(embed=embed)
     elif isinstance(error, commands.MissingRole):
         embed = discord.Embed(
             title="Error!",
             description=f"당신은 이 명령어를 사용하기 위한 역할이 없습니다. <@&{error.missing_role}>",
-            color=0xE02B2B
+            color=discord.Color.red()
         )
         await context.send(embed=embed)
     elif isinstance(error, commands.BotMissingPermissions):
@@ -191,21 +191,21 @@ async def on_command_error(context: Context, error) -> None:
             title="Error!",
             description="Bot missing permission: `" + ", ".join(
                 error.missing_permissions) + "`",
-            color=0xE02B2B
+            color=discord.Color.red()
         )
         await context.send(embed=embed)
     elif isinstance(error, commands.CommandNotFound):
         embed = discord.Embed(
             title="Error!",
             description="알 수 없는 커맨드입니다.",
-            color=0xE02B2B
+            color=discord.Color.red()
         )
         await context.send(embed=embed)
     else:
         embed = discord.Embed(
             title="Error!",
             description=f"커맨드를 실행하던 중 오류가 발생했습니다.\n`{error}`",
-            color=0xE02B2B
+            color=discord.Color.red()
         )
         await context.send(embed=embed)
     raise error
