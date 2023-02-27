@@ -169,7 +169,7 @@ def redeem(userid, reward, code):
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
     embed = discord.Embed(
         title="Bamsambot Log",
-        description=f"Type: `REDEEM`\nExecutor: <@{userid}>\nReward: {reward}\nChannel: `{code}`",
+        description=f"Type: `REDEEM`\nExecutor: <@{userid}>\nReward: {reward}\nCode: `{code}`",
         color=discord.Color.blurple()
     )
     embed.set_footer(text=timecode)
