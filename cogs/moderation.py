@@ -88,7 +88,7 @@ class Moderation(commands.Cog, name="moderation"):
             await member.send(embed=embed)
         Log_channel = discord.utils.get(context.guild.channels,
                                         id=self.bot.config["log_channel_id"])
-        await Log_channel.send(log.warning("add", context, user))
+        await Log_channel.send(embed=log.warning_add(context.author.id, user.id))
 
     @warning.command(
         name="remove",
@@ -108,7 +108,7 @@ class Moderation(commands.Cog, name="moderation"):
 
         Log_channel = discord.utils.get(context.guild.channels,
                                         id=self.bot.config["log_channel_id"])
-        await Log_channel.send(log.warning("remov", context, user))
+        await Log_channel.send(embed=log.warning_remove(context.author.id, user.id))
 
     @warning.command(
         name="list",
@@ -142,7 +142,7 @@ class Moderation(commands.Cog, name="moderation"):
 
         Log_channel = discord.utils.get(context.guild.channels,
                                         id=self.bot.config["log_channel_id"])
-        await Log_channel.send(log.purge(context, amount))
+        await Log_channel.send(embed=log.purge(context.author.id, amount, context.channel.id))
 
     @commands.hybrid_command(
         name="transcript",

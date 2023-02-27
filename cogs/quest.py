@@ -63,7 +63,7 @@ class QuestAnswerModal(ui.Modal, title='정답 제출'):
             with open("database/userdata.json", 'w', encoding="utf-8") as file:
                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
-            await Log_channel.send(log.got_answer(user))
+            await Log_channel.send(log.got_answer(user.id))
 
             quest["__ACTIVE_QUEST"] = None
             with open("database/quest.json", 'w', encoding="utf-8") as file:

@@ -230,7 +230,7 @@ class Fun(commands.Cog, name="fun"):
 
             Log_channel = discord.utils.get(context.guild.channels,
                                             id=self.bot.config["log_channel_id"])
-            await Log_channel.send(log.quote(context, message))
+            await Log_channel.send(embed=log.quote(context.author.id, message.author.id, message.channel.id))
 
         except Exception as e:
             await context.send(f"`/quote`명령어 실행 중 오류가 발생했습니다.\n`{e}`")

@@ -4,82 +4,173 @@ from discord.ext.commands import Context
 from datetime import datetime
 
 
-def LOG_CHANNEL():
-    return int(1070942724062199848)
+async def LOG_CHANNEL():
+    return int(1062130045340110978)
 
 
-def new_ticket(user):
+def new_ticket(userid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[INFO] {timecode} | New ticket opened by : <@{user.id}>"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `OPEN_TICKET`\nExecutor: <@{userid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def warning(type, context, user):
+def warning_add(executorid, targetid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[INFO] {timecode} | <@{context.author.id}> {type}ed Warning to <@{user.id}>"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `WARN_ADD`\nExecutor: <@{executorid}>\nTarget: <@{targetid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def peridot(type, context, user, amount):
+def warning_remove(executorid, targetid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[INFO] {timecode} | <@{context.author.id}> {type}ed {amount} Peridot to <@{user.id}>"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `WARN_REMOVE`\nExecutor: <@{executorid}>\nTarget: <@{targetid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def token(type, context, user, amount):
+def peridot_add(executorid, amount, targetid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[INFO] {timecode} | <@{context.author.id}> {type}ed {amount} Token to <@{user.id}>"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `PERIDOT_ADD`\nExecutor: <@{executorid}>\nAmount: `{amount}`\nTarget: <@{targetid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def shop_buy(context, item):
+def peridot_remove(executorid, amount, targetid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[SHOP] {timecode} | <@{context.author.id}> bought {item}"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `PERIDOT_REMOVE`\nExecutor: <@{executorid}>\nAmount: `{amount}`\nTarget: <@{targetid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def purge(context, amount):
+def token_add(executorid, amount, targetid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[INFO] {timecode} | <@{context.author.id}> purged `{amount}` message(s) in <#{context.channel.id}>"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `TOKEN_ADD`\nExecutor: <@{executorid}>\nAmount: `{amount}`\nTarget: <@{targetid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def got_answer(user):
+def token_remove(executorid, amount, targetid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[QUEST] {timecode} | <@{user.id}> got answer!"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `TOKEN_REMOVE`\nExecutor: <@{executorid}>\nAmount: `{amount}`\nTarget: <@{targetid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def level_set(context, user, level):
+def shop_buy(executorid, item):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[LEVEL] {timecode} | <@{context.author.id}> set <@{user.id}>'s level as {level}"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `BUY_ITEM`\nExecutor: <@{executorid}>\nItem: `{item}`",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def xp_set(context, user, xp):
+def purge(userid, amount, channelid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[LEVEL] {timecode} | <@{context.author.id}> set <@{user.id}>'s xp as {xp}"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `PURGE`\nExecutor: <@{userid}>\nAmount: `{amount}`\nChannel: <#{channelid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def quote(context, message):
+def got_answer(userid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[QUOTE] {timecode} | <@{context.author.id}> quoted <@{message.author.id}>'s message"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `QUEST_ANSWER`\nUser: <@{userid}>\n",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
 
 
-def redeem(user, reward, code):
+def level_set(executorid, level, targetid):
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    msg = f"[REDEEM] {timecode} | <@{user.id}> got {reward} using `{code}`"
-    return msg
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `SET_LEVEL`\nExecutor: <@{executorid}>\nlevel: `{level}`\nTarget: <@{targetid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
+
+
+def xp_set(executorid, level, targetid):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `SET_XP`\nExecutor: <@{executorid}>\nlevel: `{level}`\nTarget: <@{targetid}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
+
+
+def quote(executorid, msgauthorid, channel):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `QUOTE`\nExecutor: <@{executorid}>\nMessageAuthor: `{msgauthorid}`\nChannel: <#{channel}>",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
+
+
+def redeem(userid, reward, code):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `REDEEM`\nExecutor: <@{userid}>\nReward: {reward}\nChannel: `{code}`",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed

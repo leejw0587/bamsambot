@@ -110,7 +110,7 @@ class Inventory(commands.Cog, name="inventory"):
             await context.send(embed=embed)
             Log_channel = discord.utils.get(context.guild.channels,
                                             id=self.bot.config["log_channel_id"])
-            await Log_channel.send(log.peridot("add", context, user, amount))
+            await Log_channel.send(embed=log.peridot_add(context.author.id, amount, user.id))
 
     @peridot.command(
         name="remove",
@@ -153,7 +153,7 @@ class Inventory(commands.Cog, name="inventory"):
                 await context.send(embed=embed)
                 Log_channel = discord.utils.get(context.guild.channels,
                                                 id=self.bot.config["log_channel_id"])
-                await Log_channel.send(log.peridot("remov", context, user, amount))
+                await Log_channel.send(embed=log.peridot_remove(context.author.id, amount, user.id))
 
     @commands.hybrid_group(
         name="token",
@@ -199,7 +199,7 @@ class Inventory(commands.Cog, name="inventory"):
             await context.send(embed=embed)
             Log_channel = discord.utils.get(context.guild.channels,
                                             id=self.bot.config["log_channel_id"])
-            await Log_channel.send(log.token("add", context, user, amount))
+            await Log_channel.send(embed=log.token_add(context.author.id, amount, user.id))
 
     @token.command(
         name="remove",
@@ -240,7 +240,7 @@ class Inventory(commands.Cog, name="inventory"):
                 await context.send(embed=embed)
                 Log_channel = discord.utils.get(context.guild.channels,
                                                 id=self.bot.config["log_channel_id"])
-                await Log_channel.send(log.token("remov", context, user, amount))
+                await Log_channel.send(embed=log.token_remove(context.author.id, amount, user.id))
 
     @token.command(
         name="open",

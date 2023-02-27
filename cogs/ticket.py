@@ -94,7 +94,7 @@ class SelectProblem(discord.ui.Select):
             json.dump(ticket_json, file, indent="\t", ensure_ascii=False)
 
         await interaction.response.edit_message(content=f'``{self.values[0]}``에 관한 새로운 티켓이 생성되었습니다 : <#{new_channel.id}>', view=None)
-        await log_channel.send(log.new_ticket(user))
+        await log_channel.send(embed=log.new_ticket(user.id))
 
 
 class SelectProblemView(discord.ui.View):

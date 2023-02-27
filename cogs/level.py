@@ -137,7 +137,7 @@ class Level(commands.Cog, name="level"):
             await context.send(embed=embed)
             Log_channel = discord.utils.get(context.guild.channels,
                                             id=self.bot.config["log_channel_id"])
-            await Log_channel.send(log.level_set(context, user, level))
+            await Log_channel.send(embed=log.level_set(context.author.id, level, user.id))
 
     @ commands.hybrid_group(
         name="xp",
@@ -183,7 +183,7 @@ class Level(commands.Cog, name="level"):
             await context.send(embed=embed)
             Log_channel = discord.utils.get(context.guild.channels,
                                             id=self.bot.config["log_channel_id"])
-            await Log_channel.send(log.xp_set(context, user, xp))
+            await Log_channel.send(embed=log.xp_set(context.author.id, xp, user.id))
 
     @xp.command(
         name="info",
