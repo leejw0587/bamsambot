@@ -119,7 +119,7 @@ class RedeemModal(ui.Modal, title='코드 등록'):
             await interaction.user.send(embed=embed)
 
             Log_channel = discord.utils.get(interaction.guild.channels,
-                                            id=log.LOG_CHANNEL())
+                                            id=self.bot.config["log_channel_id"])
             await Log_channel.send(embed=log.redeem(interaction.user.id, REWARD, code))
         else:
             embed = discord.Embed(
