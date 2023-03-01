@@ -25,11 +25,6 @@ class SelectProblem(discord.ui.Select):
                 description="유저를 신고할 때 선택해주세요",
                 emoji="🚫"
             ),
-            discord.SelectOption(
-                label="역할 복구",
-                description="역할 복구가 필요할 때 선택해주세요",
-                emoji="🚀"
-            )
         ]
         super().__init__(
             placeholder="현재 문제 상황을 선택해주세요",
@@ -57,8 +52,6 @@ class SelectProblem(discord.ui.Select):
             new_channel = await guild.create_text_channel(name=f'🙏┃{user}-ticket', category=category)
         elif self.values[0] == "신고":
             new_channel = await guild.create_text_channel(name=f'🚫┃{user}-ticket', category=category)
-        elif self.values[0] == "역할 복구":
-            new_channel = await guild.create_text_channel(name=f'🚀┃{user}-ticket', category=category)
 
         await new_channel.set_permissions(guild.get_role(guild.id),
                                           send_messages=False,
