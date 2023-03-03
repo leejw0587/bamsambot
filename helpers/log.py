@@ -157,7 +157,7 @@ def quote(executorid, msgauthorid, channel):
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
     embed = discord.Embed(
         title="Bamsambot Log",
-        description=f"Type: `QUOTE`\nExecutor: <@{executorid}>\nMessageAuthor: `{msgauthorid}`\nChannel: <#{channel}>",
+        description=f"Type: `QUOTE`\nExecutor: <@{executorid}>\nMessageAuthor: <@{msgauthorid}>\nChannel: <#{channel}>",
         color=discord.Color.blurple()
     )
     embed.set_footer(text=timecode)
