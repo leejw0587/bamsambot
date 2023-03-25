@@ -88,7 +88,7 @@ async def on_ready() -> None:
 
 @tasks.loop(minutes=1.0)
 async def status_task() -> None:
-    statuses = ["/help", "Happy New Year!"]
+    statuses = ["/help"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
@@ -116,7 +116,7 @@ async def on_member_remove(member):
     welcome_channel = bot.get_channel(1070686070011871272)
 
     embed = discord.Embed(
-        title="GOOD BYE", description=f"{member.mention}님이 뱀샘크루를 떠났습니다.", color=0x9C84EF)
+        title="GOOD BYE", description=f"`{member.name}`님이 뱀샘크루를 떠났습니다.", color=0x9C84EF)
     await welcome_channel.send(embed=embed)
 
 
