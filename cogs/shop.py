@@ -138,7 +138,7 @@ class Shop(commands.Cog, name="shop"):
         await context.send(embed=embed)
         Log_channel = discord.utils.get(context.guild.channels,
                                         id=self.bot.config["log_channel_id"])
-        await Log_channel.send(emebed=log.shop_buy(context.author.id, item))
+        await Log_channel.send(embed=log.shop_buy(context.author.id, item))
 
     @shop.command(
         name="add",
