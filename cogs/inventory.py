@@ -1,6 +1,7 @@
 import discord
 import json
 import random
+import typing
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -286,6 +287,72 @@ class Inventory(commands.Cog, name="inventory"):
                 color=discord.Color.green()
             )
             await context.send(embed=embed)
+
+    @commands.hybrid_command(
+        name="give",
+        description="보유한 아이템을 다른 유저에게 줍니다."
+    )
+    async def give(self, context: Context, user: discord.User, type: typing.Literal('peridot', 'token'), amount: int):
+        with open("database/userdata.json", encoding="utf-8") as file:
+            userdata = json.load(file)
+
+        # 대상 유저가 없는 경우
+        if userdata[int(user.id)] == None:
+            embed = discord.Embed(
+                title="Error!",
+                description="대상 유저를 찾을 수 없습니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        # 0 이하를 주는 경우
+        elif amount <= 0:
+            embed = discord.Embed(
+                title="Error!",
+                description="0 이하는 보낼 수 없습니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        # 자신한테 주는 경우
+        elif context.author.id == user.id:
+            embed = discord.Embed(
+                title="Error!",
+                description="자신한테 보낼 수 없습니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        # 보유한 아이템보다 더 많이 주는 경우
+        elif userdata[int(context.author.id)][type] < amount:
+            embed = discord.Embed(
+                title="Error!",
+                description="보유한 아이템보다 더 많이 보낼 수 없습니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        else:
+            userdata[int(context.author.id)][type] = userdata[int(
+                context.author.id)][type] - amount
+            userdata[int(user.id)][type] = userdata[int(
+                user.id)][type] + amount
+
+            with open("database/userdata.json", 'w', encoding="utf-8") as file:
+                json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+            emoji = None
+            if type == "peridot":
+                emoji = PERIDOT_EMOJI
+            if type == "token":
+                emoji = TOKEN_EMOJI
+
+            embed = discord.Embed(
+                title="아이템 전송",
+                description=f"{user.mention}에게 {format(amount, ',d')} {emoji}를 전송하였습니다.",
+                color=discord.Color.green()
+            )
+            await context.send(embed=embed)
+
+            Log_channel = discord.utils.get(context.guild.channels,
+                                            id=self.bot.config["log_channel_id"])
+            await Log_channel.send(embed=log.give(context.author.id, user.id, type, amount))
 
 
 async def setup(bot):

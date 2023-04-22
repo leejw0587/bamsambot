@@ -448,7 +448,7 @@ class General(commands.Cog, name="general"):
     async def donate(self, context: Context):
         embed = discord.Embed(
             title=":money_with_wings: DONATE",
-            description=f"[여기](https://lnk.at/leejw0587)를 눌러 후원을 할 수 있어요.\n후원받은 금액은 다양하게 사용돼요.",
+            description=f"[여기](https://lnk.at/leejw0587)를 눌러 후원을 할 수 있어요.\n후원받은 금액은 뱀샘봇 개발 및 유지에 사용돼요.",
             color=discord.Color.brand_green()
         )
         await context.send(embed=embed)
@@ -470,6 +470,7 @@ class General(commands.Cog, name="general"):
         name="redeem",
         description="코드를 등록합니다.",
     )
+    @commands.cooldown(1, 43200, commands.BucketType.user)
     async def code_redeem(self, context: Context):
         await context.interaction.response.send_modal(RedeemModal())
 
