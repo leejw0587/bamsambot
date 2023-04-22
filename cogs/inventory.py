@@ -297,7 +297,7 @@ class Inventory(commands.Cog, name="inventory"):
             userdata = json.load(file)
 
         # 대상 유저가 없는 경우
-        if userdata[int(user.id)] == None:
+        if userdata[str(user.id)] == None:
             embed = discord.Embed(
                 title="Error!",
                 description="대상 유저를 찾을 수 없습니다.",
@@ -321,7 +321,7 @@ class Inventory(commands.Cog, name="inventory"):
             )
             await context.send(embed=embed)
         # 보유한 아이템보다 더 많이 주는 경우
-        elif userdata[int(context.author.id)][type] < amount:
+        elif userdata[str(context.author.id)][type] < amount:
             embed = discord.Embed(
                 title="Error!",
                 description="보유한 아이템보다 더 많이 보낼 수 없습니다.",
@@ -329,9 +329,9 @@ class Inventory(commands.Cog, name="inventory"):
             )
             await context.send(embed=embed)
         else:
-            userdata[int(context.author.id)][type] = userdata[int(
+            userdata[str(context.author.id)][type] = userdata[str(
                 context.author.id)][type] - amount
-            userdata[int(user.id)][type] = userdata[int(
+            userdata[str(user.id)][type] = userdata[str(
                 user.id)][type] + amount
 
             with open("database/userdata.json", 'w', encoding="utf-8") as file:
