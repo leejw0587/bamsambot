@@ -292,6 +292,7 @@ class Inventory(commands.Cog, name="inventory"):
         name="give",
         description="보유한 아이템을 다른 유저에게 줍니다."
     )
+    @app_commands.describe(user="대상 유저", type="보낼 아이템 종류", amount="보낼 아이템의 양")
     async def give(self, context: Context, user: discord.User, type: typing.Literal['peridot', 'token'], amount: int):
         with open("database/userdata.json", encoding="utf-8") as file:
             userdata = json.load(file)
