@@ -23,7 +23,7 @@ class Shop(commands.Cog, name="shop"):
         if context.invoked_subcommand is None:
             embed = discord.Embed(
                 title="Error!",
-                description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`list` - 상점에 등록된 아이템을 확인합니다.\n`buy` - 등록된 아이템을 구매합니다.\n`add` - 상점에 아이템을 추가합니다.\n`remove` - 상점에서 아이템을 제거합니다.",
+                description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`list` - 상점에 등록된 아이템을 확인합니다.\n`buy` - 등록된 아이템을 구매합니다.\n`addrole` - 상점에 역할을 추가합니다.\n`additem` - 상점에 아이템을 추가합니다.\n`remove` - 상점에서 아이템을 제거합니다.",
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
@@ -38,23 +38,41 @@ class Shop(commands.Cog, name="shop"):
         embed = discord.Embed(title="BAMSAM SHOP",
                               description="`/shop buy <이름>`: 해당 아이템 구매\n\n· - ┈┈━━ ˚ . ✿ . ˚ ━━┈┈ - · ·", color=discord.Color.purple())
         embed.set_thumbnail(url=context.guild.icon)
+
         for i in shopdata:
-            ITEMNAME = shopdata[i]["NAME"]
-            PRICE = shopdata[i]["PRICE"]
-            AMOUNT = shopdata[i]["AMOUNT"]
-            ID = shopdata[i]["ID"]
+            if shopdata[i]["TYPE"] == "ROLE":
+                ITEMNAME = shopdata[i]["NAME"]
+                PRICE = shopdata[i]["PRICE"]
+                AMOUNT = shopdata[i]["AMOUNT"]
+                ID = shopdata[i]["ID"]
 
-            PRICE = format(PRICE, ',d')
+                PRICE = format(PRICE, ',d')
 
-            if int(AMOUNT) == -1:
-                AMOUNT = "∞"
-            if shopdata[i]["CONDITION"] == "CHECK":
-                CONDITION = "인증 칭호 보유"
-            else:
-                CONDITION = "구매 조건 없음"
+                if int(AMOUNT) == -1:
+                    AMOUNT = "∞"
+                if shopdata[i]["CONDITION"] == "CHECK":
+                    CONDITION = "인증 칭호 보유"
+                else:
+                    CONDITION = "구매 조건 없음"
 
-            embed.add_field(name=f"{PERIDOT_EMOJI} {PRICE} ▫️ {ITEMNAME}",
-                            value=f"<@&{ID}> | {AMOUNT} | {CONDITION}", inline=False)
+                embed.add_field(name=f"{PERIDOT_EMOJI} {PRICE} ▫️ {ITEMNAME}",
+                                value=f"<@&{ID}> | {AMOUNT} | {CONDITION}", inline=False)
+            elif shopdata[i]["TYPE"] == "ITEM":
+                ITEMNAME = shopdata[i]["NAME"]
+                PRICE = shopdata[i]["PRICE"]
+                AMOUNT = shopdata[i]["AMOUNT"]
+
+                PRICE = format(PRICE, ',d')
+
+                if int(AMOUNT) == -1:
+                    AMOUNT = "∞"
+                if shopdata[i]["CONDITION"] == "CHECK":
+                    CONDITION = "인증 칭호 보유"
+                else:
+                    CONDITION = "구매 조건 없음"
+
+                embed.add_field(name=f"{PERIDOT_EMOJI} {PRICE} ▫️ {ITEMNAME}",
+                                value=f"| {AMOUNT} | {CONDITION}", inline=False)
 
         await context.send(embed=embed)
 
@@ -68,6 +86,8 @@ class Shop(commands.Cog, name="shop"):
             shopdata = json.load(file)
         with open('database/userdata.json') as file:
             userdata = json.load(file)
+        with open('database/itemdata.json') as file:
+            itemdata = json.load(file)
 
         CHECKROLE = context.guild.get_role(1070680727009632297)
         buyer_peridot = int(userdata[str(context.author.id)]["peridot"])
@@ -109,19 +129,27 @@ class Shop(commands.Cog, name="shop"):
         ##########################
         ##### BUYING SECTION #####
         ##########################
+        userdata[str(context.author.id)
+                 ]["peridot"] -= int(shopdata[item]["PRICE"])
+
+        if shopdata[item]["TYPE"] == "ROLE":
+            if shopdata[item]["NAME"] == "인증":
+                Guest_Role = context.guild.get_role(1070680657166090330)
+                if Guest_Role in context.author.roles:  # Checking if user has Guest role
+                    await context.author.remove_roles(Guest_Role)
+            role = context.guild.get_role(int(shopdata[item]["ID"]))
+            await context.author.add_roles(role)
+        elif shopdata[item]["TYPE"] == "ITEM":
+            if shopdata[item]["NAME"] == "개인 통화방 이모지 변경권":
+                itemdata[str(context.author.id)]["voice_emoji_modify"] = True
+            elif shopdata[item]["NAME"] == "개인 통화방 이름 변경권":
+                itemdata[str(context.author.id)]["voice_title_modify"] = True
+            itemdata[str(context.author.id)]["inventory"].append(item)
+
         if shopdata[item]["AMOUNT"] == -1:
             pass
         else:
             shopdata[item]["AMOUNT"] -= 1
-
-        if shopdata[item]["NAME"] == "인증":
-            Guest_Role = context.guild.get_role(1070680657166090330)
-            if Guest_Role in context.author.roles:  # Checking if user has Guest role
-                await context.author.remove_roles(Guest_Role)
-
-        userdata[str(context.author.id)
-                 ]["peridot"] -= int(shopdata[item]["PRICE"])
-        role = context.guild.get_role(int(shopdata[item]["ID"]))
 
         with open("database/shop.json", 'w') as file:
             json.dump(shopdata, file, indent="\t",
@@ -129,7 +157,10 @@ class Shop(commands.Cog, name="shop"):
         with open("database/userdata.json", 'w') as file:
             json.dump(userdata, file, indent="\t",
                       ensure_ascii=False)
-        await context.author.add_roles(role)
+        with open("database/itemdata.json", 'w') as file:
+            json.dump(itemdata, file, indent="\t",
+                      ensure_ascii=False)
+
         embed = discord.Embed(
             title="Shop",
             description=f"`{item}`을(를) 구매하였습니다.",
@@ -141,12 +172,12 @@ class Shop(commands.Cog, name="shop"):
         await Log_channel.send(embed=log.shop_buy(context.author.id, item))
 
     @shop.command(
-        name="add",
-        description="상점에 아이템을 추가합니다. (창조자 전용)",
+        name="addrole",
+        description="상점에 역할을 추가합니다. (창조자 전용)",
     )
     @app_commands.describe(item="아이템 이름", roleid="역할ID", price="가격", amount="개수", condition="구매 조건")
     @checks.is_owner()
-    async def shop_add(self, context: Context, item: str, roleid: str, price: int, amount: int, condition: typing.Literal['없음', '인증 칭호 보유']) -> None:
+    async def shop_addrole(self, context: Context, item: str, roleid: str, price: int, amount: int, condition: typing.Literal['없음', '인증 칭호 보유']) -> None:
         with open('database/shop.json') as file:
             shopdata = json.load(file)
 
@@ -159,10 +190,45 @@ class Shop(commands.Cog, name="shop"):
             item: {
                 "NAME": item,
                 "TYPE": "ROLE",
-                        "ID": int(roleid),
-                        "PRICE": price,
-                        "AMOUNT": amount,
-                        "CONDITION": condition
+                "ID": int(roleid),
+                "PRICE": price,
+                "AMOUNT": amount,
+                "CONDITION": condition
+            }
+        }
+        shopdata.update(newItem)
+        with open("database/shop.json", 'w') as file:
+            json.dump(shopdata, file, indent="\t",
+                      ensure_ascii=False)
+        embed = discord.Embed(
+            title="Shop",
+            description=f"`{item}`을(를) 상점에 등록하였습니다.",
+            color=discord.Color.green()
+        )
+        await context.send(embed=embed)
+
+    @shop.command(
+        name="additem",
+        description="상점에 아이템을 추가합니다. (창조자 전용)",
+    )
+    @app_commands.describe(item="아이템 이름", price="가격", amount="개수", condition="구매 조건")
+    @checks.is_owner()
+    async def shop_additem(self, context: Context, item: str, price: int, amount: int, condition: typing.Literal['없음', '인증 칭호 보유']) -> None:
+        with open('database/shop.json') as file:
+            shopdata = json.load(file)
+
+        if condition == "없음":
+            condition = None
+        elif condition == "인증 칭호 보유":
+            condition = "CHECK"
+
+        newItem = {
+            item: {
+                "NAME": item,
+                "TYPE": "ITEM",
+                "PRICE": price,
+                "AMOUNT": amount,
+                "CONDITION": condition
             }
         }
         shopdata.update(newItem)

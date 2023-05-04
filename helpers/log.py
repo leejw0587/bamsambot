@@ -186,3 +186,27 @@ def give(executorid, targetid, type, amount):
     )
     embed.set_footer(text=timecode)
     return embed
+
+
+def item_add(executorid, targetid, itemname):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `ITEM_ADD`\nExecutor: <@{executorid}>\nTarget: <@{targetid}>\nItem: `{itemname}`",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed
+
+
+def item_remove(executorid, targetid, itemname):
+    now = datetime.now()
+    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
+    embed = discord.Embed(
+        title="Bamsambot Log",
+        description=f"Type: `ITEM_REMOVE`\nExecutor: <@{executorid}>\nTarget: <@{targetid}>\nItem: `{itemname}`",
+        color=discord.Color.blurple()
+    )
+    embed.set_footer(text=timecode)
+    return embed

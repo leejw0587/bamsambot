@@ -45,6 +45,24 @@ class Inventory(commands.Cog, name="inventory"):
             with open("database/userdata.json", 'w', encoding="utf-8") as file:
                 json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
+        with open("database/itemdata.json", encoding="utf-8") as file:
+            itemdata = json.load(file)
+        if str(user.id) in itemdata:
+            pass
+        else:
+            newUser = {
+                str(user.id): {
+                    "username": str(user),
+                    "userid": str(user.id),
+                    "inventory": [],
+                    "voice_emoji_modify": False,
+                    "voice_title_modify": False
+                }
+            }
+            itemdata.update(newUser)
+            with open("database/itemdata.json", 'w', encoding="utf-8") as file:
+                json.dump(itemdata, file, indent="\t", ensure_ascii=False)
+
         with open("database/userdata.json") as file:
             userdata = json.load(file)
         USERNAME = userdata[str(user.id)]["username"]
@@ -53,6 +71,11 @@ class Inventory(commands.Cog, name="inventory"):
         TOKEN = userdata[str(user.id)]["token"]
         XP = formatter.numtostr(userdata[str(user.id)]["xp"])
         LEVEL = userdata[str(user.id)]["level"]
+
+        with open("database/itemdata.json") as file:
+            itemdata = json.load(file)
+        ITEM_LIST = itemdata[str(user.id)]["inventory"]
+        ITEM_STR = "\n".join(ITEM_LIST)
 
         TARGETXP = formatter.numtostr((LEVEL + 1) * 100)
         PERIDOT = format(PERIDOT, ',d')
@@ -63,6 +86,8 @@ class Inventory(commands.Cog, name="inventory"):
                          icon_url=user.avatar)
         embed.add_field(
             name="Wallet", value=f"{PERIDOT_EMOJI} {PERIDOT}\n{TOKEN_EMOJI} {TOKEN}", inline=False)
+        embed.add_field(
+            name="Items", value=f"{ITEM_STR}", inline=False)
         await context.send(embed=embed)
 
     @commands.hybrid_group(
@@ -354,6 +379,83 @@ class Inventory(commands.Cog, name="inventory"):
             Log_channel = discord.utils.get(context.guild.channels,
                                             id=self.bot.config["log_channel_id"])
             await Log_channel.send(embed=log.give(context.author.id, user.id, type, amount))
+
+    @commands.hybrid_group(
+        name="item",
+        description="유저의 아이템을 관리합니다.",
+    )
+    async def item(self, context: Context) -> None:
+        if context.invoked_subcommand is None:
+            embed = discord.Embed(
+                title="Error!",
+                description="Subcommand를 작성해주세요. \n\n**Subcommands:**\n`add` - 유저에게 아이템을 추가합니다.\n`remove` - 유저로부터 아이템을 제거합니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+
+    @item.command(
+        name="add",
+        description="유저에게 아이템을 추가합니다. (창조자 전용)",
+    )
+    @app_commands.describe(user="대상 유저", item="추가할 아이템")
+    @checks.is_owner()
+    async def item_add(self, context: Context, user: discord.User, item: str) -> None:
+        with open("database/itemdata.json", encoding="utf-8") as file:
+            itemdata = json.load(file)
+
+        if str(user.id) not in itemdata:
+            embed = discord.Embed(
+                title="Error!",
+                description="유저를 찾을 수 없습니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        else:
+            itemdata[str(user.id)]["inventory"].append(item)
+            with open("database/itemdata.json", 'w', encoding="utf-8") as file:
+                json.dump(itemdata, file, indent="\t", ensure_ascii=False)
+
+            embed = discord.Embed(
+                title="아이템 추가 완료",
+                description=f"**{user}**에게 `{item}`을(를) 추가하였습니다.",
+                color=discord.Color.green()
+            )
+            await context.send(embed=embed)
+            Log_channel = discord.utils.get(context.guild.channels,
+                                            id=self.bot.config["log_channel_id"])
+            await Log_channel.send(embed=log.item_add(context.author.id, user.id, item))
+
+    @item.command(
+        name="remove",
+        description="유저로부터 아이템을 제거합니다. (창조자 전용)",
+    )
+    @app_commands.describe(user="대상 유저", item="추가할 아이템")
+    @checks.is_owner()
+    async def item_remove(self, context: Context, user: discord.User, item: str) -> None:
+        with open("database/itemdata.json", encoding="utf-8") as file:
+            itemdata = json.load(file)
+
+        if str(user.id) not in itemdata:
+            embed = discord.Embed(
+                title="Error!",
+                description="유저를 찾을 수 없습니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        else:
+            itemdata[str(user.id)]["inventory"].remove(item)
+            with open("database/itemdata.json", 'w', encoding="utf-8") as file:
+                json.dump(itemdata, file, indent="\t", ensure_ascii=False)
+
+            embed = discord.Embed(
+                title="아이템 제거 완료",
+                description=f"**{user}**로부터 `{item}`을(를) 제거하였습니다.",
+                color=discord.Color.green()
+            )
+            await context.send(embed=embed)
+            Log_channel = discord.utils.get(context.guild.channels,
+                                            id=self.bot.config["log_channel_id"])
+            await Log_channel.send(embed=log.item_remove(context.author.id, user.id, item))
 
 
 async def setup(bot):
