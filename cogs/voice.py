@@ -1,5 +1,7 @@
 import discord
 import asyncio
+import json
+import emoji as emo
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -330,6 +332,105 @@ class voice(commands.Cog):
     #                     "UPDATE voiceChannel SET userID = ? WHERE voiceID = ?", (id, channel.id))
     #         conn.commit()
     #         conn.close()
+
+    @voice.command(name="name", description="본인 채널의 이름을 변경합니다.")
+    @app_commands.describe(name="변경할 이름")
+    async def voice_name(self, context, name: str):
+        with open("database/itemdata.json", encoding="utf-8") as file:
+            itemdata = json.load(file)
+
+        if itemdata[str(context.author.id)]["voice_title_modify"] == False:
+            embed = discord.Embed(
+                title="Error!",
+                description=f"`개인 통화방 제목 변경권` 아이템이 필요합니다!",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        else:
+            conn = sqlite3.connect('database/voice.db')
+            c = conn.cursor()
+            id = context.author.id
+            c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+            voice = c.fetchone()
+            if voice is None:
+                embed = discord.Embed(
+                    title="Error!",
+                    description=f"유저가 소유한 채널을 찾을 수 없습니다.",
+                    color=discord.Color.red()
+                )
+                await context.send(embed=embed)
+            else:
+                channelID = voice[0]
+                channel = self.bot.get_channel(channelID)
+                channelName = channel.name
+                channelEmoji = channelName[:2]
+                await channel.edit(name=f"{channelEmoji}{name}")
+                embed = discord.Embed(
+                    title="개인 통화방 제목 변경",
+                    description=f"개인 통화방의 제목이 `{name}`(으)로 변경되었습니다.",
+                    color=discord.Color.blurple()
+                )
+                await context.send(embed=embed)
+            conn.commit()
+            conn.close()
+
+    @voice.command(name="emoji", description="본인 채널의 이모지를 변경합니다.")
+    @app_commands.describe(emoji="변경할 이모지")
+    async def voice_emoji(self, context, emoji: str):
+        with open("database/itemdata.json", encoding="utf-8") as file:
+            itemdata = json.load(file)
+
+        if itemdata[str(context.author.id)]["voice_emoji_modify"] == False:
+            embed = discord.Embed(
+                title="Error!",
+                description=f"`개인 통화방 이모지 변경권` 아이템이 필요합니다!",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        else:
+            conn = sqlite3.connect('database/voice.db')
+            c = conn.cursor()
+            id = context.author.id
+            c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+            voice = c.fetchone()
+            if voice is None:
+                embed = discord.Embed(
+                    title="Error!",
+                    description=f"유저가 소유한 채널을 찾을 수 없습니다.",
+                    color=discord.Color.red()
+                )
+                await context.send(embed=embed)
+            if not emo.is_emoji(emoji):
+                embed = discord.Embed(
+                    title="Error!",
+                    description=f"올바른 형식의 이모지가 아닙니다!",
+                    color=discord.Color.red()
+                )
+                await context.send(embed=embed)
+            else:
+                channelID = voice[0]
+                channel = self.bot.get_channel(channelID)
+                channelName = channel.name[2:]
+                await channel.edit(name=f"{emoji}：{channelName}")
+                embed = discord.Embed(
+                    title="개인 통화방 이모지 변경",
+                    description=f"개인 통화방의 이모지가 `{emoji}`로 변경되었습니다.",
+                    color=discord.Color.blurple()
+                )
+                await context.send(embed=embed)
+            conn.commit()
+            conn.close()
+
+    @voice.command(name="fix", description="DB Cleaner (개발자 전용)")
+    @checks.is_dev()
+    async def voice_fix(self, context, userid: str):
+        conn = sqlite3.connect('database/voice.db')
+        c = conn.cursor()
+        id = int(userid)
+        c.execute('DELETE FROM voiceChannel WHERE userID=?', (id,))
+        conn.commit()
+        conn.close()
+        await context.send("CLEANED")
 
 
 async def setup(bot):

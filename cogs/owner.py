@@ -49,6 +49,24 @@ class JoinButton(discord.ui.View):
                 with open("database/userdata.json", 'w', encoding="utf-8") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
+            with open("database/itemdata.json", encoding="utf-8") as file:
+                itemdata = json.load(file)
+            if str(user.id) in itemdata:
+                pass
+            else:
+                newUser = {
+                    str(user.id): {
+                        "username": str(user),
+                        "userid": str(user.id),
+                        "inventory": [],
+                        "voice_emoji_modify": False,
+                        "voice_title_modify": False
+                    }
+                }
+                itemdata.update(newUser)
+                with open("database/itemdata.json", 'w', encoding="utf-8") as file:
+                    json.dump(itemdata, file, indent="\t", ensure_ascii=False)
+
         else:
             await interaction.user.send(embed=embeds.EmbedRed("입장", "이미 입장한 계정입니다!"))
 
@@ -90,6 +108,24 @@ class JoinButton(discord.ui.View):
                 with open("database/userdata.json", 'w', encoding="utf-8") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
+            with open("database/itemdata.json", encoding="utf-8") as file:
+                itemdata = json.load(file)
+            if str(user.id) in itemdata:
+                pass
+            else:
+                newUser = {
+                    str(user.id): {
+                        "username": str(user),
+                        "userid": str(user.id),
+                        "inventory": [],
+                        "voice_emoji_modify": False,
+                        "voice_title_modify": False
+                    }
+                }
+                itemdata.update(newUser)
+                with open("database/itemdata.json", 'w', encoding="utf-8") as file:
+                    json.dump(itemdata, file, indent="\t", ensure_ascii=False)
+
         else:
             await interaction.user.send(embed=embeds.EmbedRed("入場", "すでに入場しているアカウントです！"))
 
@@ -108,28 +144,6 @@ class JoinButton(discord.ui.View):
             await interaction.user.add_roles(SubACC_Role)
             await interaction.user.remove_roles(Temp_Role)
             await interaction.user.send(embed=embeds.EmbedGreen("Join", "You have joined Bamsam Crew!"))
-
-            with open("database/userdata.json", encoding="utf-8") as file:
-                userdata = json.load(file)
-            if str(user.id) in userdata:
-                pass
-            else:
-                newUser = {
-                    str(user.id): {
-                        "username": str(user),
-                        "userid": str(user.id),
-                        "peridot": 0,
-                        "token": 0,
-                        "xp": 0,
-                        "level": 0,
-                        "attendance": 0,
-                        "last_attendance": ""
-                    }
-                }
-                userdata.update(newUser)
-                with open("database/userdata.json", 'w', encoding="utf-8") as file:
-                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
-
         else:
             await interaction.user.send(embed=embeds.EmbedRed("Join", "You have already joined Bamsam Crew!"))
 

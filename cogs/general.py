@@ -262,48 +262,58 @@ class General(commands.Cog, name="general"):
         description="출석 체크 커맨드입니다.",
     )
     async def attendance(self, context: Context) -> None:
-        with open("database/userdata.json", encoding="utf-8") as file:
-            userdata = json.load(file)
-
-        today = str(date.today())
-        try:
-            attendance_count = userdata[str(context.author.id)]["attendance"]
-
-            if userdata[str(context.author.id)]["last_attendance"] == today:
-                embed = discord.Embed(
-                    title="Error!",
-                    description=f"오늘({today})이미 출석을 했습니다!\n누적 출석 횟수: `{attendance_count}`회",
-                    color=discord.Color.red()
-                )
-                await context.send(embed=embed)
-            else:
-
-                reward = random.randint(1, 100)
-
-                userdata[str(context.author.id)]["last_attendance"] = today
-                userdata[str(context.author.id)]["attendance"] += 1
-                userdata[str(context.author.id)]["peridot"] = userdata[str(
-                    context.author.id)]["peridot"] + int(reward)
-                with open("database/userdata.json", 'w', encoding="utf-8") as file:
-                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
-
-                attendance_count = userdata[str(
-                    context.author.id)]["attendance"]
-
-                embed = discord.Embed(
-                    title="출석 완료!",
-                    description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n출석 보상: {reward} {PERIDOT_EMOJI}",
-                    color=discord.Color.blurple()
-                )
-
-                await context.send(embed=embed)
-        except:
+        if context.channel.id != 1070685674178609213:
             embed = discord.Embed(
                 title="Error!",
-                description="유저를 찾을 수 없습니다.\n`/inventory`커맨드를 한 번 실행한 후 다시 시도해주세요.",
+                description=f"<#1070685674178609213>에서만 이 명령어를 사용할 수 있습니다!",
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
+        else:
+            with open("database/userdata.json", encoding="utf-8") as file:
+                userdata = json.load(file)
+
+            today = str(date.today())
+            try:
+                attendance_count = userdata[str(
+                    context.author.id)]["attendance"]
+
+                if userdata[str(context.author.id)]["last_attendance"] == today:
+                    embed = discord.Embed(
+                        title="Error!",
+                        description=f"오늘({today})이미 출석을 했습니다!\n누적 출석 횟수: `{attendance_count}`회",
+                        color=discord.Color.red()
+                    )
+                    await context.send(embed=embed)
+                else:
+
+                    reward = random.randint(1, 100)
+
+                    userdata[str(context.author.id)]["last_attendance"] = today
+                    userdata[str(context.author.id)]["attendance"] += 1
+                    userdata[str(context.author.id)]["peridot"] = userdata[str(
+                        context.author.id)]["peridot"] + int(reward)
+                    with open("database/userdata.json", 'w', encoding="utf-8") as file:
+                        json.dump(userdata, file, indent="\t",
+                                  ensure_ascii=False)
+
+                    attendance_count = userdata[str(
+                        context.author.id)]["attendance"]
+
+                    embed = discord.Embed(
+                        title="출석 완료!",
+                        description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n출석 보상: {reward} {PERIDOT_EMOJI}",
+                        color=discord.Color.blurple()
+                    )
+
+                    await context.send(embed=embed)
+            except:
+                embed = discord.Embed(
+                    title="Error!",
+                    description="유저를 찾을 수 없습니다.\n`/inventory`커맨드를 한 번 실행한 후 다시 시도해주세요.",
+                    color=discord.Color.red()
+                )
+                await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="createpc",
