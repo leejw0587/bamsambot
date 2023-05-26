@@ -346,6 +346,7 @@ class voice(commands.Cog):
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
+            return
         else:
             conn = sqlite3.connect('database/voice.db')
             c = conn.cursor()
@@ -359,6 +360,7 @@ class voice(commands.Cog):
                     color=discord.Color.red()
                 )
                 await context.send(embed=embed)
+                return
             else:
                 channelID = voice[0]
                 channel = self.bot.get_channel(channelID)
@@ -387,6 +389,7 @@ class voice(commands.Cog):
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
+            return
         else:
             conn = sqlite3.connect('database/voice.db')
             c = conn.cursor()
@@ -400,6 +403,7 @@ class voice(commands.Cog):
                     color=discord.Color.red()
                 )
                 await context.send(embed=embed)
+                return
             if not emo.is_emoji(emoji):
                 embed = discord.Embed(
                     title="Error!",
@@ -407,6 +411,7 @@ class voice(commands.Cog):
                     color=discord.Color.red()
                 )
                 await context.send(embed=embed)
+                return
             else:
                 channelID = voice[0]
                 channel = self.bot.get_channel(channelID)
