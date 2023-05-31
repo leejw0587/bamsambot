@@ -296,7 +296,7 @@ class General(commands.Cog, name="general"):
                     userdata[str(context.author.id)]["peridot"] = userdata[str(
                         context.author.id)]["peridot"] + int(reward)
                     try:
-                        bpUserdata[str(context.author.id)]["xp"] += 3800
+                        bpUserdata[str(context.author.id)]["xp"] += 3600
                     except:
                         pass
                     with open("database/userdata.json", 'w', encoding="utf-8") as file:
