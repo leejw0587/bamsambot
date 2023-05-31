@@ -272,6 +272,8 @@ class General(commands.Cog, name="general"):
         else:
             with open("database/userdata.json", encoding="utf-8") as file:
                 userdata = json.load(file)
+            with open('database/bpass_userdata.json', 'r') as file:
+                bpUserdata = json.load(file)
 
             today = str(date.today())
             try:
@@ -293,16 +295,22 @@ class General(commands.Cog, name="general"):
                     userdata[str(context.author.id)]["attendance"] += 1
                     userdata[str(context.author.id)]["peridot"] = userdata[str(
                         context.author.id)]["peridot"] + int(reward)
+                    try:
+                        bpUserdata[str(context.author.id)]["xp"] += 3800
+                    except:
+                        pass
                     with open("database/userdata.json", 'w', encoding="utf-8") as file:
                         json.dump(userdata, file, indent="\t",
                                   ensure_ascii=False)
+                    with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:
+                        json.dump(bpUserdata, file, indent="\t", ensure_ascii=False)
 
                     attendance_count = userdata[str(
                         context.author.id)]["attendance"]
 
                     embed = discord.Embed(
                         title="출석 완료!",
-                        description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n출석 보상: {reward} {PERIDOT_EMOJI}",
+                        description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n출석 보상: {reward} {PERIDOT_EMOJI}\n+3800bxp",
                         color=discord.Color.blurple()
                     )
 
