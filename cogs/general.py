@@ -310,7 +310,7 @@ class General(commands.Cog, name="general"):
 
                     embed = discord.Embed(
                         title="출석 완료!",
-                        description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n**[출석 보상]**\n+ {reward} {PERIDOT_EMOJI}\n+ 3800bxp",
+                        description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n**[출석 보상]**\n+ {reward} {PERIDOT_EMOJI}\n+ 3600bxp",
                         color=discord.Color.blurple()
                     )
 

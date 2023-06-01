@@ -24,8 +24,6 @@ class Bpass(commands.Cog, name="bpass"):
         with open('database/bpass_userdata.json', 'r') as file:
             bpUserdata = json.load(file)
         userid = member.id
-        if bpUserdata[str(userid)]["level"] >= 30:
-            return
         if str(userid) not in bpUserdata:
             newUser = {
                 str(userid): {
@@ -45,10 +43,11 @@ class Bpass(commands.Cog, name="bpass"):
             with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:
                 json.dump(bpUserdata, file, indent="\t", ensure_ascii=False)
 
+        if bpUserdata[str(userid)]["level"] >= 30:
+            return
         if (before.channel == None):
             joinTime = round(time.time())
             bpUserdata[str(userid)]["joinTime"] = joinTime
-
         elif after.channel == None:
             leaveTime = round(time.time())
             passedTime = leaveTime - bpUserdata[str(userid)]["joinTime"]
