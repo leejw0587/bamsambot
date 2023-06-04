@@ -83,7 +83,8 @@ class Bpass(commands.Cog, name="bpass"):
             elif bpRewards[str(currentLevel+1)]["reward"]["type"] == "ROLE":
                 role = member.guild.get_role(bpRewards[str(currentLevel+1)]["reward"]["reward"])
                 await member.add_roles(role)
-                REWARD = role.mention()
+                roleid = bpRewards[str(currentLevel+1)]["reward"]["reward"]
+                REWARD = f"<@&{roleid}>"
                 EMOJI = None
             elif bpRewards[str(currentLevel+1)]["reward"]["type"] == "ITEM":
                 REWARD = bpRewards[str(currentLevel+1)]["reward"]["reward"]

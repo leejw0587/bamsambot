@@ -70,7 +70,7 @@ class Level(commands.Cog, name="level"):
 
         embed = discord.Embed(
             title="Bamsam Leaderboard",
-            color=embeds.Color.blurple()
+            color=discord.Color.blurple()
         )
 
         for amt in total_xp:
