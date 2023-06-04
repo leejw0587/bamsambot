@@ -91,7 +91,7 @@ class Level(commands.Cog, name="level"):
             else:
                 index += 1
 
-        await context.channel.send(embed=embed)
+        await context.send(embed=embed)
 
     @commands.hybrid_group(
         name="level",
