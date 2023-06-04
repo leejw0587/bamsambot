@@ -84,11 +84,11 @@ class Bpass(commands.Cog, name="bpass"):
                 role = member.guild.get_role(bpRewards[str(currentLevel+1)]["reward"]["reward"])
                 await member.add_roles(role)
                 roleid = bpRewards[str(currentLevel+1)]["reward"]["reward"]
-                REWARD = f"<@&{roleid}>"
-                EMOJI = None
+                REWARD = "역할 보상"
+                EMOJI = ""
             elif bpRewards[str(currentLevel+1)]["reward"]["type"] == "ITEM":
                 REWARD = bpRewards[str(currentLevel+1)]["reward"]["reward"]
-                EMOJI = None
+                EMOJI = ""
                 with open("database/itemdata.json", encoding="utf-8") as file:
                     itemdata = json.load(file)
                 itemdata[str(member.id)]["inventory"].append(REWARD)
