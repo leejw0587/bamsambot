@@ -295,15 +295,15 @@ class General(commands.Cog, name="general"):
                     userdata[str(context.author.id)]["attendance"] += 1
                     userdata[str(context.author.id)]["peridot"] = userdata[str(
                         context.author.id)]["peridot"] + int(reward)
-                    try:
-                        bpUserdata[str(context.author.id)]["xp"] += 3600
-                    except:
-                        pass
+                    # try:
+                    #     bpUserdata[str(context.author.id)]["xp"] += 3600
+                    # except:
+                    #     pass
                     with open("database/userdata.json", 'w', encoding="utf-8") as file:
                         json.dump(userdata, file, indent="\t",
                                   ensure_ascii=False)
-                    with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:
-                        json.dump(bpUserdata, file, indent="\t", ensure_ascii=False)
+                    # with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:
+                    #     json.dump(bpUserdata, file, indent="\t", ensure_ascii=False)
 
                     attendance_count = userdata[str(
                         context.author.id)]["attendance"]
