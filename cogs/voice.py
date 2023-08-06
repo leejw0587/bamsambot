@@ -218,6 +218,20 @@ class voice(commands.Cog):
         id = context.author.id
         c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
         voice = c.fetchone()
+        if limit > 99:
+            embed = discord.Embed(
+                title="Error!",
+                description=f"최대 인원은 99명 이하로만 설정 가능합니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        if limit < 0:
+            embed = discord.Embed(
+                title="Error!",
+                description=f"최대 인원은 0명 이상으로만 설정 가능합니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
         if voice is None:
             embed = discord.Embed(
                 title="Error!",
