@@ -225,6 +225,7 @@ class voice(commands.Cog):
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
+            return
         if limit < 0:
             embed = discord.Embed(
                 title="Error!",
@@ -232,6 +233,7 @@ class voice(commands.Cog):
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
+            return
         if voice is None:
             embed = discord.Embed(
                 title="Error!",
@@ -239,6 +241,7 @@ class voice(commands.Cog):
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
+            return
         else:
             channelID = voice[0]
             channel = self.bot.get_channel(channelID)
