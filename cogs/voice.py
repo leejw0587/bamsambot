@@ -211,6 +211,38 @@ class voice(commands.Cog):
         conn.commit()
         conn.close()
 
+    @voice.command(name="limit", description="본인의 채널의 최대 인원을 설정합니다.")
+    async def voice_limit(self, context: Context, limit: int = 0) -> None:
+        conn = sqlite3.connect('database/voice.db')
+        c = conn.cursor()
+        id = context.author.id
+        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+        voice = c.fetchone()
+        if voice is None:
+            embed = discord.Embed(
+                title="Error!",
+                description=f"유저가 소유한 채널을 찾을 수 없습니다.",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+        else:
+            channelID = voice[0]
+            channel = self.bot.get_channel(channelID)
+            await channel.edit(user_limit=limit)
+
+            if limit == 0:
+                limit = '제한 없음'
+            else:
+                limit = str(limit) + "명"
+            embed = discord.Embed(
+                title="채널 인원 설정",
+                description=f"채널의 최대 인원이 `{limit}`으로 설정되었습니다.",
+                color=discord.Color.blurple()
+            )
+            await context.send(embed=embed)
+        conn.commit()
+        conn.close()
+
     # @voice.command(aliases=["allow"])
     # async def permit(self, context, member: discord.Member):
     #     conn = sqlite3.connect('database/voice.db')
