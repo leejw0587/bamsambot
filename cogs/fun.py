@@ -84,7 +84,7 @@ class RockPaperScissors(discord.ui.Select):
 
         if user_choice_index == bot_choice_index:
             result_embed.description = f"**비겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
-            result_embed.colour = discord.colour.blue()
+            result_embed.colour = discord.Color.blue()
         elif user_choice_index == 0 and bot_choice_index == 2:
             result_embed.description = f"**당신이 이겼습니다!**\n유저의 선택: {user_choice}\n뱀샘봇의 선택: {bot_choice}"
             result_embed.colour = discord.Color.green()
@@ -408,6 +408,271 @@ class Fun(commands.Cog, name="fun"):
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
+
+
+    @commands.hybrid_group(
+        name="unanimous",
+        description="이심전심 관련 명령어를 제공합니다."
+    )
+    async def unanimous(self, context: Context):
+        return
+
+    @unanimous.command(
+        name="join",
+        description="이심전심 게임에 참여합니다."
+    )
+    async def unanimous_join(self, context: Context) -> None:
+        with open("database/unanimous.json", encoding="utf-8") as file:
+            unanimousData = json.load(file)
+
+        if unanimousData["active"] == True:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"진행중인 게임이 종료된 후에 참여할 수 있습니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+            
+        elif str(context.author.id) in unanimousData["participants"]:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"이미 게임에 참여했습니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+        else:
+            unanimousData["participants"].append(str(context.author.id))
+            
+            with open("database/unanimous.json", 'w', encoding="utf-8") as file:
+                json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
+
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"게임에 참여하였습니다!",
+                color=discord.Color.green()
+            )
+            return await context.send(embed=embed)
+        
+    
+    @unanimous.command(
+        name="leave",
+        description="이심전심 게임에서 떠납니다."
+    )
+    async def unanimous_leave(self, context: Context) -> None:
+        with open("database/unanimous.json", encoding="utf-8") as file:
+            unanimousData = json.load(file)
+
+        if unanimousData["active"] == True:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"진행중인 게임이 종료된 후에 퇴장할 수 있습니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+            
+        elif str(context.author.id) not in unanimousData["participants"]:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"아직 게임에 참여하지 않았습니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+        else:
+            unanimousData["participants"].remove(str(context.author.id))
+            
+            with open("database/unanimous.json", 'w', encoding="utf-8") as file:
+                json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
+
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"게임에서 떠났습니다.",
+                color=discord.Color.green()
+            )
+            return await context.send(embed=embed)
+        
+    @unanimous.command(
+        name="userlist",
+        description="이심전심 게임의 참여자 목록을 보여줍니다."
+    )
+    async def unanimous_userlist(self, context: Context) -> None:
+        with open("database/unanimous.json", encoding="utf-8") as file:
+            unanimousData = json.load(file)
+
+        userList = []
+        for i in unanimousData["participants"]:
+            i = f"<@{i}>"
+            userList.append(i)
+
+        userList = "\n".join(userList)
+        embed = discord.Embed(
+                title="이심전심",
+                description=f"**<참여자 목록>**\n{userList}",
+                color=discord.Color.green()
+            )
+        return await context.send(embed=embed)
+    
+    @unanimous.command(
+        name="start",
+        description="이심전심 게임을 시작합니다."
+    )
+    async def unanimous_start(self, context: Context) -> None:
+        with open("database/unanimous.json", encoding="utf-8") as file:
+            unanimousData = json.load(file)
+        unanimousData["active"] = True
+        
+        topic = random.choice(unanimousData["topics"])
+        unanimousData["currentTopic"] = topic
+        embed = discord.Embed(
+                title="이심전심",
+                description=f"**[주제]** {topic}\n`/unanimous answer`명령어로 답을 입력해주세요!",
+                color=discord.Color.blurple()
+            )
+        await context.send(embed=embed)
+
+        with open("database/unanimous.json", 'w', encoding="utf-8") as file:
+            json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
+        
+    @unanimous.command(
+        name="answer",
+        description="이심전심 주제에 답을 입력합니다."
+    )
+    async def unanimous_answer(self, context: Context, text: str) -> None:
+        with open("database/unanimous.json", encoding="utf-8") as file:
+            unanimousData = json.load(file)
+        
+        if unanimousData["active"] == False:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"활성화된 게임이 없습니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+        elif str(context.author.id) not in unanimousData["participants"]:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"게임에 참여하지 않았습니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+        elif str(context.author.id) in unanimousData["answers"]:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"이미 답을 제출하였습니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+        else:
+            with open("database/unanimous.json", encoding="utf-8") as file:
+                unanimousData = json.load(file)
+
+            newAnswer = {"answers": {str(context.author.id): text}}
+            unanimousData.update(newAnswer)
+            with open("database/unanimous.json", 'w', encoding="utf-8") as file:
+                json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
+            
+            allParticipants = len(unanimousData["participants"])
+            allAnsweredUsers = len(unanimousData["answers"])
+
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"답 제출 완료! [{allAnsweredUsers}/{allParticipants}]",
+                color=discord.Color.green()
+            )
+            await context.send(embed=embed)
+
+            if allParticipants == allAnsweredUsers:
+                with open("database/unanimous.json", encoding="utf-8") as file:
+                    unanimousData = json.load(file)
+
+                topic = unanimousData["currentTopic"]
+
+                answerStr = "\n".join([f"<@{key}>: {value}" for key, value in unanimousData["answers"].items()])
+
+                embed = discord.Embed(
+                    title="이심전심",
+                    description=f"**[주제]** {topic}\n{answerStr}",
+                    color=discord.Color.blurple()
+                    )
+                await context.send(embed=embed)
+
+                unanimousData["participants"] = []
+                unanimousData["active"] = False
+                unanimousData["currentTopic"] = ""
+                unanimousData["answers"] = {}
+
+                with open("database/unanimous.json", 'w', encoding="utf-8") as file:
+                    json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
+
+            
+
+    @unanimous.command(
+        name="topiclist",
+        description="이심전심 게임의 주제 목록을 보여줍니다. (창조자 전용)"
+    )
+    @checks.is_owner()
+    async def unanimous_topiclist(self, context: Context) -> None:
+        with open("database/unanimous.json", encoding="utf-8") as file:
+            unanimousData = json.load(file)
+
+        topicStr = []
+        for i in unanimousData["topics"]:
+            topicStr.append(i)
+
+        topicStr = "\n".join(topicStr)
+        embed = discord.Embed(
+                title="이심전심",
+                description=f"**<주제 목록>**\n{topicStr}",
+                color=discord.Color.green()
+            )
+        return await context.send(embed=embed)
+    
+    @unanimous.command(
+        name="topicadd",
+        description="이심전심 게임에 주제를 추가합니다. (창조자 전용)"
+    )
+    @checks.is_owner()
+    async def unanimous_topicadd(self, context: Context, topic: str) -> None:
+        with open("database/unanimous.json", encoding="utf-8") as file:
+            unanimousData = json.load(file)
+        
+        unanimousData["topics"].append(topic)
+        with open("database/unanimous.json", 'w', encoding="utf-8") as file:
+            json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
+
+        embed = discord.Embed(
+            title="이심전심",
+            description=f"주제에 `{topic}`을(를) 추가하였습니다.",
+            color=discord.Color.green()
+        )
+        return await context.send(embed=embed)
+
+    @unanimous.command(
+        name="topicremove",
+        description="이심전심 게임에서 주제를 제거합니다. (창조자 전용)"
+    )
+    @checks.is_owner()
+    async def unanimous_topicremove(self, context: Context, topic: str) -> None:
+        with open("database/unanimous.json", encoding="utf-8") as file:
+            unanimousData = json.load(file)
+        
+        try:
+            unanimousData["topics"].remove(topic)
+            with open("database/unanimous.json", 'w', encoding="utf-8") as file:
+                json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
+
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"주제에서 `{topic}`을(를) 제거하였습니다.",
+                color=discord.Color.green()
+            )
+            return await context.send(embed=embed)
+        except:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"해당 주제를 제거할 수 없습니다.",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
 
 
 async def setup(bot):
