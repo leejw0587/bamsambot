@@ -565,8 +565,8 @@ class Fun(commands.Cog, name="fun"):
             with open("database/unanimous.json", encoding="utf-8") as file:
                 unanimousData = json.load(file)
 
-            newAnswer = {"answers": {str(context.author.id): text}}
-            unanimousData.update(newAnswer)
+            newAnswer = {str(context.author.id): text}
+            unanimousData["answers"].update(newAnswer)
             with open("database/unanimous.json", 'w', encoding="utf-8") as file:
                 json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
             
