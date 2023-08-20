@@ -518,19 +518,38 @@ class Fun(commands.Cog, name="fun"):
     async def unanimous_start(self, context: Context) -> None:
         with open("database/unanimous.json", encoding="utf-8") as file:
             unanimousData = json.load(file)
-        unanimousData["active"] = True
-        
-        topic = random.choice(unanimousData["topics"])
-        unanimousData["currentTopic"] = topic
-        embed = discord.Embed(
-                title="이심전심",
-                description=f"**[주제]** {topic}\n`/unanimous answer`명령어로 답을 입력해주세요!",
-                color=discord.Color.blurple()
-            )
-        await context.send(embed=embed)
 
-        with open("database/unanimous.json", 'w', encoding="utf-8") as file:
-            json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
+        if unanimousData["active"] == True:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"이미 진행중인 게임이 있습니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+        elif len(unanimousData["participants"]) < 2:
+            embed = discord.Embed(
+                title="이심전심",
+                description=f"게임을 플레이하기 위해선 최소 2명이 필요합니다!",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+
+        else:
+            with open("database/unanimous.json", encoding="utf-8") as file:
+                unanimousData = json.load(file)
+            unanimousData["active"] = True
+            
+            topic = random.choice(unanimousData["topics"])
+            unanimousData["currentTopic"] = topic
+            embed = discord.Embed(
+                    title="이심전심",
+                    description=f"**[주제]** {topic}\n`/unanimous answer`명령어로 답을 입력해주세요!",
+                    color=discord.Color.blurple()
+                )
+            await context.send(embed=embed)
+
+            with open("database/unanimous.json", 'w', encoding="utf-8") as file:
+                json.dump(unanimousData, file, indent="\t", ensure_ascii=False)
         
     @unanimous.command(
         name="answer",
