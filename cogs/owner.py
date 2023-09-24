@@ -155,10 +155,10 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="load",
-        description="cog를 로드합니다. (창조자 전용)",
+        description="cog를 로드합니다. (개발자 전용)",
     )
     @app_commands.describe(cog="로드할 cog 이름")
-    @checks.is_owner()
+    @checks.is_dev()
     async def load(self, context: Context, cog: str) -> None:
         """
         :param context: The hybrid command context.
@@ -183,10 +183,10 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="unload",
-        description="cog를 언로드합니다. (창조자 전용)",
+        description="cog를 언로드합니다. (개발자 전용)",
     )
     @app_commands.describe(cog="언로드할 cog 이름")
-    @checks.is_owner()
+    @checks.is_dev()
     async def unload(self, context: Context, cog: str) -> None:
         """
         :param context: The hybrid command context.
@@ -211,10 +211,10 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="reload",
-        description="cog를 리로드합니다. (창조자 전용)",
+        description="cog를 리로드합니다. (개발자 전용)",
     )
     @app_commands.describe(cog="리로드할 cog 이름")
-    @checks.is_owner()
+    @checks.is_dev()
     async def reload(self, context: Context, cog: str) -> None:
         """
         :param context: The hybrid command context.
@@ -236,22 +236,6 @@ class Owner(commands.Cog, name="owner"):
             color=discord.Color.green()
         )
         await context.send(embed=embed)
-
-    @commands.hybrid_command(
-        name="shutdown",
-        description="봇을 강제종료합니다. (창조자 전용)",
-    )
-    @checks.is_owner()
-    async def shutdown(self, context: Context) -> None:
-        """
-        :param context: The hybrid command context.
-        """
-        embed = discord.Embed(
-            description="Shutting down. Bye! :wave:",
-            color=discord.Color.greyple()
-        )
-        await context.send(embed=embed)
-        await self.bot.close()
 
     @commands.hybrid_command(
         name="say",
@@ -290,7 +274,7 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="createjoin",
-        description="입장 embed를 만드는 커맨드입니다. (창조자 전용)"
+        description="입장 embed를 만드는 커맨드입니다. (개발자 전용)"
     )
     @checks.is_dev()
     async def createjoin(self, context: Context) -> None:
@@ -311,7 +295,7 @@ class Owner(commands.Cog, name="owner"):
 
     @commands.hybrid_command(
         name="createname",
-        description="닉네임 embed를 만드는 커맨드입니다. (창조자 전용)"
+        description="닉네임 embed를 만드는 커맨드입니다. (개발자 전용)"
     )
     @checks.is_dev()
     async def createname(self, context: Context):

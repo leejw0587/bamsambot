@@ -399,7 +399,7 @@ class Inventory(commands.Cog, name="inventory"):
     )
     @app_commands.describe(user="대상 유저", item="추가할 아이템")
     @checks.is_owner()
-    async def item_add(self, context: Context, user: discord.User, item: str) -> None:
+    async def item_add(self, context: Context, user: discord.User, item: typing.Literal['개인 통화방 이모지 변경권', '개인 통화방 이름 변경권']) -> None:
         with open("database/itemdata.json", encoding="utf-8") as file:
             itemdata = json.load(file)
 
