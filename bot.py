@@ -10,6 +10,7 @@ import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot, Context
 from datetime import datetime
+from dotenv import load_dotenv
 
 import exceptions
 
@@ -225,4 +226,7 @@ async def load_cogs() -> None:
 
 asyncio.run(init_db())
 asyncio.run(load_cogs())
-bot.run(config["main_token"])
+
+load_dotenv()
+TOKEN = os.environ.get('main_token')
+bot.run(TOKEN)

@@ -7,6 +7,8 @@ import asyncio
 import openai
 import secrets
 import os
+
+from dotenv import load_dotenv
 from io import BytesIO
 from PIL import Image
 from discord import app_commands
@@ -19,9 +21,9 @@ from helpers import checks, embeds, log
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 RATIO = 1.1
 
-with open("config.json") as file:
-    config = json.load(file)
-openai.api_key = config["openai_api_key"]
+load_dotenv()
+OPENAI_KEY = os.environ.get('openai_api_key')
+openai.api_key = OPENAI_KEY
 
 
 class RockPaperScissors(discord.ui.Select):
