@@ -598,6 +598,17 @@ class General(commands.Cog, name="general"):
 
         await context.send(embed=embed)
 
+    @commands.hybrid_command(
+        name="invite",
+        description="뱀샘크루의 초대 링크를 보내줍니다."
+    )
+    async def invite(self, context: Context):
+        embed = discord.Embed(
+            title="초대 링크",
+            description=f"https://discord.gg/2sPgEZcMTv",
+            color=0x9C84EF
+        )
+        await context.send(embed=embed)     
 
 async def setup(bot):
     await bot.add_cog(General(bot))

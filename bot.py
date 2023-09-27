@@ -108,7 +108,7 @@ async def on_member_join(member):
     welcome_channel = bot.get_channel(1070686070011871272)
 
     embed = discord.Embed(
-        title="WELCOME", description=f"{member.mention}님, 뱀샘크루에 오신 것을 환영합니다!\n<#412231022533410817> 한 번 확인해주세요!", color=0x9C84EF)
+        title="WELCOME", description=f"{member.mention}님, 뱀샘크루에 오신 것을 환영합니다!\n<#1155885677116919848> 한 번 확인해주세요!", color=0x9C84EF)
     await welcome_channel.send(embed=embed)
 
 
