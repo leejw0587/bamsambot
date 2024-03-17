@@ -31,6 +31,7 @@ class Music(commands.Cog, name="music"):
     @commands.Cog.listener()
     async def on_wavelink_track_start(self, payload: wavelink.TrackStartEventPayload) -> None:
         player: wavelink.Player | None = payload.player
+        
         if not player:
             return
 
@@ -49,7 +50,7 @@ class Music(commands.Cog, name="music"):
             embed.set_thumbnail(url=track.artwork)
 
         if original and original.recommended:
-            embed.description = f"\n\n`(자동재생에 의해 추가된 노래임)"
+            embed.description = f"\n\n(자동재생에 의해 추가된 노래임)"
 
         await player.home.send(embed=embed)
 
@@ -58,7 +59,7 @@ class Music(commands.Cog, name="music"):
         player: wavelink.Player | None = payload.player
         if not player:
             return
-        
+
         if player.autoplay != wavelink.AutoPlayMode.disabled:
             return
         else:
@@ -67,7 +68,11 @@ class Music(commands.Cog, name="music"):
             except:
                 pass
 
-
+    @commands.Cog.listener()
+    async def on_wavelink_inactive_player(self, player: wavelink.player) -> None:
+        await player.home.send(embed=embeds.EmbedBlurple("Music", f"`{player.inactive_timeout}`초간 활동이 없어 음성 채널과 연결을 해제합니다."))
+        player.autoplay = wavelink.AutoPlayMode.disabled
+        await player.disconnect()
 
     @commands.hybrid_command(
         name="join",
@@ -127,6 +132,7 @@ class Music(commands.Cog, name="music"):
             return await context.send(embed=embeds.EmbedRed("Music", "노래를 찾을 수 없습니다."))
             
         player.autoplay = wavelink.AutoPlayMode.disabled
+        player.inactive_timeout = 60
 
         if isinstance(tracks, wavelink.Playlist):
             added: int = await player.queue.put_wait(tracks)
