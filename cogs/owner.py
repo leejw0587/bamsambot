@@ -290,8 +290,9 @@ class Owner(commands.Cog, name="owner"):
     async def newupdate(self, context: Context):
         update_channel = context.guild.get_channel(1070686029377450105)
         config = self.bot.config
-        notion_link = "https://bamsamcrew.notion.site/BamsamBot-Release-Notes-eb2cf6d3ff1b485f935ac12d8eeb960c?pvs=4"
+        notion_link = "https://bamsamcrew.notion.site/BamsamBot-Release-Notes-eb2cf6d3ff1b485f935ac12d8eeb960c"
         await update_channel.send(embed=embeds.EmbedBlurple("New Update!", f"뱀샘봇의 새로운 버전(`{config['version']}`)이 업데이트 되었습니다.\n업데이트 내용은 [여기]({notion_link})에서 확인하세요."))
+        await context.send("MESSAGE SENT", delete_after=3)
 
     @commands.hybrid_command(
         name="createname",
