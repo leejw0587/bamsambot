@@ -59,8 +59,18 @@ class Music(commands.Cog, name="music"):
         player: wavelink.Player | None = payload.player
         if not player:
             return
+        
+        members = set()
+        for member in player.channel.members:
+            members.add(member.id)
 
-        if player.autoplay != wavelink.AutoPlayMode.disabled:
+        if len(members) <= 1:
+            await player.home.send(embed=embeds.EmbedBlurple("Music", f"음성 채널에 더이상 유저가 없어 재생을 종료합니다."))
+            await player.stop(force=True)
+            player.autoplay = wavelink.AutoPlayMode.disabled
+            return
+        
+        if player.autoplay == wavelink.AutoPlayMode.enabled:
             return
         else:
             try:
@@ -73,6 +83,7 @@ class Music(commands.Cog, name="music"):
         await player.home.send(embed=embeds.EmbedBlurple("Music", f"`{player.inactive_timeout}`초간 활동이 없어 음성 채널과 연결을 해제합니다."))
         player.autoplay = wavelink.AutoPlayMode.disabled
         await player.disconnect()
+
 
     @commands.hybrid_command(
         name="join",
@@ -284,25 +295,40 @@ class Music(commands.Cog, name="music"):
 
     @commands.hybrid_command(
         name="shuffle",
-        description="[WIP] 재생목록을 무작위로 재배열합니다."
+        description="재생목록을 무작위로 재배열합니다."
     )
     async def shuffle(self, context: Context):
-        return await context.send(embed=embeds.EmbedYellow("Music", "현재 개발중인 기능입니다."))
+        player: wavelink.Player = cast(wavelink.Player, context.voice_client)
+        queue = player.queue
+
+        queue.shuffle()
+        
+        await context.send(embed=embeds.EmbedBlurple("Music", f"재생목록을 재배열하였습니다."))
     
     @commands.hybrid_command(
         name="swap",
-        description="[WIP] 두 노래의 재생 순서를 바꿉니다."
+        description="두 노래의 재생 순서를 바꿉니다."
     )
     @app_commands.describe(first="바꿀 노래의 번호", second="바꿀 노래의 번호")
     async def swap(self, context: Context, first: int, second: int):
-        return await context.send(embed=embeds.EmbedYellow("Music", "현재 개발중인 기능입니다."))
+        player: wavelink.Player = cast(wavelink.Player, context.voice_client)
+        queue = player.queue
+        
+        queue.swap(first-1, second-1)
+
+        await context.send(embed=embeds.EmbedBlurple("Music", f"두 노래\n`{queue[first-1]}` \n`{queue[second-1]}`\n의 위치를 변경하였습니다."))
 
     @commands.hybrid_command(
         name="empty",
-        description="[WIP] 재생목록을 초기화합니다."
+        description="재생목록을 초기화합니다."
     )
     async def empty(self, context: Context):
-        return await context.send(embed=embeds.EmbedYellow("Music", "현재 개발중인 기능입니다."))
+        player: wavelink.Player = cast(wavelink.Player, context.voice_client)
+        queue = player.queue
+
+        queue.reset()
+
+        await context.send(embed=embeds.EmbedBlurple("Music", f"재생목록을 초기화하였습니다."))
     
 async def setup(bot):
     await bot.add_cog(Music(bot))
