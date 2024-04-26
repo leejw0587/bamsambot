@@ -1,6 +1,6 @@
 {
   "prefix": "/",
-  "version": "R - 3.13.1",
+  "version": "R - 3.14.0",
   "permissions": "8",
   "application_id": "1070945112168861786",
   "sync_commands_globally": true,
