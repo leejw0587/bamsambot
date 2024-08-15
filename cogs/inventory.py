@@ -429,7 +429,7 @@ class Inventory(commands.Cog, name="inventory"):
         name="remove",
         description="유저로부터 아이템을 제거합니다. (창조자 전용)",
     )
-    @app_commands.describe(user="대상 유저", item="추가할 아이템")
+    @app_commands.describe(user="대상 유저", item="제거할 아이템")
     @checks.is_owner()
     async def item_remove(self, context: Context, user: discord.User, item: str) -> None:
         with open("database/itemdata.json", encoding="utf-8") as file:

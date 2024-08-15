@@ -382,16 +382,16 @@ class voice(commands.Cog):
     #         conn.commit()
     #         conn.close()
 
-    @voice.command(name="name", description="본인 채널의 이름을 변경합니다.")
+    @voice.command(name="name", description="소유한 개인 통화방의 이름을 변경합니다.")
     @app_commands.describe(name="변경할 이름")
     async def voice_name(self, context, name: str):
         with open("database/itemdata.json", encoding="utf-8") as file:
             itemdata = json.load(file)
 
-        if itemdata[str(context.author.id)]["voice_title_modify"] == False:
+        if "개인 통화방 이름 변경권" not in itemdata[str(context.author.id)]["inventory"]:
             embed = discord.Embed(
                 title="Error!",
-                description=f"`개인 통화방 제목 변경권` 아이템이 필요합니다!",
+                description=f"`개인 통화방 이름 변경권` 아이템이 필요합니다!",
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
@@ -417,8 +417,8 @@ class voice(commands.Cog):
                 channelEmoji = channelName[:2]
                 await channel.edit(name=f"{channelEmoji}{name}")
                 embed = discord.Embed(
-                    title="개인 통화방 제목 변경",
-                    description=f"개인 통화방의 제목이 `{name}`(으)로 변경되었습니다.",
+                    title="개인 통화방 이름 변경",
+                    description=f"개인 통화방의 이름이 `{name}`(으)로 변경되었습니다.",
                     color=discord.Color.blurple()
                 )
                 await context.send(embed=embed)
@@ -431,7 +431,7 @@ class voice(commands.Cog):
         with open("database/itemdata.json", encoding="utf-8") as file:
             itemdata = json.load(file)
 
-        if itemdata[str(context.author.id)]["voice_emoji_modify"] == False:
+        if "개인 통화방 이모지 변경권" not in itemdata[str(context.author.id)]["inventory"]:
             embed = discord.Embed(
                 title="Error!",
                 description=f"`개인 통화방 이모지 변경권` 아이템이 필요합니다!",

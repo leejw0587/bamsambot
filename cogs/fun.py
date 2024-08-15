@@ -21,9 +21,9 @@ from helpers import checks, embeds, log
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 RATIO = 1.1
 
-load_dotenv()
-OPENAI_KEY = os.environ.get('openai_api_key')
-openai.api_key = OPENAI_KEY
+# load_dotenv()
+# OPENAI_KEY = os.environ.get('openai_api_key')
+# openai.api_key = OPENAI_KEY
 
 
 class RockPaperScissors(discord.ui.Select):
@@ -249,7 +249,6 @@ class Fun(commands.Cog, name="fun"):
         name="coinflip",
         description="동전 던지기 미니게임을 합니다."
     )
-    @checks.is_owner()
     async def coinflip(self, context: Context, bet: int = 0) -> None:
         with open("database/userdata.json", encoding="utf-8") as file:
             userdata = json.load(file)
@@ -297,35 +296,35 @@ class Fun(commands.Cog, name="fun"):
         with open("database/userdata.json", 'w', encoding="utf-8") as file:
             json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
-    @commands.hybrid_command(
-        name="image",
-        description="글과 관련된 이미지를 만들어줍니다."
-    )
-    @app_commands.describe(prompt="만들 이미지에 대한 설명 (영어만 지원)")
-    async def image(self, context: Context, prompt: str):
-        def create_response(prompt):
-            response = openai.Image.create(
-                prompt=prompt,
-                n=1,
-                size="1024x1024"
-            )
-            image_url = response['data'][0]['url']
-            return image_url
+    # @commands.hybrid_command(
+    #     name="image",
+    #     description="글과 관련된 이미지를 만들어줍니다."
+    # )
+    # @app_commands.describe(prompt="만들 이미지에 대한 설명 (영어만 지원)")
+    # async def image(self, context: Context, prompt: str):
+    #     def create_response(prompt):
+    #         response = openai.Image.create(
+    #             prompt=prompt,
+    #             n=1,
+    #             size="1024x1024"
+    #         )
+    #         image_url = response['data'][0]['url']
+    #         return image_url
 
-        path = "cogs/assets/Images/" + secrets.token_hex(nbytes=12) + ".png"
+    #     path = "cogs/assets/Images/" + secrets.token_hex(nbytes=12) + ".png"
 
-        await context.defer()
-        try:
-            res = requests.get(create_response(prompt))
+    #     await context.defer()
+    #     try:
+    #         res = requests.get(create_response(prompt))
 
-            with open(path, 'wb') as image:
-                image.write(res.content)
+    #         with open(path, 'wb') as image:
+    #             image.write(res.content)
 
-            await context.send(file=discord.File(path))
-            image.close()
-            os.remove(path)
-        except Exception as e:
-            await context.send(embed=embeds.EmbedRed("Error!", f"이미지 생성 중 오류가 발생했습니다:\n`{e}`"))
+    #         await context.send(file=discord.File(path))
+    #         image.close()
+    #         os.remove(path)
+    #     except Exception as e:
+    #         await context.send(embed=embeds.EmbedRed("Error!", f"이미지 생성 중 오류가 발생했습니다:\n`{e}`"))
 
     # @commands.hybrid_command(
     #     name="slots",
