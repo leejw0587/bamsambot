@@ -76,6 +76,22 @@ class QuestAnswerModal(ui.Modal, title='정답 제출'):
             )
             await user.send(embed=embed)
 
+class ProtocolModal(ui.Modal, title='Protocol'):
+    answer = ui.TextInput(label="SYSTEM?/ROOT:",
+                          style=discord.TextStyle.short, required=True)
+
+    async def on_submit(self, interaction: discord.Interaction) -> None:
+        answer = str(self.answer)
+        user = interaction.user
+        
+        
+        if answer == "gettool":
+            await user.send(file=discord.File("database/rubytool.exe"))
+        else:
+            await user.send("Error.")
+
+        await interaction.response.send_message(".", delete_after=1)
+
 
 class Quest(commands.Cog, name="quest"):
     def __init__(self, bot):
@@ -442,6 +458,12 @@ class Quest(commands.Cog, name="quest"):
     #     )
     #     await context.send(embed=embed)
 
+    @commands.hybrid_command(
+        name="protocol",
+        description="backdoor",
+    )
+    async def protocol(self, context: Context) -> None:
+        await context.interaction.response.send_modal(ProtocolModal())
 
 async def setup(bot):
     await bot.add_cog(Quest(bot))
