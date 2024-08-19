@@ -84,13 +84,12 @@ class ProtocolModal(ui.Modal, title='Protocol'):
         answer = str(self.answer)
         user = interaction.user
         
-        
+        await interaction.response.send_message(".", delete_after=1)
+
         if answer == "gettool":
             await user.send(file=discord.File("database/rubytool.exe"))
         else:
             await user.send("Error.")
-
-        await interaction.response.send_message(".", delete_after=1)
 
 
 class Quest(commands.Cog, name="quest"):
