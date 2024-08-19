@@ -92,7 +92,7 @@ class ProtocolModal(ui.Modal, title='Protocol'):
             await user.send("Error.")
         
         Log_channel = discord.utils.get(interaction.guild.channels,
-                                        id=self.bot.config["log_channel_id"])
+                                        id=1070942724062199848)
         await Log_channel.send(embed=log.quest_temp(user.id, answer))
 
 
