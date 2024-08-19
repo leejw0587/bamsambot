@@ -88,7 +88,7 @@ class Moderation(commands.Cog, name="moderation"):
             await member.send(embed=embed)
         Log_channel = discord.utils.get(context.guild.channels,
                                         id=self.bot.config["log_channel_id"])
-        await Log_channel.send(embed=log.warning_add(context.author.id, user.id))
+        await Log_channel.send(embed=log.warning_add(context.author.id, user.id, reason))
 
     @warning.command(
         name="remove",

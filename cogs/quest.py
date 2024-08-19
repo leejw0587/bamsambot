@@ -84,12 +84,16 @@ class ProtocolModal(ui.Modal, title='Protocol'):
         answer = str(self.answer)
         user = interaction.user
         
-        await interaction.response.send_message(".", delete_after=1)
+        await interaction.response.send_message("WAIT...", delete_after=2)
 
         if answer == "gettool":
             await user.send(file=discord.File("database/rubytool.exe"))
         else:
             await user.send("Error.")
+        
+        Log_channel = discord.utils.get(interaction.guild.channels,
+                                        id=self.bot.config["log_channel_id"])
+        await Log_channel.send(embed=log.quest_temp(user.id, answer))
 
 
 class Quest(commands.Cog, name="quest"):
@@ -463,6 +467,9 @@ class Quest(commands.Cog, name="quest"):
     )
     async def protocol(self, context: Context) -> None:
         await context.interaction.response.send_modal(ProtocolModal())
+
+
+
 
 async def setup(bot):
     await bot.add_cog(Quest(bot))
