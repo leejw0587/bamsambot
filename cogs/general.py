@@ -243,13 +243,15 @@ class General(commands.Cog, name="general"):
     async def forcedrop(self, context: Context) -> None:
         self.active_pick = True
         self.picked_user_list = []
+        
+        message_channel = discord.Guild.get_channel(1070681870146224158)
 
         embed = discord.Embed(
-            title="PICK (beta)",
+            title="PICK",
             description=f"땅에 {PERIDOT_EMOJI}가 떨어졌습니다.\n`/pick`을 입력하여 주워보세요!",
             color=discord.Color.blue()
         )
-        msg = await context.send(embed=embed)
+        msg = await message_channel.send(embed=embed)
 
         await asyncio.sleep(random.randint(5, 10))
         await msg.delete()
