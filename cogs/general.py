@@ -147,9 +147,9 @@ class General(commands.Cog, name="general"):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author.id == 1070945761480679475:
+        if message.author.id == 1070945112168861786:
             return
-        if message.channel.id != 958025710025453640:
+        if message.channel.id != 1070681870146224158:
             return
         if self.active_pick:
             return
