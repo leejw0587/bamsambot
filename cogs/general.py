@@ -155,7 +155,7 @@ class General(commands.Cog, name="general"):
             return print(f"[PICK] ACTIVE RETURN")
         if time.time() - self.last_pick < 120:
             return print(f"[PICK] TIME RETURN, {time.time() - self.last_pick}")
-        if random.randint(1, 100) >= 76:
+        if random.randint(1, 100) >= 26:
             return print(f"[PICK] RANDNUM RETURN")
         self.active_pick = True
         self.picked_user_list = []
@@ -192,7 +192,7 @@ class General(commands.Cog, name="general"):
                 with open("database/userdata.json", encoding="utf-8") as file:
                     userdata = json.load(file)
 
-                picked_peridot = random.randint(1, 10)
+                picked_peridot = random.randint(1, 30)
                 userdata[str(context.author.id)]["peridot"] = userdata[str(context.author.id)]["peridot"] + picked_peridot
 
                 embed = discord.Embed(
@@ -218,10 +218,12 @@ class General(commands.Cog, name="general"):
         name="ㅔㅑ차"
     )
     async def pick_typo(self, context: Context) -> None:
+        picked_peridot = random.randint(1, 30)
+
         embed = discord.Embed(
             title="PICK",
-            description=f"그거 그렇게 하는 거 아닌데 ㅋㅋ",
-            color=discord.Color.yellow()
+            description=f"{context.author.mention}님이\n{picked_peridot} {PERIDOT_EMOJI}를 주울...수 있었지만\n오타를 내는 바람에 줍지 못했습니다.",
+            color=discord.Color.green()
         )
         await context.send(embed=embed)
 
