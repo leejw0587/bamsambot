@@ -210,14 +210,3 @@ def item_remove(executorid, targetid, itemname):
     )
     embed.set_footer(text=timecode)
     return embed
-
-def quest_temp(executorid, msg):
-    now = datetime.now()
-    timecode = now.strftime('%Y-%m-%d %H:%M:%S')
-    embed = discord.Embed(
-        title="Bamsambot Log",
-        description=f"Type: `QUEST / PROTOCOL`\nExecutor: <@{executorid}>\nAnswer: `{msg}`",
-        color=discord.Color.blurple()
-    )
-    embed.set_footer(text=timecode)
-    return embed
