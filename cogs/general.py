@@ -230,7 +230,7 @@ class General(commands.Cog, name="general"):
         else:
             embed = discord.Embed(
                 title="PICK",
-                description=f"님아 진정하셈 아직 아님",
+                description=f"님아 진정하셈 아직 아님\n심지어 명렁어 그거 아님 ㅋㅋ",
                 color=discord.Color.red()
             )
             await context.send(embed=embed)
@@ -252,6 +252,8 @@ class General(commands.Cog, name="general"):
             color=discord.Color.blue()
         )
         msg = await message_channel.send(embed=embed)
+
+        await context.send("PICK MESSAGE SENT")
 
         await asyncio.sleep(random.randint(5, 10))
         await msg.delete()
