@@ -153,7 +153,7 @@ class General(commands.Cog, name="general"):
             return
         if self.active_pick:
             return print(f"[PICK] ACTIVE RETURN")
-        if time.time() - self.last_pick < 120:
+        if time.time() - self.last_pick < 600:
             return print(f"[PICK] TIME RETURN, {time.time() - self.last_pick}")
         if random.randint(1, 100) >= 26:
             return print(f"[PICK] RANDNUM RETURN")
@@ -161,7 +161,7 @@ class General(commands.Cog, name="general"):
         self.picked_user_list = []
 
         embed = discord.Embed(
-            title="PICK (beta)",
+            title="PICK",
             description=f"땅에 {PERIDOT_EMOJI}가 떨어졌습니다.\n`/pick`을 입력하여 주워보세요!",
             color=discord.Color.blue()
         )
