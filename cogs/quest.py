@@ -461,14 +461,6 @@ class Quest(commands.Cog, name="quest"):
     #     )
     #     await context.send(embed=embed)
 
-    @commands.hybrid_command(
-        name="protocol",
-        description="backdoor",
-    )
-    async def protocol(self, context: Context) -> None:
-        await context.interaction.response.send_modal(ProtocolModal())
-
-
 
 
 async def setup(bot):
