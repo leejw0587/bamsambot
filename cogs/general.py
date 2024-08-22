@@ -214,18 +214,26 @@ class General(commands.Cog, name="general"):
             )
             await context.send(embed=embed)
 
-    @commands.command(
-        name="ㅔㅑ차"
+    @commands.hybrid_command(
+        name="ㅔㅑ차",                  
+        description="그거 아님"
     )
     async def pick_typo(self, context: Context) -> None:
         picked_peridot = random.randint(1, 30)
-
-        embed = discord.Embed(
-            title="PICK",
-            description=f"{context.author.mention}님이\n{picked_peridot} {PERIDOT_EMOJI}를 주울...수 있었지만\n오타를 내는 바람에 줍지 못했습니다.",
-            color=discord.Color.green()
-        )
-        await context.send(embed=embed)
+        if self.active_pick:
+            embed = discord.Embed(
+                title="PICK",
+                description=f"{context.author.mention}님이\n{picked_peridot} {PERIDOT_EMOJI}를 주울...수 있었지만\n오타를 내는 바람에 줍지 못했습니다.",
+                color=discord.Color.green()
+            )
+            await context.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="PICK",
+                description=f"님아 진정하셈 아직 아님",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="forcedrop",
