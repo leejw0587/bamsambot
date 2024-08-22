@@ -176,7 +176,7 @@ class General(commands.Cog, name="general"):
 
     @commands.hybrid_command(
         name="pick",
-        decription="페리도트를 줍습니다."
+        description="떨어진 페리도트를 줍습니다."
     )
     async def pick(self, context: Context) -> None:
         if self.active_pick:
@@ -226,6 +226,30 @@ class General(commands.Cog, name="general"):
             color=discord.Color.green()
         )
         await context.send(embed=embed)
+
+    @commands.hybrid_command(
+        name="forcedrop",
+        description="떨어진 페리도트를 줍습니다."  
+    )
+    @checks.is_owner()
+    async def forcedrop(self, context: Context) -> None:
+        self.active_pick = True
+        self.picked_user_list = []
+
+        embed = discord.Embed(
+            title="PICK (beta)",
+            description=f"땅에 {PERIDOT_EMOJI}가 떨어졌습니다.\n`/pick`을 입력하여 주워보세요!",
+            color=discord.Color.blue()
+        )
+        msg = await context.send(embed=embed)
+
+        await asyncio.sleep(random.randint(5, 10))
+        await msg.delete()
+
+        self.active_pick = False
+        self.last_pick = time.time()
+
+
 
     @commands.hybrid_command(
         name="help",
