@@ -153,7 +153,7 @@ class General(commands.Cog, name="general"):
             return
         if self.active_pick:
             return print(f"[PICK] ACTIVE RETURN")
-        if time.time() - self.last_pick < 1800:
+        if time.time() - self.last_pick < 600:
             return print(f"[PICK] TIME RETURN, {time.time() - self.last_pick}")
         if random.randint(1, 100) >= 6:
             return print(f"[PICK] RANDNUM RETURN")
