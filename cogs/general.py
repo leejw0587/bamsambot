@@ -153,9 +153,9 @@ class General(commands.Cog, name="general"):
             return
         if self.active_pick:
             return print(f"[PICK] ACTIVE RETURN")
-        if time.time() - self.last_pick < 600:
+        if time.time() - self.last_pick < 120:
             return print(f"[PICK] TIME RETURN, {time.time() - self.last_pick}")
-        if random.randint(1, 100) >= 6:
+        if random.randint(1, 100) >= 76:
             return print(f"[PICK] RANDNUM RETURN")
         self.active_pick = True
         self.picked_user_list = []
@@ -197,7 +197,7 @@ class General(commands.Cog, name="general"):
 
                 embed = discord.Embed(
                 title="PICK",
-                description=f"{picked_peridot} {PERIDOT_EMOJI}를 주웠습니다!",
+                description=f"{context.author.mention}님이\n{picked_peridot} {PERIDOT_EMOJI}를 주웠습니다!",
                 color=discord.Color.green()
                 )
                 await context.send(embed=embed)
@@ -214,6 +214,16 @@ class General(commands.Cog, name="general"):
             )
             await context.send(embed=embed)
 
+    @commands.command(
+        name="ㅔㅑ차"
+    )
+    async def pick_typo(self, context: Context) -> None:
+        embed = discord.Embed(
+            title="PICK",
+            description=f"그거 그렇게 하는 거 아닌데 ㅋㅋ",
+            color=discord.Color.yellow()
+        )
+        await context.send(embed=embed)
 
     @commands.hybrid_command(
         name="help",
