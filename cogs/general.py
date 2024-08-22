@@ -216,7 +216,6 @@ class General(commands.Cog, name="general"):
 
     @commands.hybrid_command(
         name="ㅔㅑ차",                  
-        description="그거 아님"
     )
     async def pick_typo(self, context: Context) -> None:
         picked_peridot = random.randint(1, 30)
@@ -237,7 +236,7 @@ class General(commands.Cog, name="general"):
 
     @commands.hybrid_command(
         name="forcedrop",
-        description="떨어진 페리도트를 줍습니다."  
+        description="PICK 강제드랍 (창조자 전용)"  
     )
     @checks.is_owner()
     async def forcedrop(self, context: Context) -> None:
