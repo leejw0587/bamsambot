@@ -23,7 +23,6 @@ from helpers import checks, embeds, log
 PERIDOT_EMOJI = "<:peridot:722474684045721973>"
 TOKEN_EMOJI = "<:token:884035217252311051>"
 
-
 class CreatePcButtons(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -38,7 +37,6 @@ class CreatePcButtons(discord.ui.View):
     async def refuse(self, button: discord.ui.Button, interaction: discord.Interaction):
         self.value = "거부"
         self.stop()
-
 
 class ReportModal(ui.Modal, title='개발자에게 연락'):
     type = ui.TextInput(label="종류", style=discord.TextStyle.short,
@@ -143,6 +141,79 @@ class RedeemModal(ui.Modal, title='코드 등록'):
 class General(commands.Cog, name="general"):
     def __init__(self, bot):
         self.bot = bot
+        self.active_pick = False
+        self.picked_user_list = []
+        self.last_pick = time.time()
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.author.id == 1070945761480679475:
+            return
+        if message.channel.id != 958025710025453640:
+            return
+        if self.active_pick:
+            return
+        if time.time() - self.last_pick < 1800:
+            return
+        if random.randint(1, 100) >= 6:
+            return
+        self.active_pick = True
+        self.picked_user_list = []
+
+        embed = discord.Embed(
+            title="PICK (beta)",
+            description=f"땅에 {PERIDOT_EMOJI}가 떨어졌습니다.\n`/pick`을 입력하여 주워보세요!",
+            color=discord.Color.blue()
+        )
+        msg = await message.channel.send(embed=embed)
+
+        await asyncio.sleep(random.randint(5, 10))
+        await msg.delete()
+
+        self.active_pick = False
+        self.last_pick = time.time()
+
+
+    @commands.hybrid_command(
+        name="pick",
+        decription="페리도트를 줍습니다."
+    )
+    async def pick(self, context: Context) -> None:
+        if self.active_pick:
+            if context.author.id in self.picked_user_list:
+                embed = discord.Embed(
+                title="PICK",
+                description=f"이미 페리도트를 주웠습니다!",
+                color=discord.Color.red()
+                )
+                return await context.send(embed=embed)
+
+            else:    
+                with open("database/userdata.json", encoding="utf-8") as file:
+                    userdata = json.load(file)
+
+                picked_peridot = random.randint(1, 10)
+                userdata[str(context.author.id)]["peridot"] = userdata[str(context.author.id)]["peridot"] + picked_peridot
+
+                embed = discord.Embed(
+                title="PICK",
+                description=f"{picked_peridot} {PERIDOT_EMOJI}를 주웠습니다!",
+                color=discord.Color.green()
+                )
+                await context.send(embed=embed)
+
+                with open("database/userdata.json", 'w', encoding="utf-8") as file:
+                    json.dump(userdata, file, indent="\t", ensure_ascii=False)
+
+                self.picked_user_list.append(context.author.id)
+        else:
+            embed = discord.Embed(
+                title="PICK",
+                description=f"현재 활성화된 PICK이 없습니다!",
+                color=discord.Color.red()
+            )
+            await context.send(embed=embed)
+
 
     @commands.hybrid_command(
         name="help",
@@ -218,7 +289,7 @@ class General(commands.Cog, name="general"):
         embed = discord.Embed(
             title="**Server Name:**",
             description=f"{context.guild}",
-            color=discord.Color.light_gray
+            color=discord.Color.light_gray()
         )
         if context.guild.icon is not None:
             embed.set_thumbnail(
@@ -324,15 +395,14 @@ class General(commands.Cog, name="general"):
                 await context.send(embed=embed)
 
     @commands.hybrid_command(
-        name="createpc",
-        description="개인 채널 생성 요청을 보냅니다."
+    name="createpc",
+    description="개인 채널 생성 요청을 보냅니다."
     )
-    # @commands.has_role(706453703745601546)
+    @commands.has_role(1070680695258763305)
     @app_commands.describe(nickname="채널 주인의 한글 닉네임", channelname="채널 이름", genere="채널의 장르", description="채널 설명", restrictions="채널을 볼 수 있는 역할")
     async def createpc(self, context: Context, nickname: str, channelname: str, genere: str, description: str, restrictions: typing.Literal['모두', '인증', '변태', '그로테스크']):
-
         if context.channel.id == 1070686335498723439:
-            # if context.channel.id == 958025710025453640: for dev server
+        # if context.channel.id == 958025710025453640: for dev server             
             admin_channel = context.guild.get_channel(1071266892993548298)
             # admin_channel = context.guild.get_channel(1062130045340110978) for dev server
             category = context.guild.get_channel(1070683365814050847)
@@ -365,24 +435,24 @@ class General(commands.Cog, name="general"):
 
                 new_channel = await context.guild.create_text_channel(name=f"{nickname}ㆍ{channelname}", topic=f"장르 : {genere}", category=category, nsfw=NSFW)
                 await new_channel.set_permissions(context.guild.get_role(context.guild.id),
-                                                  send_messages=False,
-                                                  read_messages=False)
+                                                send_messages=False,
+                                                read_messages=False)
                 await new_channel.set_permissions(context.author,
-                                                  send_messages=True,
-                                                  read_messages=True,
-                                                  add_reactions=True,
-                                                  embed_links=True,
-                                                  attach_files=True,
-                                                  read_message_history=True,
-                                                  external_emojis=True)
+                                                send_messages=True,
+                                                read_messages=True,
+                                                add_reactions=True,
+                                                embed_links=True,
+                                                attach_files=True,
+                                                read_message_history=True,
+                                                external_emojis=True)
                 await new_channel.set_permissions(restrictions,
-                                                  send_messages=False,
-                                                  read_messages=True,
-                                                  add_reactions=True,
-                                                  embed_links=True,
-                                                  attach_files=True,
-                                                  read_message_history=True,
-                                                  external_emojis=True)
+                                                send_messages=False,
+                                                read_messages=True,
+                                                add_reactions=True,
+                                                embed_links=True,
+                                                attach_files=True,
+                                                read_message_history=True,
+                                                external_emojis=True)
                 embed = discord.Embed(color=discord.Color.green())
                 embed.add_field(name="개인 채널 생성 요청",
                                 value=f"개인 채널 생성 요청이 승인되었습니다.\n생성된 채널: <#{new_channel.id}>", inline=False)
@@ -401,6 +471,7 @@ class General(commands.Cog, name="general"):
                             value="해당 명령어는 <#706526566104170607> 에서만 작동합니다.", inline=False)
             await context.send(embed=embed)
 
+
     @commands.hybrid_command(
         name="reels",
         description="릴스를 보기 쉽게 보내줍니다."
@@ -408,7 +479,7 @@ class General(commands.Cog, name="general"):
     @app_commands.describe(link="영상 링크")
     async def reels(self, context: Context, link: str):
         regexes_pre = [
-            'https:\/\/www\.instagram\.com\/reel\/([a-zA-Z0-9_\-]*)',
+            r'https:\/\/www\.instagram\.com\/reel\/([a-zA-Z0-9_\-]*)',
             # 'https:\/\/www\.tiktok\.com\/@[A-z]*\/video\/([a-zA-Z0-9_\-]*)',
             # 'https:\/\/www\.youtube\.com\/shorts\/([a-zA-Z0-9_\-]*)'
         ]
@@ -488,7 +559,6 @@ class General(commands.Cog, name="general"):
         name="redeem",
         description="코드를 등록합니다.",
     )
-    @commands.cooldown(1, 43200, commands.BucketType.user)
     async def code_redeem(self, context: Context):
         await context.interaction.response.send_modal(RedeemModal())
 
