@@ -244,7 +244,7 @@ class General(commands.Cog, name="general"):
         self.active_pick = True
         self.picked_user_list = []
         
-        message_channel = discord.Guild.get_channel(1070681870146224158)
+        message_channel = discord.Guild.get_channel(self, 1070681870146224158)
 
         embed = discord.Embed(
             title="PICK",
