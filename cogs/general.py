@@ -152,11 +152,11 @@ class General(commands.Cog, name="general"):
         if message.channel.id != 1070681870146224158:
             return
         if self.active_pick:
-            return
+            return print(f"[PICK] ACTIVE RETURN")
         if time.time() - self.last_pick < 1800:
-            return
+            return print(f"[PICK] TIME RETURN, {time.time() - self.last_pick}")
         if random.randint(1, 100) >= 6:
-            return
+            return print(f"[PICK] RANDNUM RETURN")
         self.active_pick = True
         self.picked_user_list = []
 
