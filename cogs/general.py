@@ -152,11 +152,11 @@ class General(commands.Cog, name="general"):
         if message.channel.id != 1070681870146224158:
             return
         if self.active_pick:
-            return print(f"[PICK] ACTIVE RETURN")
+            return
         if time.time() - self.last_pick < 600:
-            return print(f"[PICK] TIME RETURN, {time.time() - self.last_pick}")
+            return
         if random.randint(1, 100) >= 26:
-            return print(f"[PICK] RANDNUM RETURN")
+            return
         self.active_pick = True
         self.picked_user_list = []
 
@@ -167,7 +167,7 @@ class General(commands.Cog, name="general"):
         )
         msg = await message.channel.send(embed=embed)
 
-        await asyncio.sleep(random.randint(5, 10))
+        await asyncio.sleep(random.randint(10, 11))
         await msg.delete()
 
         self.active_pick = False
@@ -192,7 +192,7 @@ class General(commands.Cog, name="general"):
                 with open("database/userdata.json", encoding="utf-8") as file:
                     userdata = json.load(file)
 
-                picked_peridot = random.randint(1, 30)
+                picked_peridot = random.randint(0, 150)
                 userdata[str(context.author.id)]["peridot"] = userdata[str(context.author.id)]["peridot"] + picked_peridot
 
                 embed = discord.Embed(
@@ -200,7 +200,7 @@ class General(commands.Cog, name="general"):
                 description=f"{context.author.mention}님이\n{picked_peridot} {PERIDOT_EMOJI}를 주웠습니다!",
                 color=discord.Color.green()
                 )
-                await context.send(embed=embed)
+                await context.send(embed=embed, delete_after=30)
 
                 with open("database/userdata.json", 'w', encoding="utf-8") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
