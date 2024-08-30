@@ -1,6 +1,7 @@
 import discord
 import json
 import typing
+import asyncio
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
@@ -29,10 +30,14 @@ class Shop(commands.Cog, name="shop"):
             await context.send(embed=embed)
 
     @shop.command(
-        name="list",
-        description="상점에 등록된 아이템을 확인합니다.",
+        name="update",
+        description="상점 메시지를 새로 등록합니다. (창조자 전용)",
     )
-    async def shop_list(self, context: Context) -> None:
+    @checks.is_owner()
+    async def shop_update(self, context: Context) -> None:
+        shopChannel = context.guild.get_channel(1276799909856804874)
+        await shopChannel.purge(limit=1)
+
         with open('database/shop.json') as file:
             shopdata = json.load(file)
         embed = discord.Embed(title="BAMSAM SHOP",
@@ -74,7 +79,7 @@ class Shop(commands.Cog, name="shop"):
                 embed.add_field(name=f"{PERIDOT_EMOJI} {PRICE} ▫️ {ITEMNAME}",
                                 value=f"| {AMOUNT} | {CONDITION}", inline=False)
 
-        await context.send(embed=embed)
+        await shopChannel.send(embed=embed)
 
     @shop.command(
         name="buy",
@@ -82,6 +87,14 @@ class Shop(commands.Cog, name="shop"):
     )
     @app_commands.describe(item="구매할 아이템")
     async def shop_buy(self, context: Context, item: str) -> None:
+        if context.channel.id != 1276799909856804874:
+            embed = discord.Embed(
+                title="Shop",
+                description=f"구매는 <#1276799909856804874>에서만 가능합니다.",
+                color=discord.Color.red()
+            )
+            return await context.send(embed=embed)
+            
         with open('database/shop.json') as file:
             shopdata = json.load(file)
         with open('database/userdata.json') as file:
@@ -166,10 +179,17 @@ class Shop(commands.Cog, name="shop"):
             description=f"`{item}`을(를) 구매하였습니다.",
             color=discord.Color.green()
         )
-        await context.send(embed=embed)
+        msg = await context.send(embed=embed)
         Log_channel = discord.utils.get(context.guild.channels,
                                         id=self.bot.config["log_channel_id"])
         await Log_channel.send(embed=log.shop_buy(context.author.id, item))
+
+        await asyncio.sleep(15)
+        await msg.delete()
+        self.shop_update(context)
+
+
+
 
     @shop.command(
         name="addrole",

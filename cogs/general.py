@@ -153,9 +153,9 @@ class General(commands.Cog, name="general"):
             return
         if self.active_pick:
             return
-        if time.time() - self.last_pick < 600:
+        if time.time() - self.last_pick < 1800:
             return
-        if random.randint(1, 100) >= 26:
+        if random.randint(1, 100) >= 11:
             return
         self.active_pick = True
         self.picked_user_list = []
@@ -174,7 +174,7 @@ class General(commands.Cog, name="general"):
         self.last_pick = time.time()
 
 
-    @commands.hybrid_command(
+    @commands.command(
         name="pick",
         description="떨어진 페리도트를 줍습니다."
     )
@@ -214,11 +214,11 @@ class General(commands.Cog, name="general"):
             )
             await context.send(embed=embed)
 
-    @commands.hybrid_command(
+    @commands.command(
         name="ㅔㅑ차",                  
     )
     async def pick_typo(self, context: Context) -> None:
-        picked_peridot = random.randint(1, 30)
+        picked_peridot = random.randint(100, 150)
         if self.active_pick:
             embed = discord.Embed(
                 title="PICK",
@@ -236,7 +236,7 @@ class General(commands.Cog, name="general"):
 
     @commands.hybrid_command(
         name="forcedrop",
-        description="PICK 강제드랍 (창조자 전용)"  
+        description="픽 강제드랍 (창조자 전용)"  
     )
     @checks.is_owner()
     async def forcedrop(self, context: Context) -> None:
@@ -254,7 +254,7 @@ class General(commands.Cog, name="general"):
 
         await context.send("PICK MESSAGE SENT")
 
-        await asyncio.sleep(random.randint(5, 10))
+        await asyncio.sleep(random.randint(10, 11))
         await msg.delete()
 
         self.active_pick = False
@@ -411,28 +411,37 @@ class General(commands.Cog, name="general"):
 
                     userdata[str(context.author.id)]["last_attendance"] = today
                     userdata[str(context.author.id)]["attendance"] += 1
-                    userdata[str(context.author.id)]["peridot"] = userdata[str(
-                        context.author.id)]["peridot"] + int(reward)
-                    # try:
-                    #     bpUserdata[str(context.author.id)]["xp"] += 3600
-                    # except:
-                    #     pass
+                    userdata[str(context.author.id)]["peridot"] = userdata[str(context.author.id)]["peridot"] + int(reward)
+                    
+                    isBspass = False
+                    try:
+                        bpUserdata[str(context.author.id)]["xp"] += 3600
+                        isBspass = True
+                    except:
+                        pass
+
                     with open("database/userdata.json", 'w', encoding="utf-8") as file:
-                        json.dump(userdata, file, indent="\t",
-                                  ensure_ascii=False)
-                    # with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:
-                    #     json.dump(bpUserdata, file, indent="\t", ensure_ascii=False)
+                        json.dump(userdata, file, indent="\t", ensure_ascii=False)
+                    with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:
+                        json.dump(bpUserdata, file, indent="\t", ensure_ascii=False)
 
-                    attendance_count = userdata[str(
-                        context.author.id)]["attendance"]
+                    attendance_count = userdata[str(context.author.id)]["attendance"]
 
-                    embed = discord.Embed(
+                    if isBspass:
+                        embed = discord.Embed(
+                            title="출석 완료!",
+                            description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n**[출석 보상]**\n+ {reward} {PERIDOT_EMOJI}\n+ 3600 bxp",
+                            color=discord.Color.blurple()
+                        )
+                    else:
+                        embed = discord.Embed(
                         title="출석 완료!",
                         description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n**[출석 보상]**\n+ {reward} {PERIDOT_EMOJI}",
                         color=discord.Color.blurple()
-                    )
+                        )
 
                     await context.send(embed=embed)
+
             except:
                 embed = discord.Embed(
                     title="Error!",
