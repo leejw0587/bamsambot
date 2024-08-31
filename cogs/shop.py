@@ -111,7 +111,7 @@ class Shop(commands.Cog, name="shop"):
                 description=f"존재하지 않는 아이템입니다.",
                 color=discord.Color.red()
             )
-            await context.send(embed=embed)
+            await context.send(embed=embed, delete_after=15)
             return
         if shopdata[item]["AMOUNT"] == 0:
             embed = discord.Embed(
@@ -119,7 +119,7 @@ class Shop(commands.Cog, name="shop"):
                 description=f"재고가 부족합니다.",
                 color=discord.Color.red()
             )
-            await context.send(embed=embed)
+            await context.send(embed=embed, delete_after=15)
             return
         if buyer_peridot < int(shopdata[item]["PRICE"]):
             embed = discord.Embed(
@@ -127,7 +127,7 @@ class Shop(commands.Cog, name="shop"):
                 description=f"페리도트가 부족합니다.",
                 color=discord.Color.red()
             )
-            await context.send(embed=embed)
+            await context.send(embed=embed, delete_after=15)
             return
         if shopdata[item]["CONDITION"] == "CHECK":
             if CHECKROLE not in context.author.roles:
@@ -136,7 +136,7 @@ class Shop(commands.Cog, name="shop"):
                     description=f"인증 칭호를 가진 사람만 구매할 수 있는 아이템입니다.",
                     color=discord.Color.red()
                 )
-                await context.send(embed=embed)
+                await context.send(embed=embed, delete_after=15)
                 return
 
         ##########################
