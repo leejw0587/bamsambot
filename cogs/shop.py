@@ -186,7 +186,7 @@ class Shop(commands.Cog, name="shop"):
 
         await asyncio.sleep(15)
         await msg.delete()
-        self.shop_update(context)
+        await self.shop_update(context)
 
 
 
