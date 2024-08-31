@@ -179,6 +179,7 @@ class General(commands.Cog, name="general"):
         description="떨어진 페리도트를 줍습니다."
     )
     async def pick(self, context: Context) -> None:
+        await context.message.delete(delay=17)
         if self.active_pick:
             if context.author.id in self.picked_user_list:
                 embed = discord.Embed(
@@ -186,7 +187,7 @@ class General(commands.Cog, name="general"):
                 description=f"이미 페리도트를 주웠습니다!",
                 color=discord.Color.red()
                 )
-                return await context.send(embed=embed, delete_after=15)
+                return await context.reply(embed=embed, delete_after=15)
 
             else:    
                 with open("database/userdata.json", encoding="utf-8") as file:
@@ -200,8 +201,7 @@ class General(commands.Cog, name="general"):
                 description=f"{context.author.mention}님이\n{picked_peridot} {PERIDOT_EMOJI}를 주웠습니다!",
                 color=discord.Color.green()
                 )
-                await context.send(embed=embed, delete_after=15)
-
+                await context.reply(embed=embed, delete_after=15)
                 with open("database/userdata.json", 'w', encoding="utf-8") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
 
@@ -212,7 +212,9 @@ class General(commands.Cog, name="general"):
                 description=f"현재 활성화된 PICK이 없습니다!",
                 color=discord.Color.red()
             )
-            await context.send(embed=embed, delete_after=15)
+            await context.reply(embed=embed, delete_after=15)
+        
+        
 
     @commands.command(
         name="ㅔㅑ차",                  
