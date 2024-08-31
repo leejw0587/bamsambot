@@ -36,7 +36,7 @@ class Shop(commands.Cog, name="shop"):
     @checks.is_owner()
     async def shop_update(self, context: Context) -> None:
         shopChannel = context.guild.get_channel(1276799909856804874)
-        await shopChannel.purge(limit=1)
+        await shopChannel.purge(limit=100)
 
         with open('database/shop.json') as file:
             shopdata = json.load(file)
