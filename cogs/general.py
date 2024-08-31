@@ -186,7 +186,7 @@ class General(commands.Cog, name="general"):
                 description=f"이미 페리도트를 주웠습니다!",
                 color=discord.Color.red()
                 )
-                return await context.send(embed=embed)
+                return await context.send(embed=embed, delete_after=15)
 
             else:    
                 with open("database/userdata.json", encoding="utf-8") as file:
@@ -200,7 +200,7 @@ class General(commands.Cog, name="general"):
                 description=f"{context.author.mention}님이\n{picked_peridot} {PERIDOT_EMOJI}를 주웠습니다!",
                 color=discord.Color.green()
                 )
-                await context.send(embed=embed, delete_after=30)
+                await context.send(embed=embed, delete_after=15)
 
                 with open("database/userdata.json", 'w', encoding="utf-8") as file:
                     json.dump(userdata, file, indent="\t", ensure_ascii=False)
@@ -212,7 +212,7 @@ class General(commands.Cog, name="general"):
                 description=f"현재 활성화된 PICK이 없습니다!",
                 color=discord.Color.red()
             )
-            await context.send(embed=embed)
+            await context.send(embed=embed, delete_after=15)
 
     @commands.command(
         name="ㅔㅑ차",                  
@@ -225,14 +225,14 @@ class General(commands.Cog, name="general"):
                 description=f"{context.author.mention}님이\n{picked_peridot} {PERIDOT_EMOJI}를 주울...수 있었지만\n오타를 내는 바람에 줍지 못했습니다.",
                 color=discord.Color.green()
             )
-            await context.send(embed=embed)
+            await context.send(embed=embed, delete_after=15)
         else:
             embed = discord.Embed(
                 title="PICK",
                 description=f"님아 진정하셈 아직 아님\n심지어 명렁어 그거 아님 ㅋㅋ",
                 color=discord.Color.red()
             )
-            await context.send(embed=embed)
+            await context.send(embed=embed, delete_after=15)
 
     @commands.hybrid_command(
         name="forcedrop",
