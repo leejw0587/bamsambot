@@ -351,7 +351,7 @@ class BSpass(commands.Cog, name="bamsampass"):
             bpUserdata[str(user.id)]["premium"] = True
 
         embed = discord.Embed(
-                title="Bamsampass", description=f"{user.mention}의 뱀샘패스 타입을 {type}으로 수정하였습니다.", color=discord.Color.blurple())
+                title="Bamsampass", description=f"{user.mention}의 뱀샘패스 타입을 `{type}`으로 수정하였습니다.", color=discord.Color.blurple())
         await context.send(embed=embed)
 
         with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:

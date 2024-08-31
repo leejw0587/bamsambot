@@ -430,7 +430,7 @@ class General(commands.Cog, name="general"):
                     if isBspass:
                         embed = discord.Embed(
                             title="출석 완료!",
-                            description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n**[출석 보상]**\n+ {reward} {PERIDOT_EMOJI}\n+ 3600 bxp",
+                            description=f"`{today}` 출석을 완료했습니다!\n누적 출석 횟수: `{attendance_count}`회\n**[출석 보상]**\n+ {reward} {PERIDOT_EMOJI}\n+ 3600 **bxp**",
                             color=discord.Color.blurple()
                         )
                     else:
