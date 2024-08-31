@@ -112,32 +112,32 @@ class BSpass(commands.Cog, name="bamsampass"):
             #Normal rewarding
             if normalRewardType == "PERIDOT":
                 bpUserdata[str(userid)]["unreceivedPeridot"] += bpRewards[str(currentLevel+1)]["reward"]["reward"]
-                rewardStr = f"{bpRewards[str(currentLevel+1)]["reward"]["reward"]} {PERIDOT_EMOJI}"
+                rewardStr = f"{bpRewards[str(currentLevel+1)]['reward']['reward']} {PERIDOT_EMOJI}"
             elif normalRewardType == "TOKEN":
                 bpUserdata[str(userid)]["unreceivedToken"] += bpRewards[str(currentLevel+1)]["reward"]["reward"]
-                rewardStr = f"{bpRewards[str(currentLevel+1)]["reward"]["reward"]} {TOKEN_EMOJI}"
+                rewardStr = f"{bpRewards[str(currentLevel+1)]['reward']['reward']} {TOKEN_EMOJI}"
             elif normalRewardType == "ROLE":
                 bpUserdata[str(userid)]["unreceivedRole"].append(bpRewards[str(currentLevel+1)]["reward"]["reward"])
                 role = member.guild.get_role(bpRewards[str(currentLevel+1)]["reward"]["reward"])
                 rewardStr = f"{role.mention()}"
             elif normalRewardType == "ITEM":
                 bpUserdata[str(userid)]["unreceivedItem"].append(bpRewards[str(currentLevel+1)]["reward"]["reward"])
-                rewardStr = f"{bpRewards[str(currentLevel+1)]["reward"]["reward"]}"
+                rewardStr = f"{bpRewards[str(currentLevel+1)]['reward']['reward']}"
 
             #Premium rewarding
             if premiumRewardType == "PERIDOT":
                 bpUserdata[str(userid)]["unreceivedPremiumPeridot"] += bpRewards[str(currentLevel+1)]["premiumReward"]["reward"]
-                premiumRewardStr = f"{bpRewards[str(currentLevel+1)]["premiumReward"]["reward"]} {PERIDOT_EMOJI}"
+                premiumRewardStr = f"{bpRewards[str(currentLevel+1)]['premiumReward']['reward']} {PERIDOT_EMOJI}"
             elif premiumRewardType == "TOKEN":
                 bpUserdata[str(userid)]["unreceivedPremiumToken"] += bpRewards[str(currentLevel+1)]["premiumReward"]["reward"]
-                premiumRewardStr = f"{bpRewards[str(currentLevel+1)]["premiumReward"]["reward"]} {TOKEN_EMOJI}"
+                premiumRewardStr = f"{bpRewards[str(currentLevel+1)]['premiumReward']['reward']} {TOKEN_EMOJI}"
             elif premiumRewardType == "ROLE":
                 bpUserdata[str(userid)]["unreceivedPremiumRole"].append(bpRewards[str(currentLevel+1)]["premiumReward"]["reward"])
-                role = member.guild.get_role(bpRewards[str(currentLevel+1)]["premiumReward"]["reward"])
+                role = member.guild.get_role(bpRewards[str(currentLevel+1)]['premiumReward']['reward'])
                 premiumRewardStr = f"{role.mention()}"
             elif premiumRewardType == "ITEM":
                 bpUserdata[str(userid)]["unreceivedPremiumItem"].append(bpRewards[str(currentLevel+1)]["premiumReward"]["reward"])
-                premiumRewardStr = f"{bpRewards[str(currentLevel+1)]["premiumReward"]["reward"]}"
+                premiumRewardStr = f"{bpRewards[str(currentLevel+1)]['premiumReward']['reward']}"
 
             embed = discord.Embed(
                 title="BAMSAMPASS", description=f":tada: **LEVEL UP!** :tada:\nLv.{currentLevel} → Lv.{currentLevel+1}", color=discord.Color.og_blurple())
@@ -274,8 +274,8 @@ class BSpass(commands.Cog, name="bamsampass"):
             PREMIUM_EMOJI = ""
 
         
-        storedPeridot = f"{bpUserdata[str(user.id)]["unreceivedPremiumPeridot"]} {PERIDOT_EMOJI}\n"
-        storedToken = f"{bpUserdata[str(user.id)]["unreceivedPremiumToken"]} {TOKEN_EMOJI}\n"
+        storedPeridot = f"{bpUserdata[str(user.id)]['unreceivedPremiumPeridot']} {PERIDOT_EMOJI}\n"
+        storedToken = f"{bpUserdata[str(user.id)]['unreceivedPremiumToken']} {TOKEN_EMOJI}\n"
         storedRole = f""
         storedItem = f""
         if len(bpUserdata[str(user.id)]["unreceivedPremiumRole"]) != 0:
@@ -285,7 +285,7 @@ class BSpass(commands.Cog, name="bamsampass"):
         
         if len(bpUserdata[str(user.id)]["unreceivedPremiumItem"]) != 0:
             for i in range(len(bpUserdata[str(user.id)]["unreceivedPremiumItem"])):
-                storedItem += f"{bpUserdata[str(user.id)]["unreceivedPremiumItem"][i]}\n"
+                storedItem += f"{bpUserdata[str(user.id)]['unreceivedPremiumItem'][i]}\n"
 
 
         embed = discord.Embed(
