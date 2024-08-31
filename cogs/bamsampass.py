@@ -298,7 +298,7 @@ class BSpass(commands.Cog, name="bamsampass"):
 
 
         embed = discord.Embed(
-            title=None, description=f"**{ISPREMIUM}**\nLv. {LEVEL}\n「 {format(XP, ',')} / {format(int(TARGETXP), ',')} BXP 」", color=discord.Color.og_blurple())
+            title=None, description=f"**{ISPREMIUM}**\nLv. {LEVEL}\n「 {format(int(XP), ',')} / {format(int(TARGETXP), ',')} BXP 」", color=discord.Color.og_blurple())
         embed.set_author(
             name=f"{formatter.remove_wings(user.display_name)}'s Bamsampass", icon_url=user.avatar)
         embed.add_field(
@@ -308,7 +308,7 @@ class BSpass(commands.Cog, name="bamsampass"):
         if bpUserdata[str(user.id)]["premium"] == False:
             embed.add_field(name="Stored Premium Rewards",
                             value=f"{storedPeridot+storedToken+storedRole+storedItem}", inline=False)
-            embed.set_footer(text="Stored된 보상은 프리미엄 업그레이드시 자동 지급됩니다.")
+            embed.set_footer(text="저장된 보상은 프리미엄 업그레이드시 자동 지급됩니다.")
         await context.send(embed=embed)
 
     @bamsampass.command(
