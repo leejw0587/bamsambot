@@ -197,7 +197,7 @@ class BSpass(commands.Cog, name="bamsampass"):
         with open("database/userdata.json", 'w', encoding="utf-8") as file:
             json.dump(userdata, file, indent="\t", ensure_ascii=False)
         with open("database/itemdata.json", 'w', encoding="utf-8") as file:
-            json.dump(userdata, file, indent="\t", ensure_ascii=False)
+            json.dump(itemdata, file, indent="\t", ensure_ascii=False)
         with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:
             json.dump(bpUserdata, file, indent="\t", ensure_ascii=False)
 
