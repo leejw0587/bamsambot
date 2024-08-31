@@ -235,6 +235,23 @@ class BSpass(commands.Cog, name="bamsampass"):
             embed.set_author(
                 name=f"{user.name}'s Bamsampass", icon_url=user.display_avatar.url)
             return await context.send(embed=embed)
+        
+        if bpUserdata[str(user.id)]["level"] >= 30:
+            ISPREMIUM = "[NORMAL USER]"
+            if bpUserdata[str(user.id)]["premium"] == True:
+                ISPREMIUM = "[PREMIUM USER]"
+
+            embed = discord.Embed(
+            title=None, description=f"**{ISPREMIUM}**\nLv. {LEVEL}\n「 {format(XP, ',')} / {format(0, ',')} BXP 」\n\n**뱀샘패스의 최종 레벨에 도달하였습니다.**", color=discord.Color.og_blurple())
+            embed.set_author(
+                name=f"{formatter.remove_wings(user.display_name)}'s Bamsampass", icon_url=user.avatar)
+            if bpUserdata[str(user.id)]["premium"] == False:
+                embed.add_field(name="Stored Premium Rewards",
+                                value=f"{storedPeridot+storedToken+storedRole+storedItem}", inline=False)
+                embed.set_footer(text="Stored된 보상은 프리미엄 업그레이드시 자동 지급됩니다.")
+            return await context.send(embed=embed)
+
+
 
         LEVEL = bpUserdata[str(user.id)]["level"]
         XP = bpUserdata[str(user.id)]["xp"]
