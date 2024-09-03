@@ -147,7 +147,7 @@ class BSpass(commands.Cog, name="bamsampass"):
                 name="[프리미엄 보상]", value=f"{premiumRewardStr}", inline=True)
             embed.set_footer(text=member.display_name, icon_url=member.display_avatar.url)
 
-            chatChannel = member.guild.get_channel(1070681870146224158)
+            chatChannel = member.guild.get_channel(1070701349089595512)
             await chatChannel.send(content=member.mention, embed=embed)
 
 
