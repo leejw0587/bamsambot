@@ -119,7 +119,7 @@ class BSpass(commands.Cog, name="bamsampass"):
             elif normalRewardType == "ROLE":
                 bpUserdata[str(userid)]["unreceivedRole"].append(bpRewards[str(currentLevel+1)]["reward"]["reward"])
                 role = member.guild.get_role(bpRewards[str(currentLevel+1)]["reward"]["reward"])
-                rewardStr = f"{role.mention()}"
+                rewardStr = f"{role.mention}"
             elif normalRewardType == "ITEM":
                 bpUserdata[str(userid)]["unreceivedItem"].append(bpRewards[str(currentLevel+1)]["reward"]["reward"])
                 rewardStr = f"{bpRewards[str(currentLevel+1)]['reward']['reward']}"
@@ -165,7 +165,7 @@ class BSpass(commands.Cog, name="bamsampass"):
         if len(bpUserdata[str(userid)]["unreceivedRole"]) != 0:
             for i in range(len(bpUserdata[str(userid)]["unreceivedRole"])):
                 role = member.guild.get_role(bpUserdata[str(userid)]["unreceivedRole"][i])
-                normalRole.append(role.mention())
+                normalRole.append(role.mention)
                 bpUserdata[str(userid)]["unreceivedRole"].remove(bpUserdata[str(userid)]["unreceivedRole"][i])
         if len(bpUserdata[str(userid)]["unreceivedItem"]) != 0:
             for i in range(len(bpUserdata[str(userid)]["unreceivedItem"])):
@@ -186,7 +186,7 @@ class BSpass(commands.Cog, name="bamsampass"):
             if len(bpUserdata[str(userid)]["unreceivedPremiumRole"]) != 0:
                 for i in range(len(bpUserdata[str(userid)]["unreceivedPremiumRole"])):
                     role = member.guild.get_role(bpUserdata[str(userid)]["unreceivedPremiumRole"][i])
-                    premiumRole.append(role.mention())
+                    premiumRole.append(role.mention)
                     bpUserdata[str(userid)]["unreceivedPremiumRole"].remove(bpUserdata[str(userid)]["unreceivedPremiumRole"][i])
             if len(bpUserdata[str(userid)]["unreceivedPremiumItem"]) != 0:
                 for i in range(len(bpUserdata[str(userid)]["unreceivedPremiumItem"])):
