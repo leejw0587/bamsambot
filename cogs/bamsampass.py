@@ -317,7 +317,7 @@ class BSpass(commands.Cog, name="bamsampass"):
     )
     @checks.is_owner()
     @app_commands.describe(user="대상 유저", type="수정할 정보의 종류", value="수정할 값")
-    async def bamsampass_set(self, context: Context, user: discord.User, type: typing.Literal['경험치', '레벨'], value):
+    async def bamsampass_set(self, context: Context, user: discord.User, type: typing.Literal['경험치', '레벨'], value: int):
         with open("database/bpass_userdata.json", encoding="utf-8") as file:
             bpUserdata = json.load(file)
 
@@ -327,9 +327,9 @@ class BSpass(commands.Cog, name="bamsampass"):
             return await context.send(embed=embed)
         
         if type == "경험치":
-            bpUserdata[str(user.id)]["xp"] = value
+            bpUserdata[str(user.id)]["xp"] = int(value)
         elif type == "레벨":
-            bpUserdata[str(user.id)]["level"] = value
+            bpUserdata[str(user.id)]["level"] = int(value)
         
         embed = discord.Embed(
                 title="Bamsampass", description=f"{user.mention}의 뱀샘패스 {type}(을)를 `{value}`(으)로 수정하였습니다.", color=discord.Color.blurple())
