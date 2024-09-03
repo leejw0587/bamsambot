@@ -262,7 +262,8 @@ class BSpass(commands.Cog, name="bamsampass"):
             EMOJI = TOKEN_EMOJI
         elif bpRewards[str(LEVEL+1)]["reward"]["type"] == "ROLE":
             EMOJI = ""
-            REWARD = f"<@&{REWARD}>"
+            role = context.guild.get_role(REWARD)
+            REWARD = role.mention
         elif bpRewards[str(LEVEL+1)]["reward"]["type"] == "ITEM":
             EMOJI = ""
             REWARD = f"{REWARD}"
@@ -277,7 +278,8 @@ class BSpass(commands.Cog, name="bamsampass"):
             PREMIUM_EMOJI = TOKEN_EMOJI
         elif bpRewards[str(LEVEL+1)]["premiumReward"]["type"] == "ROLE":
             PREMIUM_EMOJI = ""
-            PREMIUM_REWARD = f"<@&{REWARD}>"
+            role = context.guild.get_role(PREMIUM_REWARD)
+            PREMIUM_REWARD = role.mention
         elif bpRewards[str(LEVEL+1)]["premiumReward"]["type"] == "ITEM":
             EMOJI = ""
             REWARD = f"{REWARD}"
