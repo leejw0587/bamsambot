@@ -134,7 +134,7 @@ class BSpass(commands.Cog, name="bamsampass"):
             elif premiumRewardType == "ROLE":
                 bpUserdata[str(userid)]["unreceivedPremiumRole"].append(bpRewards[str(currentLevel+1)]["premiumReward"]["reward"])
                 role = member.guild.get_role(bpRewards[str(currentLevel+1)]['premiumReward']['reward'])
-                premiumRewardStr = f"{role.mention()}"
+                premiumRewardStr = f"{role.mention}"
             elif premiumRewardType == "ITEM":
                 bpUserdata[str(userid)]["unreceivedPremiumItem"].append(bpRewards[str(currentLevel+1)]["premiumReward"]["reward"])
                 premiumRewardStr = f"{bpRewards[str(currentLevel+1)]['premiumReward']['reward']}"
