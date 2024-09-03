@@ -166,7 +166,7 @@ class BSpass(commands.Cog, name="bamsampass"):
             for i in range(len(bpUserdata[str(userid)]["unreceivedRole"])):
                 role = member.guild.get_role(bpUserdata[str(userid)]["unreceivedRole"][i])
                 normalRole.append(role.mention)
-                await member.add_roles(role, "Bamsampass Reward")
+                await member.add_roles(role, reason="Bamsampass Reward")
                 bpUserdata[str(userid)]["unreceivedRole"].remove(bpUserdata[str(userid)]["unreceivedRole"][i])
         if len(bpUserdata[str(userid)]["unreceivedItem"]) != 0:
             for i in range(len(bpUserdata[str(userid)]["unreceivedItem"])):
@@ -188,7 +188,7 @@ class BSpass(commands.Cog, name="bamsampass"):
                 for i in range(len(bpUserdata[str(userid)]["unreceivedPremiumRole"])):
                     role = member.guild.get_role(bpUserdata[str(userid)]["unreceivedPremiumRole"][i])
                     premiumRole.append(role.mention)
-                    await member.add_roles(role, "Bamsampass Premium Reward")
+                    await member.add_roles(role, reason="Bamsampass Premium Reward")
                     bpUserdata[str(userid)]["unreceivedPremiumRole"].remove(bpUserdata[str(userid)]["unreceivedPremiumRole"][i])
             if len(bpUserdata[str(userid)]["unreceivedPremiumItem"]) != 0:
                 for i in range(len(bpUserdata[str(userid)]["unreceivedPremiumItem"])):
