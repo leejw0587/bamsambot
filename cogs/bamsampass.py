@@ -64,8 +64,6 @@ class BSpass(commands.Cog, name="bamsampass"):
         with open('database/bpass_userdata.json', encoding="utf-8") as file:
             bpUserdata = json.load(file)
         
-        if bpUserdata[str(userid)]["level"] >= 30:
-            return
         if before.channel == None: #Check if new join
             joinTime = round(time.time())
             bpUserdata[str(userid)]["joinTime"] = joinTime
@@ -77,10 +75,7 @@ class BSpass(commands.Cog, name="bamsampass"):
                 xp = passedTime * 1.25
             else:
                 xp = passedTime
-            
-            if xp >= 10000:
-                xp = 10000
-
+                
             bpUserdata[str(userid)]["xp"] += xp
             bpUserdata[str(userid)]["joinTime"] = None
 
@@ -241,14 +236,6 @@ class BSpass(commands.Cog, name="bamsampass"):
                 name=f"{user.name}'s Bamsampass", icon_url=user.display_avatar.url)
             return await context.send(embed=embed)
         
-        if bpUserdata[str(user.id)]["level"] >= 30:
-            embed = discord.Embed(
-            title=None, description=f"**{ISPREMIUM}**\nLv. {LEVEL}\n「 {format(XP, ',')} / {format(0, ',')} BXP 」\n\n**뱀샘패스의 최종 레벨에 도달하였습니다.**", color=discord.Color.og_blurple())
-            embed.set_author(
-                name=f"{formatter.remove_wings(user.display_name)}'s Bamsampass", icon_url=user.avatar)
-            return await context.send(embed=embed)
-
-
 
         LEVEL = bpUserdata[str(user.id)]["level"]
         XP = bpUserdata[str(user.id)]["xp"]
@@ -304,14 +291,21 @@ class BSpass(commands.Cog, name="bamsampass"):
                 storedItem += f"{bpUserdata[str(user.id)]['unreceivedPremiumItem'][i]}\n"
 
 
-        embed = discord.Embed(
-            title=None, description=f"**{ISPREMIUM}**\nLv. {LEVEL}\n「 {format(int(XP), ',')} / {format(int(TARGETXP), ',')} BXP 」", color=discord.Color.og_blurple())
-        embed.set_author(
-            name=f"{formatter.remove_wings(user.display_name)}'s Bamsampass", icon_url=user.avatar)
-        embed.add_field(
-            name="Next Reward", value=f"{REWARD} {EMOJI}", inline=True)
-        embed.add_field(name="Next Reward (Premium)",
-                        value=f"{PREMIUM_REWARD} {PREMIUM_EMOJI}", inline=True)
+        if bpUserdata[str(user.id)]["level"] >= 30:
+            embed = discord.Embed(
+            title=None, description=f"**{ISPREMIUM}**\nLv. {LEVEL}\n「 {format(XP, ',')} BXP 」\n\n**뱀샘패스의 최종 레벨에 도달하였습니다.**", color=discord.Color.og_blurple())
+            embed.set_author(
+                name=f"{formatter.remove_wings(user.display_name)}'s Bamsampass", icon_url=user.avatar)
+        else:   
+            embed = discord.Embed(
+                title=None, description=f"**{ISPREMIUM}**\nLv. {LEVEL}\n「 {format(int(XP), ',')} / {format(int(TARGETXP), ',')} BXP 」", color=discord.Color.og_blurple())
+            embed.set_author(
+                name=f"{formatter.remove_wings(user.display_name)}'s Bamsampass", icon_url=user.avatar)
+            embed.add_field(
+                name="Next Reward", value=f"{REWARD} {EMOJI}", inline=True)
+            embed.add_field(name="Next Reward (Premium)",
+                            value=f"{PREMIUM_REWARD} {PREMIUM_EMOJI}", inline=True)
+            
         if bpUserdata[str(user.id)]["premium"] == False:
             embed.add_field(name="Stored Premium Rewards",
                             value=f"{storedPeridot+storedToken+storedRole+storedItem}", inline=False)
