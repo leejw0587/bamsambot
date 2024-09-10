@@ -58,7 +58,7 @@ class BSpass(commands.Cog, name="bamsampass"):
             bpUserdata.update(newUser)
             with open("database/bpass_userdata.json", 'w', encoding="utf-8") as file:
                 json.dump(bpUserdata, file, indent="\t", ensure_ascii=False)
-
+        
 
         #Adding XP
         with open('database/bpass_userdata.json', encoding="utf-8") as file:
@@ -78,6 +78,9 @@ class BSpass(commands.Cog, name="bamsampass"):
             else:
                 xp = passedTime
             
+            if xp >= 10000:
+                xp = 10000
+
             bpUserdata[str(userid)]["xp"] += xp
             bpUserdata[str(userid)]["joinTime"] = None
 
@@ -281,7 +284,7 @@ class BSpass(commands.Cog, name="bamsampass"):
             role = context.guild.get_role(PREMIUM_REWARD)
             PREMIUM_REWARD = role.mention
         elif bpRewards[str(LEVEL+1)]["premiumReward"]["type"] == "ITEM":
-            EMOJI = ""
+            PREMIUM_EMOJI = ""
             REWARD = f"{REWARD}"
         else:
             PREMIUM_EMOJI = ""
