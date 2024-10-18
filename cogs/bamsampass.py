@@ -19,6 +19,8 @@ class BSpass(commands.Cog, name="bamsampass"):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
+        return
+
         if member.bot: #Bot return
             return
         try:
@@ -221,6 +223,13 @@ class BSpass(commands.Cog, name="bamsampass"):
     )
     @app_commands.describe(user="대상 유저")
     async def bamsampass_info(self, context: Context, user: discord.User = None) -> None:
+        embed = discord.Embed(
+            title=None, description=f"Coming soon ...", color=discord.Color.og_blurple())
+        embed.set_author(
+            name=f"{user.name}'s Bamsampass", icon_url=user.display_avatar.url)
+        return await context.send(embed=embed)
+
+
         if user == None:
             user = context.author
 
