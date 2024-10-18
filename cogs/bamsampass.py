@@ -225,8 +225,6 @@ class BSpass(commands.Cog, name="bamsampass"):
     async def bamsampass_info(self, context: Context, user: discord.User = None) -> None:
         embed = discord.Embed(
             title=None, description=f"Coming soon ...", color=discord.Color.og_blurple())
-        embed.set_author(
-            name=f"{user.name}'s Bamsampass", icon_url=user.display_avatar.url)
         return await context.send(embed=embed)
 
 
