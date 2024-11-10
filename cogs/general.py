@@ -750,7 +750,7 @@ class General(commands.Cog, name="general"):
         with open("database/userdata.json", encoding="utf-8") as file:
             userdata = json.load(file)
 
-        context.defer()
+        await context.defer()
 
         errorCount = 0
         successCount = 0
@@ -775,7 +775,7 @@ class General(commands.Cog, name="general"):
                 except:
                     errorCount += 1
 
-        context.send(f"Done\nSuccess: {successCount}\nFail: {errorCount}")
+        await context.send(f"Done\nSuccess: {successCount}\nFail: {errorCount}")
 
 
 async def setup(bot):
