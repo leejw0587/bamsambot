@@ -228,5 +228,5 @@ asyncio.run(init_db())
 asyncio.run(load_cogs())
 
 load_dotenv()
-TOKEN = os.environ.get('main_token')
+TOKEN = os.environ.get('test_token')
 bot.run(TOKEN)
