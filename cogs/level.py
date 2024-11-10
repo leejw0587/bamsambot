@@ -49,47 +49,11 @@ class Level(commands.Cog, name="level"):
         description="레벨 순위를 확인합니다."
     )
     async def leaderboard(self, context: Context) -> None:
-        await context.defer()
-        with open("database/userdata.json", encoding="utf-8") as file:
-            userdata = json.load(file)
-
-        lim = 10
-
-        lb = {}
-        total_xp = []
-
-        for uid in userdata:
-            xp = int(userdata[str(uid)]["xp"]) + \
-                (int(userdata[str(uid)]["level"] * 100))
-
-            lb[xp] = f"{uid};{userdata[str(uid)]['level']};{userdata[str(uid)]['xp']}"
-            total_xp.append(xp)
-
-        total_xp = sorted(total_xp, reverse=True)
-        index = 1
-
         embed = discord.Embed(
             title="Bamsam Leaderboard",
+            description="https://www.bamsam.xyz/leaderboard",
             color=discord.Color.blurple()
         )
-
-        for amt in total_xp:
-            id_ = int(str(lb[amt]).split(";")[0])
-            level = int(str(lb[amt]).split(";")[1])
-            xp = int(str(lb[amt]).split(";")[2])
-
-            member = await self.bot.fetch_user(id_)
-
-            if member is not None:
-                name = member.name
-                embed.add_field(name=f"{index}. {name}",
-                                value=f"**Level: {level} | XP: {xp}**",
-                                inline=False)
-
-            if index == lim:
-                break
-            else:
-                index += 1
 
         await context.send(embed=embed)
 

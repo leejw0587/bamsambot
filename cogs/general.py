@@ -738,5 +738,38 @@ class General(commands.Cog, name="general"):
         )
         await context.send(embed=embed)     
 
+
+    @commands.hybrid_command(
+        name="db_init",
+        description="dev"
+    )
+    @checks.is_dev()
+    async def db_init(self ,context: Context):
+        with open("database/leaderboard.json", encoding="utf-8") as file:
+            leaderboard = json.load(file)
+        with open("database/userdata.json", encoding="utf-8") as file:
+            userdata = json.load(file)
+
+        context.defer()
+
+        for user in context.guild.members:
+            if str(user.id) in userdata:
+                pass
+            else:
+                newUser = {
+                    str(user.id): {
+                        "username": user.display_name,
+                        "userid": str(user.id),
+                        "xp": userdata[str(user.id)]["xp"],
+                        "level": userdata[str(user.id)]["level"],
+                    }
+                }
+            leaderboard.update(newUser)
+            with open("database/leaderboard.json", 'w', encoding="utf-8") as file:
+                json.dump(leaderboard, file, indent="\t", ensure_ascii=False)
+
+        context.send("Done")
+
+
 async def setup(bot):
     await bot.add_cog(General(bot))
