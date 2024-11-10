@@ -764,9 +764,9 @@ class General(commands.Cog, name="general"):
                         "level": userdata[str(user.id)]["level"],
                     }
                 }
-            leaderboard.update(newUser)
-            with open("database/leaderboard.json", 'w', encoding="utf-8") as file:
-                json.dump(leaderboard, file, indent="\t", ensure_ascii=False)
+                leaderboard.update(newUser)
+                with open("database/leaderboard.json", 'w', encoding="utf-8") as file:
+                    json.dump(leaderboard, file, indent="\t", ensure_ascii=False)
 
         context.send("Done")
 
