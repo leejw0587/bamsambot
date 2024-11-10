@@ -755,8 +755,10 @@ class General(commands.Cog, name="general"):
         errorCount = 0
         successCount = 0
 
+        print(f"{context.guild.members}")
+
         for user in context.guild.members:
-            if str(user.id) in userdata:
+            if str(user.id) in leaderboard:
                 pass
             else:
                 try:
