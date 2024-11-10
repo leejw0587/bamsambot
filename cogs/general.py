@@ -752,23 +752,30 @@ class General(commands.Cog, name="general"):
 
         context.defer()
 
+        errorCount = 0
+        successCount = 0
+
         for user in context.guild.members:
             if str(user.id) in userdata:
                 pass
             else:
-                newUser = {
-                    str(user.id): {
-                        "username": user.display_name,
-                        "userid": str(user.id),
-                        "xp": userdata[str(user.id)]["xp"],
-                        "level": userdata[str(user.id)]["level"],
+                try:
+                    newUser = {
+                        str(user.id): {
+                            "username": user.display_name,
+                            "userid": str(user.id),
+                            "xp": userdata[str(user.id)]["xp"],
+                            "level": userdata[str(user.id)]["level"],
+                        }
                     }
-                }
-                leaderboard.update(newUser)
-                with open("database/leaderboard.json", 'w', encoding="utf-8") as file:
-                    json.dump(leaderboard, file, indent="\t", ensure_ascii=False)
+                    leaderboard.update(newUser)
+                    successCount += 1
+                    with open("database/leaderboard.json", 'w', encoding="utf-8") as file:
+                        json.dump(leaderboard, file, indent="\t", ensure_ascii=False)
+                except:
+                    errorCount += 1
 
-        context.send("Done")
+        context.send(f"Done\nSuccess: {successCount}\nFail: {errorCount}")
 
 
 async def setup(bot):
