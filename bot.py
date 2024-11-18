@@ -76,6 +76,7 @@ bot.config = config
 
 @bot.event
 async def on_ready() -> None:
+    print("-------------------")
     print(f"Logged in as {bot.user.name}")
     print(f"discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
@@ -105,20 +106,20 @@ async def on_message(message: discord.Message) -> None:
 
 @bot.event
 async def on_member_join(member):
-    welcome_channel = bot.get_channel(1070686070011871272)
+    welcomeChannel = bot.get_channel(1070686070011871272)
 
     embed = discord.Embed(
         title="WELCOME", description=f"{member.mention}님, 뱀샘크루에 오신 것을 환영합니다!", color=0x9C84EF)
-    await welcome_channel.send(embed=embed)
+    await welcomeChannel.send(embed=embed)
 
 
 @bot.event
 async def on_member_remove(member):
-    welcome_channel = bot.get_channel(1070686070011871272)
+    welcomeChannel = bot.get_channel(1070686070011871272)
 
     embed = discord.Embed(
         title="GOOD BYE", description=f"`{member.name}`님이 뱀샘크루를 떠났습니다.", color=0x9C84EF)
-    await welcome_channel.send(embed=embed)
+    await welcomeChannel.send(embed=embed)
 
 
 @bot.event
@@ -126,19 +127,19 @@ async def on_command_completion(context: Context) -> None:
     """
     :param context: The context of the command that has been executed.
     """
-    full_command_name = context.command.qualified_name
-    split = full_command_name.split(" ")
-    executed_command = str(split[0])
+    fullCommandName = context.command.qualified_name
+    split = fullCommandName.split(" ")
+    executedCommand = str(split[0])
 
     now = datetime.now()
     timecode = now.strftime('%Y-%m-%d %H:%M:%S')
 
     if context.guild is not None:
         print(
-            f"[INFO] {timecode} | Executed {executed_command} command by {context.author}")
+            f"[INFO] {timecode} | Executed {executedCommand} command by {context.author}")
     else:
         print(
-            f"[INFO] {timecode} | Executed {executed_command} command by {context.author} in DMs")
+            f"[INFO] {timecode} | Executed {executedCommand} command by {context.author} in DMs")
 
 
 @bot.event
@@ -205,7 +206,7 @@ async def on_command_error(context: Context, error) -> None:
     else:
         embed = discord.Embed(
             title="Error!",
-            description=f"커맨드를 실행하던 중 오류가 발생했습니다.\n`{error}`",
+            description=f"커맨드를 실행하던 중 오류가 발생했습니다.",
             color=discord.Color.red()
         )
         await context.send(embed=embed)

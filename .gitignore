@@ -146,11 +146,15 @@ cython_debug/
 # database
 database/
 
-#Ds_Store
+# Ds_Store
 .Ds_Store
 
+# Asset temporary files
 cogs/assets/Quote/icon.jpeg
 cogs/assets/Quote/result.png
 cogs/assets/Transcripts/
 cogs/assets/Videos/
 cogs/assets/Images/
+
+# Cookie
+cookies.txt
