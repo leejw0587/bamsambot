@@ -4,13 +4,13 @@
 타 서버 사용 불가
 
 ### Git Flow
-1. Branch
+#### 1. Branch
 - main
 - develop
 - feature
 - refactor
 
-2. Commit Convention
+#### 2. Commit Convention
 - [Feat] : 기능 추가
 - [Fix] : 기능 수정
 - [Refactor] : 리팩토링
