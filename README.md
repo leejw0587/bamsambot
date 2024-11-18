@@ -3,6 +3,8 @@
 디스코드 커뮤니티 뱀샘크루를 위한 자체 개발 디스코드 봇  
 타 서버 사용 불가
 
+---
+
 ### Git Flow
 #### 1. Branch
 - main
@@ -17,7 +19,7 @@
 
 example: [Feat] 음악 재생 기능 추가
 
-
+---
 
 ### Code Convention
 1. Class명은 PascalCase로 작성한다.
@@ -28,7 +30,7 @@ example: [Feat] 음악 재생 기능 추가
 4. 상수변수, 전역변수명은  UPPER_CASE로 작성한다.
 5. 이 외 작명은 camelCase를 사용한다.
 
-
+---
 
 ### Database Managing Rules
 데이터베이스에 접근하는 명령어 함수 최상단에 필요한 데이터베이스를 모두 open한다.
