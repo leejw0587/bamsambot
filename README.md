@@ -16,7 +16,6 @@
 - [Refactor] : 리팩토링
 
 example: [Feat] 음악 재생 기능 추가
-
 example: [Fix] username display bug
 
 
