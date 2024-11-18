@@ -18,6 +18,7 @@ example: [Feat] 음악 재생 기능 추가
 example: [Fix] username display bug
 
 
+
 ### Code Convention
 1. Class명은 PascalCase로 작성한다.
 2. 함수명은 snake_case로 작성한다.
@@ -28,9 +29,8 @@ example: [Fix] username display bug
 5. 이 외 작명은 camelCase를 사용한다.
 
 
-### Database Managing Rules
-## DB Managing Rules
 
+### Database Managing Rules
 데이터베이스에 접근하는 명령어 함수 최상단에 필요한 데이터베이스를 모두 open한다.
 
 사용한 데이터베이스는 해당 함수 최하단에서 dump한다.
@@ -43,4 +43,5 @@ example: [Fix] username display bug
 | itemdata.json | itemdata |
 | shop.json | shopdata |
 | codes.json | codedata |
-|  |  |
+
+(DB system change project 이후 변경 예정)
