@@ -4,7 +4,6 @@ import textwrap
 import random
 import json
 import asyncio
-import openai
 import secrets
 import os
 
