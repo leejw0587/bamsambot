@@ -50,7 +50,7 @@ class Music(commands.Cog, name="music"):
             embed.set_thumbnail(url=track.artwork)
 
         if original and original.recommended:
-            embed.description = f"\n\n(자동재생에 의해 추가된 노래임)"
+            embed.description = f"\n\n(자동재생에 의해 추가됨)"
 
         await player.home.send(embed=embed)
 
@@ -185,11 +185,6 @@ class Music(commands.Cog, name="music"):
 
         await context.send(embed=embeds.EmbedBlurple("Music", f"`{player.current.title}`을(를) 건너뜁니다."))
         await player.skip(force=True)
-        
-        try:
-            await player.play(player.queue.get(), volume=30)
-        except:
-            pass
 
         
     @commands.hybrid_command(
