@@ -733,7 +733,7 @@ class General(commands.Cog, name="general"):
     async def invite(self, context: Context):
         embed = discord.Embed(
             title="초대 링크",
-            description=f"https://discord.gg/2sPgEZcMTv",
+            description=f"https://discord.gg/nKgyf3a9bF",
             color=0x9C84EF
         )
         await context.send(embed=embed)     
